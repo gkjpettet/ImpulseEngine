@@ -13,6 +13,7 @@ Class=Matrix;PhysicsKit/Matrix.xojo_code;&h0000000053D22FFF;&h000000006811E7FF;f
 Interface=Shape;PhysicsKit/Shape.xojo_code;&h000000005E2047FF;&h000000006811E7FF;false
 Class=Body;PhysicsKit/Body.xojo_code;&h0000000057439FFF;&h000000006811E7FF;false
 Class=Circle;PhysicsKit/Circle.xojo_code;&h0000000067F317FF;&h000000006811E7FF;false
+Class=Polygon;PhysicsKit/Polygon.xojo_code;&h0000000059363FFF;&h000000006811E7FF;false
 DefaultWindow=Window1
 AppMenuBar=MainMenuBar
 MajorVersion=1

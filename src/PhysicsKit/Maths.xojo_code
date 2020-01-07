@@ -109,6 +109,9 @@ Protected Module Maths
 	#tag Constant, Name = EPSILON_SQ, Type = Double, Dynamic = False, Default = \"0.00000001", Scope = Protected
 	#tag EndConstant
 
+	#tag Constant, Name = FLOAT_MAX_VALUE, Type = Double, Dynamic = False, Default = \"2147483647", Scope = Protected
+	#tag EndConstant
+
 	#tag Constant, Name = PENETRATION_ALLOWANCE, Type = Double, Dynamic = False, Default = \"0.05", Scope = Protected
 	#tag EndConstant
 

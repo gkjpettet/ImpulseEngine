@@ -108,6 +108,30 @@ Implements PhysicsKit.Shape
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Function GetSupport(dir As PhysicsKit.Vector) As PhysicsKit.Vector
+		  Var bestProjection As Double = -Maths.FLOAT_MAX_VALUE
+		  Var bestVertex, v As PhysicsKit.Vector
+		  Var projection As Double
+		  
+		  Var i As Integer = 0
+		  While i < VertexCount
+		    v = Vertices(i)
+		    projection = Vector.Dot(v, dir)
+		    
+		    If projection > bestProjection Then
+		      bestVertex = v
+		      bestProjection = projection
+		    End If
+		    
+		    i = i + 1
+		  Wend
+		  
+		  Return bestVertex
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub Initialise()
 		  // Part of the PhysicsKit.Shape interface.
 		  
@@ -346,6 +370,14 @@ Implements PhysicsKit.Shape
 			Visible=true
 			Group="Position"
 			InitialValue="0"
+			Type="Integer"
+			EditorType=""
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="VertexCount"
+			Visible=false
+			Group="Behavior"
+			InitialValue=""
 			Type="Integer"
 			EditorType=""
 		#tag EndViewProperty

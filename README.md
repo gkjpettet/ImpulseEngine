@@ -11,7 +11,7 @@ A 2D rigid body physics engine for Xojo. Based on Randy Gaul's [Impulse engine][
 - [ ] CollisionPolygonPolygon
 - [ ] Collisions.java
 - [x] ImpulseMath.java (renamed to PhysicsKit.Maths)
-- [ ] ImpulseScene.java
+- [x] ImpulseScene.java (renamed to World)
 - [x] Manifold.java
 - [x] Mat2.java
 - [x] Polygon.java

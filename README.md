@@ -15,7 +15,7 @@ A 2D rigid body physics engine for Xojo. Based on Randy Gaul's [Impulse engine][
 - [ ] Manifold.java
 - [x] Mat2.java
 - [ ] Polygon.java
-- [ ] Shape.java
+- [x] Shape.java
 - [x] Vec2.java (renamed to Vector)
 
 [randy's]: https://www.randygaul.net/projects-open-sources/impulse-engine/

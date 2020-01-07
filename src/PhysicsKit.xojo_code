@@ -10,5 +10,12 @@ Protected Module PhysicsKit
 	#tag EndMethod
 
 
+	#tag Enum, Name = ShapeTypes, Type = Integer, Flags = &h0
+		Circle
+		  Poly
+		Count
+	#tag EndEnum
+
+
 End Module
 #tag EndModule

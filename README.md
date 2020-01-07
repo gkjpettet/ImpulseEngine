@@ -2,8 +2,8 @@
 A 2D rigid body physics engine for Xojo. Based on Randy Gaul's [Impulse engine][randy's] and the Java port by [whackashoe][java port].
 
 ## Port process
-- [ ] Body.java
-- [ ] Circle.java
+- [x] Body.java
+- [x] Circle.java
 - [ ] CollisionCallback.java
 - [ ] CollisionCircleCircle.java
 - [ ] CollisionCirclePolygon.java

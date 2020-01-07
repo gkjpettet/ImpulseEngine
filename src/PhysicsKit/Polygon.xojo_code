@@ -29,8 +29,8 @@ Implements PhysicsKit.Shape
 		  
 		  Var i As Integer = 0
 		  While i < VertexCount
-		    p.Vertices(i).Set(Vertices(i))
-		    p.Normals(i).Set(Normals(i))
+		    Call p.Vertices(i).Set(Vertices(i))
+		    Call p.Normals(i).Set(Normals(i))
 		    i = i + 1
 		  Wend
 		  
@@ -231,7 +231,7 @@ Implements PhysicsKit.Shape
 		  i = 0
 		  While i < VertexCount
 		    // Copy vertices into shape's vertices.
-		    Vertices(i).Set(verts(hull(i)))
+		    Call Vertices(i).Set(verts(hull(i)))
 		    i = i + 1
 		  Wend
 		  
@@ -273,15 +273,6 @@ Implements PhysicsKit.Shape
 		  mU.Set(radians)
 		  
 		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function Type() As PhysicsKit.ShapeTypes
-		  // Part of the PhysicsKit.Shape interface.
-		  
-		  Return PhysicsKit.ShapeTypes.Poly
-		  
-		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0

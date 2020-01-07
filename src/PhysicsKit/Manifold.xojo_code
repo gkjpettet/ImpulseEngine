@@ -135,13 +135,25 @@ Protected Class Manifold
 
 	#tag Method, Flags = &h0
 		Sub Solve()
-		  Var ia As Integer = Integer(A.Shape.Type)
-		  Var ib As Integer = Integer(B.Shape.Type)
-		  
-		  #Pragma Warning "TODO!!"
-		  //Collisions.Dispatch[ia][ib].HandleCollision(Self, A, B)
+		  If A IsA Circle And B IsA Circle Then
+		    Collisions.CircleCircle(Self, A, B)
+		  ElseIf A IsA Circle And B IsA Polygon Then
+		    #Pragma Warning "TODO"
+		  ElseIf A IsA Polygon And B IsA Circle Then
+		    #Pragma Warning "TODO"
+		  ElseIf A IsA Polygon And B IsA Polygon Then
+		    #Pragma Warning "TODO"
+		  Else
+		    Raise New InvalidArgumentException("Collision.Solve: Unsupported combination of shapes")
+		  End If
 		End Sub
 	#tag EndMethod
+
+
+	#tag Note, Name = About
+		Manifold objects contain information about a collision.
+		
+	#tag EndNote
 
 
 	#tag Property, Flags = &h0

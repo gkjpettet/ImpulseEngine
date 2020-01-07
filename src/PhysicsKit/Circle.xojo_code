@@ -92,15 +92,6 @@ Implements PhysicsKit.Shape
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Type() As PhysicsKit.ShapeTypes
-		  // Part of the PhysicsKit.Shape interface.
-		  
-		  Return PhysicsKit.ShapeTypes.Circle
-		  
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Function U() As PhysicsKit.Matrix
 		  // Part of the PhysicsKit.Shape interface.
 		  
@@ -170,14 +161,6 @@ Implements PhysicsKit.Shape
 			Visible=true
 			Group="Position"
 			InitialValue="0"
-			Type="Integer"
-			EditorType=""
-		#tag EndViewProperty
-		#tag ViewProperty
-			Name="mBody"
-			Visible=false
-			Group="Behavior"
-			InitialValue=""
 			Type="Integer"
 			EditorType=""
 		#tag EndViewProperty

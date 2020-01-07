@@ -619,13 +619,14 @@ Protected Class Vector
 		End Sub
 	#tag EndMethod
 
-	#tag Method, Flags = &h0, Description = 53657473207468697320766563746F72277320636F6D706F6E656E747320746F207468652073616D652076616C756573206173207468652070617373656420766563746F722E
-		Sub Set(v As PhysicsKit.Vector)
-		  // Sets this vector's components to the same values as the passed vector.
+	#tag Method, Flags = &h0, Description = 53657473207468697320766563746F72277320636F6D706F6E656E747320746F207468652073616D652076616C756573206173207468652070617373656420766563746F7220616E642072657475726E7320697473656C662E
+		Function Set(v As PhysicsKit.Vector) As PhysicsKit.Vector
+		  // Sets this vector's components to the same values as the passed vector and returns itself.
 		  
 		  Self.X = v.X
 		  Self.Y = v.Y
-		End Sub
+		  Return Self
+		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0, Description = 52657475726E732061206E657720766563746F72207468617420697320746865207375627472616374696F6E206F66206076602066726F6D207468697320766563746F722E205468697320766563746F7220697320756E616C74657265642E
@@ -723,8 +724,16 @@ Protected Class Vector
 			Name="X"
 			Visible=false
 			Group="Behavior"
-			InitialValue=""
-			Type="Integer"
+			InitialValue="0"
+			Type="Double"
+			EditorType=""
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Y"
+			Visible=false
+			Group="Behavior"
+			InitialValue="0"
+			Type="Double"
 			EditorType=""
 		#tag EndViewProperty
 	#tag EndViewBehavior

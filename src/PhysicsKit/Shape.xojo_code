@@ -49,12 +49,6 @@ Protected Interface Shape
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Type() As PhysicsKit.ShapeTypes
-		  
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Function U() As PhysicsKit.Matrix
 		  
 		End Function

@@ -138,7 +138,7 @@ Protected Class Manifold
 		  If A IsA Circle And B IsA Circle Then
 		    Collisions.CircleCircle(Self, A, B)
 		  ElseIf A IsA Circle And B IsA Polygon Then
-		    #Pragma Warning "TODO"
+		    Collisions.CirclePolygon(Self, A, B)
 		  ElseIf A IsA Polygon And B IsA Circle Then
 		    #Pragma Warning "TODO"
 		  ElseIf A IsA Polygon And B IsA Polygon Then

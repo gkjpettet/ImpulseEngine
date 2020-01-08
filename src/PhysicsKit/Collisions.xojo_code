@@ -34,6 +34,83 @@ Protected Module Collisions
 		End Sub
 	#tag EndMethod
 
+	#tag Method, Flags = &h1
+		Protected Sub CirclePolygon(m As PhysicsKit.Manifold, a As PhysicsKit.Body, b As PhysicsKit.Body)
+		  Var circleShape As PhysicsKit.Circle = PhysicsKit.Circle(a.Shape) //A
+		  Var polygonShape As PhysicsKit.Polygon = PhysicsKit.Polygon(b.Shape) // B
+		  
+		  m.ContactCount = 0
+		  
+		  // Transform circle center to Polygon model space.
+		  Var center As PhysicsKit.Vector = polygonShape.U.Transpose.MultiplySelf(a.Position.Subtract(b.Position))
+		  
+		  // Find edge with minimum penetration.
+		  // Same concept as using support points in Polygon vs Polygon.
+		  Var separation As Double = -Maths.FLOAT_MAX_VALUE
+		  Var faceNormal As Integer = 0
+		  
+		  Var i As Integer = 0
+		  Var s As Double
+		  While i < polygonShape.VertexCount
+		    s = Vector.Dot(polygonShape.Normals(i), center.Subtract(polygonShape.Vertices(i)))
+		    
+		    If s > circleShape.Radius Then Return
+		    
+		    If s > separation Then
+		      separation = s
+		      faceNormal = i
+		    End If
+		    
+		    i = i + 1
+		  Wend
+		  
+		  // Grab the face's vertices.
+		  Var v1 As PhysicsKit.Vector = polygonShape.Vertices(faceNormal)
+		  Var i2 As Integer = If(faceNormal + 1 < polygonShape.VertexCount, faceNormal + 1, 0)
+		  Var v2 As PhysicsKit.Vector = polygonShape.Vertices(i2)
+		  
+		  // Check to see if center is within polygon
+		  If separation < Maths.EPSILON Then
+		    m.ContactCount = 1
+		    Call polygonShape.U.Multiply(polygonShape.Normals(faceNormal), m.Normal).NegateSelf
+		    Call m.Contacts(0).Set(m.Normal).MultiplySelf(circleShape.Radius).AddSelf(a.Position)
+		    m.Penetration = circleShape.Radius
+		    Return
+		  End If
+		  
+		  // Determine which voronoi region of the edge center of circle lies within.
+		  Var dot1 As Double = Vector.Dot(center.Subtract(v1), v2.Subtract(v1))
+		  Var dot2 As Double = Vector.Dot(center.Subtract(v2), v1.Subtract(v2))
+		  m.Penetration = circleShape.Radius - separation
+		  
+		  // Closest to v1.
+		  If dot1 <= 0 Then
+		    If Vector.DistanceSquared(center, v1) > circleShape.Radius * circleShape.Radius Then Return
+		    
+		    m.ContactCount = 1
+		    polygonShape.U.MultiplySelf(m.Normal.Set(v1).SubtractSelf(center)).Normalise
+		    Call polygonShape.U.Multiply(v1, m.Contacts(0)).AddSelf(b.Position)
+		    
+		  ElseIf dot2 <= 0 Then // Closest to v2.
+		    If Vector.DistanceSquared(center, v2) > circleShape.Radius * circleShape.Radius Then Return
+		    
+		    m.ContactCount = 1
+		    polygonShape.U.MultiplySelf(m.Normal.Set(v2).SubtractSelf(center)).Normalise
+		    Call polygonShape.U.Multiply(v2, m.Contacts(0)).AddSelf(b.Position)
+		    
+		  Else // Closest to face.
+		    Var n As PhysicsKit.Vector = polygonShape.Normals(faceNormal)
+		    
+		    If Vector.Dot(center.Subtract(v1), n) > circleShape.Radius Then Return
+		    
+		    m.ContactCount = 1
+		    Call polygonShape.U.Multiply(n, m.Normal).NegateSelf
+		    Call m.Contacts(0).Set(a.Position).AddSelf(m.Normal, circleShape.Radius)
+		  End If
+		  
+		End Sub
+	#tag EndMethod
+
 
 End Module
 #tag EndModule

@@ -6,7 +6,7 @@ A 2D rigid body physics engine for Xojo. Based on Randy Gaul's [Impulse engine][
 - [x] Circle.java
 - [x] CollisionCallback.java
 - [x] CollisionCircleCircle.java
-- [ ] CollisionCirclePolygon.java
+- [x] CollisionCirclePolygon.java
 - [ ] CollisionPolygonCircle.java
 - [ ] CollisionPolygonPolygon
 - [x] Collisions.java

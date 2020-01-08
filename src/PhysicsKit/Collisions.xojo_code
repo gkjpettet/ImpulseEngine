@@ -111,12 +111,226 @@ Protected Module Collisions
 		End Sub
 	#tag EndMethod
 
+	#tag Method, Flags = &h21
+		Private Function Clip(n As PhysicsKit.Vector, c As Double, face() As PhysicsKit.Vector) As Integer
+		  Var sp As Integer = 0
+		  Var out() As PhysicsKit.Vector
+		  out.AddRow(New Vector(face(0)))
+		  out.AddRow(New Vector(face(1)))
+		  
+		  // Retrieve distances from each endpoint to the line.
+		  // d = ax + by - c
+		  Var d1 As Double = Vector.Dot(n, face(0)) - c
+		  Var d2 As Double = Vector.Dot(n, face(1)) - c
+		  
+		  // If negative (behind plane) clip.
+		  If d1 <= 0 Then
+		    Call out(sp).Set(face(0))
+		    sp = sp + 1
+		  End If
+		  If d2 <= 0 Then
+		    Call out(sp).Set(face(1))
+		    sp = sp + 1
+		  End If
+		  
+		  // If the points are on different sides of the plane.
+		  If d1 * d2 < 0 Then // Less than to ignore -0.0
+		    // Push intersection point.
+		    Var alpha As Double = d1 / (d1 - d2)
+		    
+		    Call out(sp).Set(face(1)).SubtractSelf(face(0)).MultiplySelf(alpha).AddSelf(face(0))
+		    sp = sp + 1
+		  End If
+		  
+		  // Assign our new converted values.
+		  face(0) = out(0)
+		  face(1) = out(1)
+		  
+		  Return sp
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Function FindAxisLeastPenetration(faceIndex() As Integer, polygonA As PhysicsKit.Polygon, polygonB As PhysicsKit.Polygon) As Double
+		  Var bestDistance As Double = -Maths.FLOAT_MAX_VALUE
+		  Var bestIndex As Integer = 0
+		  
+		  Var i As Integer = 0
+		  While i < polygonA.VertexCount
+		    // Retrieve a face normal from polygonA.
+		    Var nw As PhysicsKit.Vector = polygonA.U.Multiply(polygonA.Normals(i))
+		    
+		    // Transform face normal into polygonB's model space.
+		    Var buT As PhysicsKit.Matrix = polygonB.U.Transpose
+		    Var n As PhysicsKit.Vector = buT.Multiply(nw)
+		    
+		    // Retrieve support point from B along -n
+		    Var s As PhysicsKit.Vector = polygonB.GetSupport(n.Negate)
+		    
+		    // Retrieve vertex on face from A, transform into polygonB's model space.
+		    Var v As PhysicsKit.Vector = _
+		    buT.MultiplySelf(polygonA.U.Multiply(polygonA.Vertices(i)).AddSelf(polygonA.Body.Position)._
+		    SubtractSelf(polygonB.Body.Position))
+		    
+		    // Compute penetration distance (in polygonB's model space).
+		    Var d As Double = Vector.Dot(n, s.Subtract(v))
+		    
+		    // Store greatest distance.
+		    If d > bestDistance Then
+		      bestDistance = d
+		      bestIndex = i
+		    End If
+		    
+		    i = i + 1
+		  Wend
+		  
+		  faceIndex(0) = bestIndex
+		  Return bestDistance
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub FindIncidentFace(v() As PhysicsKit.Vector, refPoly As PhysicsKit.Polygon, incPoly As PhysicsKit.Polygon, referenceIndex As Integer)
+		  Var referenceNormal As PhysicsKit.Vector = refPoly.Normals(referenceIndex)
+		  
+		  // Calculate normal in incident's frame of reference
+		  referenceNormal = refPoly.U.Multiply(referenceNormal) // To world space.
+		  referenceNormal = incPoly.U.Transpose.Multiply(referenceNormal) // To incident's model space.
+		  
+		  // Find most anti-normal face on incident polygon.
+		  Var incidentFace As Integer = 0
+		  Var minDot As Double = Maths.FLOAT_MAX_VALUE
+		  
+		  Var i As Integer = 0
+		  While i < incPoly.VertexCount
+		    Var dot As Double = Vector.Dot(referenceNormal, incPoly.Normals(i))
+		    
+		    If dot < minDot Then
+		      minDot = dot
+		      incidentFace = i
+		    End If
+		    
+		    i = i + 1
+		  Wend
+		  
+		  // Assign face vertices for incidentFace.
+		  v(0) = incPoly.U.Multiply(incPoly.Vertices(incidentFace)).AddSelf(incPoly.Body.Position)
+		  incidentFace = If(incidentFace + 1 >= incPoly.VertexCount, 0, incidentFace + 1)
+		  v(1) = incPoly.U.Multiply(incPoly.Vertices(incidentFace)).AddSelf(incPoly.Body.Position)
+		  
+		End Sub
+	#tag EndMethod
+
 	#tag Method, Flags = &h1
-		Protected Sub PolygonCircle(m As PhysicsKit.Manifold, a As PhysicsKit.Body, a As PhysicsKit.Body)
+		Protected Sub PolygonCircle(m As PhysicsKit.Manifold, a As PhysicsKit.Body, b As PhysicsKit.Body)
 		  // Re-use the CirclePolygon method with the arguments reversed.
 		  Collisions.CirclePolygon(m, b, a)
 		  
-		  If m.ContactCount > 0 Then m.Normal.NegateSelf
+		  If m.ContactCount > 0 Then Call m.Normal.NegateSelf
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h1
+		Protected Sub PolygonPolygon(m As PhysicsKit.Manifold, a As PhysicsKit.Body, b As PhysicsKit.Body)
+		  Var polygonShapeA As PhysicsKit.Polygon = PhysicsKit.Polygon(a.Shape) //A
+		  Var polygonShapeB As PhysicsKit.Polygon = PhysicsKit.Polygon(b.Shape) //B
+		  
+		  m.ContactCount = 0
+		  
+		  // Check for a separating axis with polygonShapeA's face planes.
+		  Var faceA() As Integer = Array(0)
+		  Var penetrationA As Double = FindAxisLeastPenetration(faceA, polygonShapeA, polygonShapeB)
+		  If penetrationA >= 0 Then Return
+		  
+		  // Check for a separating axis with polygonShapeB's face planes.
+		  Var faceB() As Integer = Array(0)
+		  Var penetrationB As Double = FindAxisLeastPenetration(faceB, polygonShapeB, polygonShapeA)
+		  If penetrationB >= 0 Then Return
+		  
+		  Var referenceIndex As Integer
+		  Var flip As Boolean // Always point from bodyA to bodyB.
+		  
+		  Var RefPoly As PhysicsKit.Polygon // Reference.
+		  Var IncPoly As PhysicsKit.Polygon // Incident.
+		  
+		  // Determine which shape contains reference face.
+		  If Maths.Greater(penetrationA, penetrationB) Then
+		    RefPoly = polygonShapeA
+		    IncPoly = polygonShapeB
+		    referenceIndex = faceA(0)
+		    flip = False
+		  Else
+		    RefPoly = polygonShapeB
+		    IncPoly = polygonShapeA
+		    referenceIndex = faceB(0)
+		    flip = True
+		  End If
+		  
+		  // World space incident face.
+		  Var incidentFace() As PhysicsKit.Vector = Vector.ArrayOf(2)
+		  FindIncidentFace(incidentFace, RefPoly, IncPoly, referenceIndex)
+		  
+		  // Setup reference face vertices.
+		  Var v1 As PhysicsKit.Vector = RefPoly.Vertices(referenceIndex)
+		  referenceIndex = If(referenceIndex + 1 = RefPoly.VertexCount, 0, referenceIndex + 1)
+		  Var v2 As PhysicsKit.Vector = RefPoly.Vertices(referenceIndex)
+		  
+		  // Transform vertices to world space.
+		  v1 = RefPoly.U.Multiply(v1).AddSelf(RefPoly.Body.Position)
+		  v2 = RefPoly.U.Multiply(v2).AddSelf(RefPoly.Body.Position)
+		  
+		  // Calculate reference face side normal in world space.
+		  Var sidePlaneNormal As PhysicsKit.Vector = v2.Subtract(v1)
+		  sidePlaneNormal.Normalise
+		  
+		  // Orthogonalize.
+		  Var refFaceNormal As PhysicsKit.Vector = New Vector(sidePlaneNormal.Y, -sidePlaneNormal.X)
+		  
+		  // ax + by = c
+		  // c is distance from origin
+		  Var refC As Double = Vector.Dot(refFaceNormal, v1)
+		  Var negSide As Double = -Vector.Dot(sidePlaneNormal, v1)
+		  Var posSide As Double = Vector.Dot(sidePlaneNormal, v2)
+		  
+		  // Clip incident face to reference face side planes.
+		  If Clip(sidePlaneNormal.Negate, negSide, incidentFace) < 2 Then
+		    Return // Due to floating point error, possible to not have required points.
+		  End If
+		  
+		  If Clip(sidePlaneNormal, posSide, incidentFace) < 2 Then
+		    Return // Due to floating point error, possible to not have required points.
+		  End If
+		  
+		  // Flip.
+		  Call m.Normal.Set(refFaceNormal)
+		  If flip Then Call m.Normal.NegateSelf
+		  
+		  // Keep points behind reference face.
+		  Var cp As Integer = 0 // Clipped points behind reference face.
+		  Var separation As Double = Vector.Dot(refFaceNormal, incidentFace(0)) - refC
+		  If separation <= 0 Then
+		    Call m.Contacts(cp).Set(incidentFace(0))
+		    m.Penetration = -separation
+		    cp = cp + 1
+		  Else
+		    m.Penetration = 0
+		  End If
+		  
+		  separation = Vector.Dot(refFaceNormal, incidentFace(1)) - refC
+		  
+		  If separation <= 0 Then
+		    Call m.Contacts(cp).Set(incidentFace(1))
+		    m.Penetration = m.Penetration + -separation
+		    cp = cp + 1
+		    
+		    // Average penetration.
+		    m.Penetration = m.Penetration / cp
+		  End If
+		  
+		  m.ContactCount = cp
 		  
 		End Sub
 	#tag EndMethod

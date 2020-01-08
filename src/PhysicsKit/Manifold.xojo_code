@@ -145,7 +145,7 @@ Protected Class Manifold
 		    Collisions.PolygonCircle(Self, A, B)
 		    
 		  ElseIf A IsA Polygon And B IsA Polygon Then
-		    #Pragma Warning "TODO"
+		    Collisions.PolygonPolygon(Self, A, B)
 		    
 		  Else
 		    Raise New InvalidArgumentException("Collision.Solve: Unsupported combination of shapes")

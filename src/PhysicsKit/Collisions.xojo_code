@@ -111,6 +111,16 @@ Protected Module Collisions
 		End Sub
 	#tag EndMethod
 
+	#tag Method, Flags = &h1
+		Protected Sub PolygonCircle(m As PhysicsKit.Manifold, a As PhysicsKit.Body, a As PhysicsKit.Body)
+		  // Re-use the CirclePolygon method with the arguments reversed.
+		  Collisions.CirclePolygon(m, b, a)
+		  
+		  If m.ContactCount > 0 Then m.Normal.NegateSelf
+		  
+		End Sub
+	#tag EndMethod
+
 
 End Module
 #tag EndModule

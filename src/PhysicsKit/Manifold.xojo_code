@@ -142,8 +142,7 @@ Protected Class Manifold
 		    Collisions.CirclePolygon(Self, A, B)
 		    
 		  ElseIf A IsA Polygon And B IsA Circle Then
-		    Collisions.CirclePolygon(Self, B, A)
-		    If m.ContactCount > 0 Then m.Normal.NegateSelf
+		    Collisions.PolygonCircle(Self, A, B)
 		    
 		  ElseIf A IsA Polygon And B IsA Polygon Then
 		    #Pragma Warning "TODO"

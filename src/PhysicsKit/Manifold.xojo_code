@@ -137,12 +137,17 @@ Protected Class Manifold
 		Sub Solve()
 		  If A IsA Circle And B IsA Circle Then
 		    Collisions.CircleCircle(Self, A, B)
+		    
 		  ElseIf A IsA Circle And B IsA Polygon Then
 		    Collisions.CirclePolygon(Self, A, B)
+		    
 		  ElseIf A IsA Polygon And B IsA Circle Then
-		    #Pragma Warning "TODO"
+		    Collisions.CirclePolygon(Self, B, A)
+		    If m.ContactCount > 0 Then m.Normal.NegateSelf
+		    
 		  ElseIf A IsA Polygon And B IsA Polygon Then
 		    #Pragma Warning "TODO"
+		    
 		  Else
 		    Raise New InvalidArgumentException("Collision.Solve: Unsupported combination of shapes")
 		  End If

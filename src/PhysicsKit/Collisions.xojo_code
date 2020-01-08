@@ -35,14 +35,14 @@ Protected Module Collisions
 	#tag EndMethod
 
 	#tag Method, Flags = &h1
-		Protected Sub CirclePolygon(m As PhysicsKit.Manifold, a As PhysicsKit.Body, b As PhysicsKit.Body)
-		  Var circleShape As PhysicsKit.Circle = PhysicsKit.Circle(a.Shape) //A
-		  Var polygonShape As PhysicsKit.Polygon = PhysicsKit.Polygon(b.Shape) // B
+		Protected Sub CirclePolygon(m As PhysicsKit.Manifold, circleBody As PhysicsKit.Body, polygonBody As PhysicsKit.Body)
+		  Var circleShape As PhysicsKit.Circle = PhysicsKit.Circle(circleBody.Shape) //A
+		  Var polygonShape As PhysicsKit.Polygon = PhysicsKit.Polygon(polygonBody.Shape) // B
 		  
 		  m.ContactCount = 0
 		  
 		  // Transform circle center to Polygon model space.
-		  Var center As PhysicsKit.Vector = polygonShape.U.Transpose.MultiplySelf(a.Position.Subtract(b.Position))
+		  Var center As PhysicsKit.Vector = polygonShape.U.Transpose.MultiplySelf(circleBody.Position.Subtract(polygonBody.Position))
 		  
 		  // Find edge with minimum penetration.
 		  // Same concept as using support points in Polygon vs Polygon.
@@ -73,7 +73,7 @@ Protected Module Collisions
 		  If separation < Maths.EPSILON Then
 		    m.ContactCount = 1
 		    Call polygonShape.U.Multiply(polygonShape.Normals(faceNormal), m.Normal).NegateSelf
-		    Call m.Contacts(0).Set(m.Normal).MultiplySelf(circleShape.Radius).AddSelf(a.Position)
+		    Call m.Contacts(0).Set(m.Normal).MultiplySelf(circleShape.Radius).AddSelf(circleBody.Position)
 		    m.Penetration = circleShape.Radius
 		    Return
 		  End If
@@ -89,14 +89,14 @@ Protected Module Collisions
 		    
 		    m.ContactCount = 1
 		    polygonShape.U.MultiplySelf(m.Normal.Set(v1).SubtractSelf(center)).Normalise
-		    Call polygonShape.U.Multiply(v1, m.Contacts(0)).AddSelf(b.Position)
+		    Call polygonShape.U.Multiply(v1, m.Contacts(0)).AddSelf(polygonBody.Position)
 		    
 		  ElseIf dot2 <= 0 Then // Closest to v2.
 		    If Vector.DistanceSquared(center, v2) > circleShape.Radius * circleShape.Radius Then Return
 		    
 		    m.ContactCount = 1
 		    polygonShape.U.MultiplySelf(m.Normal.Set(v2).SubtractSelf(center)).Normalise
-		    Call polygonShape.U.Multiply(v2, m.Contacts(0)).AddSelf(b.Position)
+		    Call polygonShape.U.Multiply(v2, m.Contacts(0)).AddSelf(polygonBody.Position)
 		    
 		  Else // Closest to face.
 		    Var n As PhysicsKit.Vector = polygonShape.Normals(faceNormal)
@@ -105,7 +105,7 @@ Protected Module Collisions
 		    
 		    m.ContactCount = 1
 		    Call polygonShape.U.Multiply(n, m.Normal).NegateSelf
-		    Call m.Contacts(0).Set(a.Position).AddSelf(m.Normal, circleShape.Radius)
+		    Call m.Contacts(0).Set(circleBody.Position).AddSelf(m.Normal, circleShape.Radius)
 		  End If
 		  
 		End Sub

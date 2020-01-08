@@ -96,18 +96,6 @@ Implements PhysicsKit.Shape
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Constructor(hw As Double, hh As Double)
-		  // All classes implementing the `Shape` interface must intialise mU to a new Matrix.
-		  mU = New PhysicsKit.Matrix
-		  
-		  Vertices = Vector.ArrayOf(MAX_POLY_VERTEX_COUNT)
-		  Normals = Vector.ArrayOf(MAX_POLY_VERTEX_COUNT)
-		  
-		  SetBox(hw, hh)
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
 		Sub Constructor(ParamArray verts As PhysicsKit.Vector)
 		  // All classes implementing the `Shape` interface must intialise mU to a new Matrix.
 		  mU = New PhysicsKit.Matrix
@@ -264,12 +252,12 @@ Implements PhysicsKit.Shape
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub SetBox(hw As Double, hh As Double)
+		Sub SetBox(halfWidth As Double, halfHeight As Double)
 		  VertexCount = 4
-		  Vertices(0).Set(-hw, -hh)
-		  Vertices(1).Set(hw, -hh)
-		  Vertices(2).Set(hw, hh)
-		  Vertices(3).Set(-hw, hh)
+		  Vertices(0).Set(-halfWidth, -halfHeight)
+		  Vertices(1).Set(halfWidth, -halfHeight)
+		  Vertices(2).Set(halfWidth, halfHeight)
+		  Vertices(3).Set(-halfWidth, halfHeight)
 		  Normals(0).Set(0, -1)
 		  Normals(1).Set(1, 0)
 		  Normals(2).Set(0, 1)
@@ -306,16 +294,16 @@ Implements PhysicsKit.Shape
 	#tag EndMethod
 
 
-	#tag Property, Flags = &h21
-		Private mBody As PhysicsKit.Body
+	#tag Property, Flags = &h1
+		Protected mBody As PhysicsKit.Body
 	#tag EndProperty
 
-	#tag Property, Flags = &h21
-		Private mRadius As Double
+	#tag Property, Flags = &h1
+		Protected mRadius As Double
 	#tag EndProperty
 
-	#tag Property, Flags = &h21
-		Private mU As PhysicsKit.Matrix
+	#tag Property, Flags = &h1
+		Protected mU As PhysicsKit.Matrix
 	#tag EndProperty
 
 	#tag Property, Flags = &h0

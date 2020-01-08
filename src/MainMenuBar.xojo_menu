@@ -116,5 +116,26 @@ Begin Menu MainMenuBar
          Visible = True
       End
    End
+   Begin MenuItem DebugMenu
+      SpecialMenu = 0
+      Value = "Debug"
+      Index = -2147483648
+      Text = "Debug"
+      AutoEnabled = True
+      AutoEnable = True
+      Visible = True
+      Begin MenuItem DebugRun
+         SpecialMenu = 0
+         Value = "Run"
+         Index = -2147483648
+         Text = "Run"
+         ShortcutKey = "R"
+         Shortcut = "Cmd+R"
+         MenuModifier = True
+         AutoEnabled = True
+         AutoEnable = True
+         Visible = True
+      End
+   End
 End
 #tag EndMenu

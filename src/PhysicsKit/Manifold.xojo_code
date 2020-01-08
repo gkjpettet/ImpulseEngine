@@ -135,21 +135,25 @@ Protected Class Manifold
 
 	#tag Method, Flags = &h0
 		Sub Solve()
-		  If A IsA Circle And B IsA Circle Then
+		  Var shapeA As Variant = A.Shape
+		  Var shapeB As Variant = B.Shape
+		  
+		  If shapeA IsA Circle And shapeB IsA Circle Then
 		    Collisions.CircleCircle(Self, A, B)
 		    
-		  ElseIf A IsA Circle And B IsA Polygon Then
+		  ElseIf shapeA IsA Circle And shapeB IsA Polygon Then
 		    Collisions.CirclePolygon(Self, A, B)
 		    
-		  ElseIf A IsA Polygon And B IsA Circle Then
+		  ElseIf shapeA IsA Polygon And shapeB IsA Circle Then
 		    Collisions.PolygonCircle(Self, A, B)
 		    
-		  ElseIf A IsA Polygon And B IsA Polygon Then
+		  ElseIf shapeA IsA Polygon And shapeB IsA Polygon Then
 		    Collisions.PolygonPolygon(Self, A, B)
 		    
 		  Else
 		    Raise New InvalidArgumentException("Collision.Solve: Unsupported combination of shapes")
 		  End If
+		  
 		End Sub
 	#tag EndMethod
 

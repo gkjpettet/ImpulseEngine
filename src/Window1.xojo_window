@@ -8,9 +8,9 @@ Begin Window Window1
    HasBackgroundColor=   False
    HasCloseButton  =   True
    HasFullScreenButton=   False
-   HasMaximizeButton=   True
+   HasMaximizeButton=   False
    HasMinimizeButton=   True
-   Height          =   590
+   Height          =   680
    ImplicitInstance=   True
    MacProcID       =   0
    MaximumHeight   =   32000
@@ -19,59 +19,11 @@ Begin Window Window1
    MenuBarVisible  =   True
    MinimumHeight   =   64
    MinimumWidth    =   64
-   Resizeable      =   True
+   Resizeable      =   False
    Title           =   "PhysicsKit"
    Type            =   "0"
    Visible         =   True
-   Width           =   906
-   Begin TextArea Output
-      AllowAutoDeactivate=   True
-      AllowFocusRing  =   True
-      AllowSpellChecking=   True
-      AllowStyledText =   True
-      AllowTabs       =   False
-      BackgroundColor =   &cFFFFFF00
-      Bold            =   False
-      DataField       =   ""
-      DataSource      =   ""
-      Enabled         =   True
-      FontName        =   "System"
-      FontSize        =   0.0
-      FontUnit        =   0
-      Format          =   ""
-      HasBorder       =   True
-      HasHorizontalScrollbar=   False
-      HasVerticalScrollbar=   True
-      Height          =   518
-      HideSelection   =   True
-      Index           =   -2147483648
-      Italic          =   False
-      Left            =   20
-      LineHeight      =   0.0
-      LineSpacing     =   1.0
-      LockBottom      =   True
-      LockedInPosition=   False
-      LockLeft        =   True
-      LockRight       =   True
-      LockTop         =   True
-      MaximumCharactersAllowed=   0
-      Multiline       =   True
-      ReadOnly        =   False
-      Scope           =   2
-      TabIndex        =   0
-      TabPanelIndex   =   0
-      TabStop         =   True
-      TextAlignment   =   "0"
-      TextColor       =   &c00000000
-      Tooltip         =   ""
-      Top             =   20
-      Transparent     =   False
-      Underline       =   False
-      ValidationMask  =   ""
-      Value           =   ""
-      Visible         =   True
-      Width           =   866
-   End
+   Width           =   1024
    Begin PushButton ButtonStart
       AllowAutoDeactivate=   True
       Bold            =   False
@@ -86,7 +38,7 @@ Begin Window Window1
       Index           =   -2147483648
       InitialParent   =   ""
       Italic          =   False
-      Left            =   806
+      Left            =   924
       LockBottom      =   True
       LockedInPosition=   False
       LockLeft        =   False
@@ -98,7 +50,7 @@ Begin Window Window1
       TabPanelIndex   =   0
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   550
+      Top             =   640
       Transparent     =   False
       Underline       =   False
       Visible         =   True
@@ -110,7 +62,7 @@ Begin Window Window1
       Cancel          =   False
       Caption         =   "Pause"
       Default         =   False
-      Enabled         =   True
+      Enabled         =   False
       FontName        =   "System"
       FontSize        =   0.0
       FontUnit        =   0
@@ -118,19 +70,19 @@ Begin Window Window1
       Index           =   -2147483648
       InitialParent   =   ""
       Italic          =   False
-      Left            =   714
+      Left            =   832
       LockBottom      =   True
       LockedInPosition=   False
       LockLeft        =   False
       LockRight       =   True
-      LockTop         =   True
+      LockTop         =   False
       MacButtonStyle  =   "0"
       Scope           =   2
       TabIndex        =   2
       TabPanelIndex   =   0
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   550
+      Top             =   640
       Transparent     =   False
       Underline       =   False
       Visible         =   True
@@ -142,6 +94,45 @@ Begin Window Window1
       Cancel          =   False
       Caption         =   "Stop"
       Default         =   False
+      Enabled         =   False
+      FontName        =   "System"
+      FontSize        =   0.0
+      FontUnit        =   0
+      Height          =   20
+      Index           =   -2147483648
+      InitialParent   =   ""
+      Italic          =   False
+      Left            =   740
+      LockBottom      =   True
+      LockedInPosition=   False
+      LockLeft        =   False
+      LockRight       =   True
+      LockTop         =   False
+      MacButtonStyle  =   "0"
+      Scope           =   2
+      TabIndex        =   3
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Tooltip         =   ""
+      Top             =   640
+      Transparent     =   False
+      Underline       =   False
+      Visible         =   True
+      Width           =   80
+   End
+   Begin Timer WorldUpdateTimer
+      Index           =   -2147483648
+      LockedInPosition=   False
+      Period          =   18
+      RunMode         =   "0"
+      Scope           =   0
+      TabPanelIndex   =   0
+   End
+   Begin Label Info
+      AllowAutoDeactivate=   True
+      Bold            =   False
+      DataField       =   ""
+      DataSource      =   ""
       Enabled         =   True
       FontName        =   "System"
       FontSize        =   0.0
@@ -150,23 +141,53 @@ Begin Window Window1
       Index           =   -2147483648
       InitialParent   =   ""
       Italic          =   False
-      Left            =   622
+      Left            =   20
       LockBottom      =   True
       LockedInPosition=   False
-      LockLeft        =   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   False
+      Multiline       =   False
+      Scope           =   0
+      Selectable      =   False
+      TabIndex        =   4
+      TabPanelIndex   =   0
+      TabStop         =   True
+      TextAlignment   =   "0"
+      TextColor       =   &c00000000
+      Tooltip         =   ""
+      Top             =   640
+      Transparent     =   False
+      Underline       =   False
+      Value           =   ""
+      Visible         =   True
+      Width           =   590
+   End
+   Begin Canvas Display
+      AllowAutoDeactivate=   True
+      AllowFocus      =   False
+      AllowFocusRing  =   True
+      AllowTabs       =   False
+      Backdrop        =   0
+      Enabled         =   True
+      Height          =   608
+      Index           =   -2147483648
+      InitialParent   =   ""
+      Left            =   20
+      LockBottom      =   True
+      LockedInPosition=   False
+      LockLeft        =   True
       LockRight       =   True
       LockTop         =   True
-      MacButtonStyle  =   "0"
-      Scope           =   2
-      TabIndex        =   3
+      Scope           =   0
+      TabIndex        =   5
       TabPanelIndex   =   0
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   550
-      Transparent     =   False
-      Underline       =   False
+      Top             =   20
+      Transparent     =   True
       Visible         =   True
-      Width           =   80
+      Width           =   984
    End
 End
 #tag EndWindow
@@ -179,8 +200,73 @@ End
 	#tag EndEvent
 
 
-	#tag Property, Flags = &h21
-		Private World As PhysicsKit.World
+	#tag MenuHandler
+		Function DebugRun() As Boolean Handles DebugRun.Action
+			Window1.StartSimulation
+			
+			Return True
+			
+		End Function
+	#tag EndMenuHandler
+
+
+	#tag Method, Flags = &h0
+		Sub StartSimulation()
+		  Using PhysicsKit
+		  
+		  PhysicsKit.Initialise
+		  
+		  Var fps As Integer = 30
+		  MyWorld = New World(1 / fps, 10)
+		  
+		  UpdateCycles = 0
+		  
+		  Var b As Body
+		  Var displayCentreX As Double = Display.Width / 2
+		  Var displayCentreY As Double = Display.Height / 2
+		  
+		  // Add some dynamic circles.
+		  b = MyWorld.Add(New Circle(15), displayCentreX - 10, 0)
+		  b = MyWorld.Add(New Circle(20), displayCentreX, 110)
+		  b = MyWorld.Add(New Circle(35), displayCentreX - 20, 200)
+		  b = MyWorld.Add(New Circle(20), displayCentreX - 100, 100)
+		  b = MyWorld.Add(New Circle(30), displayCentreX - 120, 40)
+		  
+		  // Dynamic polygon.
+		  b = MyWorld.Add(New Polygon(New Vector(0, 0), New Vector(30, -45), New Vector(60, -20), _
+		  New Vector(75, 20), New Vector(40, 40)), displayCentreX + 50, 50)
+		  
+		  // Bigger static circle.
+		  b = MyWorld.Add(New Circle(50), displayCentreX, displayCentreY)
+		  b.SetStatic
+		  
+		  // Ground.
+		  b = MyWorld.Add(New Box(Display.Width - 1, 8), displayCentreX, Display.Height - 9)
+		  b.SetStatic
+		  b.SetOrient(0)
+		  
+		  ButtonPauseResume.Caption = "Pause"
+		  ButtonPauseResume.Enabled = True
+		  ButtonStop.Enabled = True
+		  ButtonStart.Enabled = False
+		  WorldUpdateTimer.RunMode = Timer.RunModes.Multiple
+		  WorldUpdateTimer.Period = 1000 / fps
+		  WorldUpdateTimer.Enabled = True
+		  
+		End Sub
+	#tag EndMethod
+
+
+	#tag Property, Flags = &h0
+		MyWorld As PhysicsKit.World
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		ShouldUpdateWorld As Boolean = False
+	#tag EndProperty
+
+	#tag Property, Flags = &h0
+		UpdateCycles As Integer = 0
 	#tag EndProperty
 
 
@@ -189,19 +275,91 @@ End
 #tag Events ButtonStart
 	#tag Event
 		Sub Action()
-		  PhysicsKit.Initialise
+		  StartSimulation
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events ButtonPauseResume
+	#tag Event
+		Sub Action()
+		  If Me.Caption = "Pause" Then
+		    Me.Caption = "Resume"
+		    ButtonStop.Enabled = True
+		    WorldUpdateTimer.Enabled = False
+		  Else // User wants to resume the simulation.
+		    Me.Caption = "Pause"
+		    WorldUpdateTimer.Enabled = True
+		  End If
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events ButtonStop
+	#tag Event
+		Sub Action()
+		  Me.Enabled = False
+		  ButtonStart.Enabled = True
+		  Info.Value = "Simulation not running"
+		  WorldUpdateTimer.Enabled = False
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events WorldUpdateTimer
+	#tag Event
+		Sub Action()
+		  Window1.MyWorld.Update
+		  //Window1.UpdateCycles = Window1.UpdateCycles + 1
+		  //Window1.Info.Value = "Update cycles: " + Window1.UpdateCycles.ToString
 		  
-		  Var fps As Integer = 1/60
-		  World = New PhysicsKit.World(fps, 10)
+		  Window1.Display.Invalidate
+		  
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events Display
+	#tag Event
+		Sub Paint(g As Graphics, areas() As REALbasic.Rect)
+		  If MyWorld = Nil Then Return
 		  
 		  Var b As PhysicsKit.Body
-		  b = World.Add(New PhysicsKit.Circle(30), 200, 200)
-		  b.SetStatic
-		  
-		  b = World.Add(New PhysicsKit.Polygon(200, 10), 240, 300)
-		  b.SetStatic
-		  b.SetOrient(0)
-		  
+		  Var c As PhysicsKit.Circle
+		  Var p As PhysicsKit.Polygon
+		  For Each b In MyWorld.Bodies
+		    If b.Shape IsA PhysicsKit.Circle Then
+		      c = PhysicsKit.Circle(b.Shape)
+		      
+		      Var rx As Double = Cos(b.Orient) * c.Radius
+		      Var ry As Double = Sin(b.Orient) * c.Radius
+		      
+		      g.DrawingColor = &cFF0000
+		      Var diameter As Double = c.radius * 2
+		      g.DrawOval(b.Position.X - c.Radius, b.Position.Y - c.Radius, diameter, diameter)
+		      g.DrawLine(b.Position.X, b.Position.Y, b.Position.X + rx, b.Position.Y + ry)
+		      
+		    ElseIf b.Shape IsA PhysicsKit.Polygon Then
+		      p = PhysicsKit.Polygon(b.Shape)
+		      
+		      g.DrawingColor = &c0000FF
+		      
+		      Var origin As PhysicsKit.Vector = New PhysicsKit.Vector(p.Vertices(0))
+		      Call p.U.MultiplySelf(origin)
+		      Call origin.AddSelf(b.Position)
+		      
+		      Var currentPos, previousPos As PhysicsKit.Vector
+		      previousPos = origin
+		      For i As Integer = 1 To p.VertexCount - 1
+		        currentPos = New PhysicsKit.Vector(p.Vertices(i))
+		        Call p.U.MultiplySelf(currentPos)
+		        Call currentPos.AddSelf(b.Position)
+		        
+		        g.DrawLine(previousPos.X, previousPos.Y, currentPos.X, currentPos.Y)
+		        
+		        previousPos = currentPos
+		      Next i
+		      // g.DrawingColor = &c00FF00
+		      g.DrawLine(currentPos.X, currentPos.Y, origin.X, origin.Y)
+		      
+		    End If
+		  Next b
 		End Sub
 	#tag EndEvent
 #tag EndEvents

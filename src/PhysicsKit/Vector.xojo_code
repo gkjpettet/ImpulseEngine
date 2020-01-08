@@ -669,6 +669,12 @@ Protected Class Vector
 		End Function
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Function ToString() As String
+		  Return "{X: " + X.ToString + ", Y: " + Y.ToString + "}"
+		End Function
+	#tag EndMethod
+
 
 	#tag Property, Flags = &h0
 		X As Double = 0

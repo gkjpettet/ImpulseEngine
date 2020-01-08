@@ -46,8 +46,11 @@ Implements PhysicsKit.Shape
 
 	#tag Method, Flags = &h0
 		Sub Constructor(r As Double)
-		  radius = r
+		  // All classes implementing the `Shape` interface must intialise mU to a new Matrix.
 		  mU = New PhysicsKit.Matrix
+		  
+		  radius = r
+		  
 		End Sub
 	#tag EndMethod
 

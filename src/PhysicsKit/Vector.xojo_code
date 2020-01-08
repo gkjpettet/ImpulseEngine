@@ -116,7 +116,7 @@ Protected Class Vector
 		End Function
 	#tag EndMethod
 
-	#tag Method, Flags = &h0
+	#tag Method, Flags = &h0, Description = 52657475726E7320616E206172726179206F6620616C6C6F636174656420566563746F7273206F662074686520726571756573746564206C656E6774682E
 		Shared Function ArrayOf(length As Integer) As PhysicsKit.Vector()
 		  // Returns an array of allocated Vectors of the requested length.
 		  

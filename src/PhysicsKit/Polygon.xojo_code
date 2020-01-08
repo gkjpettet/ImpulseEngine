@@ -97,12 +97,24 @@ Implements PhysicsKit.Shape
 
 	#tag Method, Flags = &h0
 		Sub Constructor(hw As Double, hh As Double)
+		  // All classes implementing the `Shape` interface must intialise mU to a new Matrix.
+		  mU = New PhysicsKit.Matrix
+		  
+		  Vertices = Vector.ArrayOf(MAX_POLY_VERTEX_COUNT)
+		  Normals = Vector.ArrayOf(MAX_POLY_VERTEX_COUNT)
+		  
 		  SetBox(hw, hh)
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub Constructor(ParamArray verts As PhysicsKit.Vector)
+		  // All classes implementing the `Shape` interface must intialise mU to a new Matrix.
+		  mU = New PhysicsKit.Matrix
+		  
+		  Vertices = Vector.ArrayOf(MAX_POLY_VERTEX_COUNT)
+		  Normals = Vector.ArrayOf(MAX_POLY_VERTEX_COUNT)
+		  
 		  Set(verts)
 		End Sub
 	#tag EndMethod

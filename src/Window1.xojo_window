@@ -255,7 +255,7 @@ End
 		Sub StartSimulation()
 		  Const FPS = 60
 		  
-		  MyWorld = New PhysicsKit.World(1/FPS)
+		  MyWorld = New PhysicsKit.World(1/FPS, 5)
 		  AddHandler MyWorld.CollisionOccurred, AddressOf CollisionOccurred
 		  
 		  Var b As PhysicsKit.Body
@@ -288,7 +288,7 @@ End
 		  PinkID = b.ID
 		  
 		  // Orange circle
-		  b = MyWorld.AddCircle(100, 100, 25)
+		  b = MyWorld.AddCircle(dw - 50, 100, 25)
 		  OrangeID = b.ID
 		  
 		  // Bigger static circle.
@@ -302,6 +302,11 @@ End
 		  b = MyWorld.AddCircle(dcx - 100, 100, 20)
 		  b = MyWorld.AddCircle(dcx - 120, 40, 30)
 		  b = MyWorld.AddCircle(dw - 220, 200, 35)
+		  
+		  // Add 10 little boxes.
+		  For i As Integer = 1 To 10
+		    Call MyWorld.AddBox((i * 25) + 5, 15, 20, 20)
+		  Next i
 		  
 		  // Add a polygon with some spin.
 		  b = MyWorld.AddPolygon(dcx + 165, 50, 0, 0, 30, -50, 60, -20, 75, 20, 40, 40)

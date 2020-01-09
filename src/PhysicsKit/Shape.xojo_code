@@ -31,6 +31,12 @@ Protected Interface Shape
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub Orientation(Assigns radians As Double)
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function Radius() As Double
 		  
 		End Function
@@ -38,12 +44,6 @@ Protected Interface Shape
 
 	#tag Method, Flags = &h0
 		Sub Radius(Assigns r As Double)
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub SetOrient(radians As Double)
 		  
 		End Sub
 	#tag EndMethod

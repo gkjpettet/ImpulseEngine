@@ -82,9 +82,9 @@ Implements PhysicsKit.Shape
 		  Next vert
 		  
 		  mBody.Mass = density * area
-		  mBody.InvMass = If((mBody.Mass <> 0), 1 / mBody.Mass, 0)
+		  mBody.InverseMass = If((mBody.Mass <> 0), 1 / mBody.Mass, 0)
 		  mBody.Inertia = inertia * density
-		  mBody.InvInertia = If((mBody.Inertia <> 0), 1 / mBody.Inertia, 0)
+		  mBody.InverseInertia = If((mBody.Inertia <> 0), 1 / mBody.Inertia, 0)
 		  
 		End Sub
 	#tag EndMethod
@@ -126,6 +126,15 @@ Implements PhysicsKit.Shape
 		  // Part of the PhysicsKit.Shape interface.
 		  
 		  ComputeMass(1.0)
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub Orientation(Assigns radians As Double)
+		  // Part of the PhysicsKit.Shape interface.
+		  
+		  mU.Set(radians)
 		  
 		End Sub
 	#tag EndMethod
@@ -240,15 +249,6 @@ Implements PhysicsKit.Shape
 		  Normals(1).Set(1, 0)
 		  Normals(2).Set(0, 1)
 		  Normals(3).Set(-1, 0)
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub SetOrient(radians As Double)
-		  // Part of the PhysicsKit.Shape interface.
-		  
-		  mU.Set(radians)
 		  
 		End Sub
 	#tag EndMethod

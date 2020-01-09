@@ -170,10 +170,10 @@ Begin Window Window1
       AllowTabs       =   False
       Backdrop        =   0
       Enabled         =   True
-      Height          =   608
+      Height          =   628
       Index           =   -2147483648
       InitialParent   =   ""
-      Left            =   20
+      Left            =   0
       LockBottom      =   True
       LockedInPosition=   False
       LockLeft        =   True
@@ -184,10 +184,10 @@ Begin Window Window1
       TabPanelIndex   =   0
       TabStop         =   True
       Tooltip         =   ""
-      Top             =   20
+      Top             =   0
       Transparent     =   True
       Visible         =   True
-      Width           =   984
+      Width           =   1024
    End
 End
 #tag EndWindow
@@ -211,54 +211,54 @@ End
 
 
 	#tag Method, Flags = &h0
+		Sub CollisionOccurred(sender As PhysicsKit.World, m As PhysicsKit.Manifold)
+		  #Pragma Unused sender
+		  #Pragma Unused m
+		  
+		  System.DebugLog("Collision occurred")
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub StartSimulation()
 		  Using PhysicsKit
 		  
-		  PhysicsKit.Initialise
-		  
 		  Var fps As Integer = 30
-		  MyWorld = New World(1 / fps, 10)
 		  
-		  UpdateCycles = 0
+		  MyWorld = New World(1/fps, 10)
+		  AddHandler MyWorld.CollisionOccurred, AddressOf CollisionOccurred
 		  
 		  Var b As Body
 		  Var displayCentreX As Double = Display.Width / 2
 		  Var displayCentreY As Double = Display.Height / 2
 		  
-		  // Add some dynamic circles.
-		  // b = MyWorld.Add(New Circle(15), displayCentreX - 10, 0)
-		  // b = MyWorld.Add(New Circle(20), displayCentreX, 110)
-		  // b = MyWorld.Add(New Circle(35), displayCentreX - 20, 200)
-		  // b = MyWorld.Add(New Circle(20), displayCentreX - 100, 100)
-		  // b = MyWorld.Add(New Circle(30), displayCentreX - 120, 40)
-		  
-		  // Dynamic polygon.
-		  // b = MyWorld.Add(New Polygon(New Vector(0, 0), New Vector(30, -45), New Vector(60, -20), _
-		  // New Vector(75, 20), New Vector(40, 40)), displayCentreX + 50, 50)
-		  
 		  // Ground.
 		  b = MyWorld.Add(New Box(Display.Width - 1, 8), displayCentreX, Display.Height - 9)
 		  b.IsStatic = True
-		  b.SetOrient(0)
-		  b.StaticFriction = 1
 		  
-		  // Pink box1.
-		  b = MyWorld.Add(New Box(25, 25), 600, Display.Height - 27)
+		  // Pink circle
+		  b = MyWorld.Add(New Circle(25), 600, 100)
+		  PinkID = b.ID
 		  
-		  // Orange circle1.
-		  b = MyWorld.Add(New Circle(12.5), 400, Display.Height - 27)
-		  // Push the circle rightwards.
-		  b.Push(New Vector(50, 0), 5)
-		  
-		  // // Box2 (orange).
-		  // b = MyWorld.Add(New Box(25, 25), 700, 100)
-		  // b.SetOrient(Maths.DegreesToRadians(45))
-		  // b.StaticFriction = 0
+		  // Orange circle
+		  b = MyWorld.Add(New Circle(25), 100, 100)
+		  OrangeID = b.ID
 		  
 		  // Bigger static circle.
 		  b = MyWorld.Add(New Circle(50), displayCentreX, displayCentreY)
 		  b.IsStatic = True
-		  b.SetOrient(PhysicsKit.Maths.DegreesToRadians(45))
+		  b.Orientation = PhysicsKit.Maths.DegreesToRadians(45)
+		  
+		  // Add some dynamic circles.
+		  b = MyWorld.Add(New Circle(15), displayCentreX - 10, 0)
+		  b = MyWorld.Add(New Circle(20), displayCentreX, 110)
+		  b = MyWorld.Add(New Circle(35), displayCentreX - 20, 200)
+		  b = MyWorld.Add(New Circle(20), displayCentreX - 100, 100)
+		  b = MyWorld.Add(New Circle(30), displayCentreX - 120, 40)
+		  
+		  // Dynamic polygon.
+		  b = MyWorld.Add(New Polygon(New Vector(0, 0), New Vector(30, -45), New Vector(60, -20), _
+		  New Vector(75, 20), New Vector(40, 40)), displayCentreX + 50, 50)
 		  
 		  ButtonPauseResume.Caption = "Pause"
 		  ButtonPauseResume.Enabled = True
@@ -277,11 +277,11 @@ End
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		ShouldUpdateWorld As Boolean = False
+		OrangeID As Integer = -1
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		UpdateCycles As Integer = 0
+		PinkID As Integer = -1
 	#tag EndProperty
 
 
@@ -333,6 +333,8 @@ End
 #tag Events Display
 	#tag Event
 		Sub Paint(g As Graphics, areas() As REALbasic.Rect)
+		  #Pragma Unused areas
+		  
 		  If MyWorld = Nil Then Return
 		  
 		  Var b As PhysicsKit.Body
@@ -345,7 +347,15 @@ End
 		      Var rx As Double = Cos(b.Orientation) * c.Radius
 		      Var ry As Double = Sin(b.Orientation) * c.Radius
 		      
-		      g.DrawingColor = &cFF0000
+		      Select Case b.ID
+		      Case PinkID
+		        g.DrawingColor = &cFF31A3
+		      Case OrangeID
+		        g.DrawingColor = &cFFA200
+		      Else
+		        g.DrawingColor = &c00FF00 // Green.
+		      End Select
+		      
 		      Var diameter As Double = c.radius * 2
 		      g.DrawOval(b.Position.X - c.Radius, b.Position.Y - c.Radius, diameter, diameter)
 		      g.DrawLine(b.Position.X, b.Position.Y, b.Position.X + rx, b.Position.Y + ry)
@@ -353,13 +363,14 @@ End
 		    ElseIf b.Shape IsA PhysicsKit.Polygon Then
 		      p = PhysicsKit.Polygon(b.Shape)
 		      
-		      If b.ID = 1 Then
-		        g.DrawingColor = &cFF31A300 // Pink.
-		      ElseIf b.ID = 2 Then
-		        g.DrawingColor = &cFFA20000 // Orange.
+		      Select Case b.ID
+		      Case PinkID
+		        g.DrawingColor = &cFF31A3
+		      Case OrangeID
+		        g.DrawingColor = &cFFA200
 		      Else
-		        g.DrawingColor = &c0000FF
-		      End If
+		        g.DrawingColor = &c0000FF // Blue.
+		      End Select
 		      
 		      Var origin As PhysicsKit.Vector = New PhysicsKit.Vector(p.Vertices(0))
 		      Call p.U.MultiplySelf(origin)
@@ -381,6 +392,15 @@ End
 		      
 		    End If
 		  Next b
+		  
+		  g.DrawingColor = &cFF0000 // Red.
+		  For Each m As PhysicsKit.Manifold In MyWorld.Contacts
+		    If Not m.CollisionOccurred Then Continue
+		    Var n As PhysicsKit.Vector = m.Normal
+		    for Each v As PhysicsKit.Vector In m.Contacts
+		      g.DrawLine(v.X, v.Y, v.X + n.X * 4, v.Y + n.Y * 4)
+		    Next v
+		  Next m
 		End Sub
 	#tag EndEvent
 #tag EndEvents
@@ -619,6 +639,22 @@ End
 		Group="Deprecated"
 		InitialValue="True"
 		Type="Boolean"
+		EditorType=""
+	#tag EndViewProperty
+	#tag ViewProperty
+		Name="PinkID"
+		Visible=false
+		Group="Behavior"
+		InitialValue="-1"
+		Type="Integer"
+		EditorType=""
+	#tag EndViewProperty
+	#tag ViewProperty
+		Name="OrangeID"
+		Visible=false
+		Group="Behavior"
+		InitialValue="-1"
+		Type="Integer"
 		EditorType=""
 	#tag EndViewProperty
 #tag EndViewBehavior

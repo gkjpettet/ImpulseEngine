@@ -36,14 +36,14 @@ Protected Module Maths
 	#tag EndMethod
 
 	#tag Method, Flags = &h1
-		Protected Sub Initialise()
-		  // Several of the properties in this module must be computed before first use.
-		  // This method sets them all up. It is called internally by `PhysicsKit.Initialise`
-		  // and only needs to be done once.
+		Protected Function OutsideRange(value As Double, min As Double, max As Double) As Boolean
+		  If value < min Or value > max Then
+		    Return True
+		  Else
+		    Return False
+		  End If
 		  
-		  mGRAVITY = New Vector(0, 50)
-		  mRESTING = mGRAVITY.Multiply(DT).LengthSquared + EPSILON
-		End Sub
+		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h1, Description = 52657475726E7320746865207370656369666965642072616469616E7320696E20646567726565732E
@@ -69,44 +69,15 @@ Protected Module Maths
 	#tag EndNote
 
 
-	#tag ComputedProperty, Flags = &h1
-		#tag Getter
-			Get
-			  Return mGRAVITY
-			End Get
-		#tag EndGetter
-		Protected GRAVITY As PhysicsKit.Vector
-	#tag EndComputedProperty
-
-	#tag Property, Flags = &h21
-		Private mGRAVITY As PhysicsKit.Vector
-	#tag EndProperty
-
-	#tag Property, Flags = &h21
-		Private mRESTING As Double
-	#tag EndProperty
-
 	#tag Property, Flags = &h1
 		Protected PI As Double = 3.14159265359
 	#tag EndProperty
-
-	#tag ComputedProperty, Flags = &h1
-		#tag Getter
-			Get
-			  Return mRESTING
-			End Get
-		#tag EndGetter
-		Protected RESTING As Double
-	#tag EndComputedProperty
 
 
 	#tag Constant, Name = BIAS_ABSOLUTE, Type = Double, Dynamic = False, Default = \"0.01", Scope = Protected
 	#tag EndConstant
 
 	#tag Constant, Name = BIAS_RELATIVE, Type = Double, Dynamic = False, Default = \"0.95", Scope = Protected
-	#tag EndConstant
-
-	#tag Constant, Name = DT, Type = Double, Dynamic = False, Default = \"0.01666666", Scope = Protected
 	#tag EndConstant
 
 	#tag Constant, Name = EPSILON, Type = Double, Dynamic = False, Default = \"0.0001", Scope = Protected

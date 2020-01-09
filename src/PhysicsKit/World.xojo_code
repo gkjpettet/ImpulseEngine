@@ -34,9 +34,16 @@ Protected Class World
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Constructor(dt As Double, iterations As Integer)
+		Sub Constructor(dt As Double, iterations As Integer, gravity As PhysicsKit.Vector = Nil)
 		  Self.DeltaTime = dt
 		  Self.Iterations = iterations
+		  
+		  If gravity = Nil Then
+		    Self.Gravity = New Vector(0, 50)
+		  Else
+		    Self.Gravity = New Vector(gravity)
+		  End If
+		  
 		  
 		End Sub
 	#tag EndMethod
@@ -53,24 +60,24 @@ Protected Class World
 
 	#tag Method, Flags = &h0
 		Sub IntegrateForces(b As PhysicsKit.Body, dt As Double)
-		  If b.InvMass = 0 Then Return
+		  If b.InverseMass = 0 Then Return
 		  
 		  Var dts As Double = dt * 0.5
 		  
-		  Call b.Velocity.AddSelf(b.Force, b.InvMass * dts)
-		  Call b.Velocity.AddSelf(Maths.GRAVITY, dts)
-		  b.AngularVelocity = b.AngularVelocity + (b.Torque * b.InvInertia * dts)
+		  Call b.Velocity.AddSelf(b.Force, b.InverseMass * dts)
+		  Call b.Velocity.AddSelf(Gravity, dts)
+		  b.AngularVelocity = b.AngularVelocity + (b.Torque * b.InverseInertia * dts)
 		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
 		Sub IntegrateVelocity(b As PhysicsKit.Body, dt As Double)
-		  If b.InvMass = 0 Then Return
+		  If b.InverseMass = 0 Then Return
 		  
 		  Call b.Position.AddSelf(b.Velocity, dt)
 		  b.Orientation = b.Orientation + (b.AngularVelocity * dt)
-		  b.SetOrient(b.Orientation)
+		  b.Orientation = b.Orientation
 		  
 		  IntegrateForces(b, dt)
 		  
@@ -79,6 +86,8 @@ Protected Class World
 
 	#tag Method, Flags = &h0
 		Sub Update()
+		  mTimeStep = mTimeStep + 1
+		  
 		  // Generate new collision info.
 		  Contacts.ResizeTo(-1)
 		  
@@ -91,9 +100,9 @@ Protected Class World
 		    For j As Integer = i + 1 To Bodies.LastRowIndex
 		      B = Bodies(j)
 		      
-		      If A.InvMass = 0 And B.InvMass = 0 Then Continue
+		      If A.InverseMass = 0 And B.InverseMass = 0 Then Continue
 		      
-		      m = New Manifold(A, B)
+		      m = New Manifold(A, B, mTimeStep)
 		      m.Solve
 		      
 		      If m.ContactCount > 0 Then Contacts.AddRow(m)
@@ -107,7 +116,7 @@ Protected Class World
 		  
 		  // Initialize collision.
 		  For Each m In Contacts
-		    m.Initialise
+		    m.Initialise(Self)
 		  Next m
 		  
 		  // Solve collisions.
@@ -122,9 +131,14 @@ Protected Class World
 		    IntegrateVelocity(body, DeltaTime)
 		  Next body
 		  
-		  // Correct positions.
+		  // Correct positions and fire the `CollisionOccurred` event for each collision if needed.
 		  For Each m In Contacts
 		    m.PositionalCorrection
+		    
+		    // If both bodies are resting (i.e not moving) then disregard this collision, otherwise 
+		    // fire the `CollisionOccurred` event.
+		    m.RestingCorrection
+		    If m.CollisionOccurred Then CollisionOccurred(m)
 		  Next m
 		  
 		  For Each body As PhysicsKit.Body In Bodies
@@ -134,6 +148,11 @@ Protected Class World
 		  
 		End Sub
 	#tag EndMethod
+
+
+	#tag Hook, Flags = &h0, Description = 4120636F6C6C6973696F6E20686173206F63637572726564206265747765656E2074776F20626F646965732E2054686520636F6C6C6973696F6E20646174612069732073746F72656420696E2074686520706173736564204D616E69666F6C642E
+		Event CollisionOccurred(m As PhysicsKit.Manifold)
+	#tag EndHook
 
 
 	#tag Property, Flags = &h0
@@ -148,13 +167,49 @@ Protected Class World
 		DeltaTime As Double
 	#tag EndProperty
 
+	#tag ComputedProperty, Flags = &h0
+		#tag Getter
+			Get
+			  Return mGravity
+			End Get
+		#tag EndGetter
+		#tag Setter
+			Set
+			  mGravity = New Vector(value)
+			  mRestingValue = mGravity.Multiply(DeltaTime).LengthSquared + Maths.EPSILON
+			End Set
+		#tag EndSetter
+		Gravity As PhysicsKit.Vector
+	#tag EndComputedProperty
+
 	#tag Property, Flags = &h0
 		Iterations As Integer
 	#tag EndProperty
 
 	#tag Property, Flags = &h21
+		Private mGravity As PhysicsKit.Vector
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
 		Private mNextID As Integer = -1
 	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private mRestingValue As Double = 0
+	#tag EndProperty
+
+	#tag Property, Flags = &h21, Description = 496E6372656D656E746564206F6E636520647572696E672065766572792060576F726C642E557064617465602E205573656420696E2064657465726D696E696E672069662061206E657720636F6C6C6973696F6E20686173206F636375726564206265747765656E20626F646965732E
+		Private mTimeStep As Integer
+	#tag EndProperty
+
+	#tag ComputedProperty, Flags = &h0, Description = 52656164206F6E6C792E20507265636F6D70757465642066726F6D2074686520776F726C64277320677261766974792E205573656420627920636F6C6C6973696F6E206D616E69666F6C64732E
+		#tag Getter
+			Get
+			  Return mRestingValue
+			End Get
+		#tag EndGetter
+		RestingValue As Double
+	#tag EndComputedProperty
 
 
 	#tag ViewBehavior
@@ -203,7 +258,23 @@ Protected Class World
 			Visible=false
 			Group="Behavior"
 			InitialValue=""
+			Type="Double"
+			EditorType=""
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Iterations"
+			Visible=false
+			Group="Behavior"
+			InitialValue=""
 			Type="Integer"
+			EditorType=""
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="RestingValue"
+			Visible=false
+			Group="Behavior"
+			InitialValue=""
+			Type="Double"
 			EditorType=""
 		#tag EndViewProperty
 	#tag EndViewBehavior

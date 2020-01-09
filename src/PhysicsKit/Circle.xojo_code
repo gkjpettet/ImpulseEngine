@@ -37,9 +37,9 @@ Implements PhysicsKit.Shape
 		  // Part of the PhysicsKit.Shape interface.
 		  
 		  mBody.Mass = Maths.PI * radius * radius * density
-		  mBody.InvMass = If((mBody.Mass <> 0), 1 / mBody.Mass, 0)
+		  mBody.InverseMass = If((mBody.Mass <> 0), 1 / mBody.Mass, 0)
 		  mBody.Inertia = mBody.Mass * radius * radius
-		  mBody.InvInertia = If((mBody.Inertia <> 0), 1 / mBody.Inertia, 0)
+		  mBody.InverseInertia = If((mBody.Inertia <> 0), 1 / mBody.Inertia, 0)
 		  
 		End Sub
 	#tag EndMethod
@@ -64,6 +64,16 @@ Implements PhysicsKit.Shape
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub Orientation(Assigns radians As Double)
+		  // Part of the PhysicsKit.Shape interface.
+		  
+		  #Pragma Unused radians
+		  
+		  // Not needed.
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Function Radius() As Double
 		  // Part of the PhysicsKit.Shape interface.
 		  
@@ -79,16 +89,6 @@ Implements PhysicsKit.Shape
 		  
 		  mRadians = r
 		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub SetOrient(radians As Double)
-		  // Part of the PhysicsKit.Shape interface.
-		  
-		  #Pragma Unused radians
-		  
-		  // Not needed.
 		End Sub
 	#tag EndMethod
 

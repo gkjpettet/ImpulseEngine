@@ -3,7 +3,7 @@ Protected Class Manifold
 	#tag Method, Flags = &h0
 		Sub ApplyImpulse()
 		  // Early out and positional correct if both objects have infinite mass
-		  If Maths.Equal(A.InvMass + B.InvMass, 0) Then
+		  If Maths.Equal(A.InverseMass + B.InverseMass, 0) Then
 		    InfiniteMassCorrection
 		    Return
 		  End If
@@ -28,8 +28,8 @@ Protected Class Manifold
 		    
 		    raCrossN = Vector.Cross(ra, Normal)
 		    rbCrossN = Vector.Cross(rb, Normal)
-		    invMassSum = A.InvMass + B.InvMass + (raCrossN * raCrossN) * A.InvInertia + _
-		    (rbCrossN * rbCrossN) * B.InvInertia
+		    invMassSum = A.InverseMass + B.InverseMass + (raCrossN * raCrossN) * A.InverseInertia + _
+		    (rbCrossN * rbCrossN) * B.InverseInertia
 		    
 		    // Calculate impulse scalar.
 		    j = -(1 + Restitution) * contactVel
@@ -72,12 +72,13 @@ Protected Class Manifold
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Constructor(a As PhysicsKit.Body, b As PhysicsKit.Body)
+		Sub Constructor(a As PhysicsKit.Body, b As PhysicsKit.Body, timeStep As Integer)
 		  Self.A = a
 		  Self.B = b
 		  Normal = New Vector(0, 0)
 		  Contacts(0) = New Vector(0, 0)
 		  Contacts(1) = New Vector(0, 0)
+		  mTimeStep = timeStep
 		End Sub
 	#tag EndMethod
 
@@ -90,9 +91,11 @@ Protected Class Manifold
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Initialise()
-		  // Calculate average restitution
-		  Restitution = Min(A.Restitution, B.Restitution)
+		Sub Initialise(w As PhysicsKit.World)
+		  // Restitution mixing law. Taken from Box2D. 
+		  // The idea is allow for anything to bounce off an inelastic surface.
+		  // For example, a superball bounces on anything.
+		  Restitution = If(A.Restitution > B.Restitution, A.Restitution, B.Restitution)
 		  
 		  // Calculate static and dynamic friction.
 		  StaticFriction = Sqrt(A.StaticFriction * A.StaticFriction + B.StaticFriction * B.StaticFriction)
@@ -111,7 +114,7 @@ Protected Class Manifold
 		    // Determine if we should perform a resting collision or not.
 		    // The idea is that if the only thing moving this object is gravity,
 		    // then the collision should be performed without any restitution.
-		    If rv.LengthSquared < Maths.RESTING Then Restitution = 0
+		    If rv.LengthSquared < w.RestingValue Then Restitution = 0
 		  Next i
 		End Sub
 	#tag EndMethod
@@ -119,10 +122,30 @@ Protected Class Manifold
 	#tag Method, Flags = &h0
 		Sub PositionalCorrection()
 		  Var correction As Double = Max(Penetration - Maths.PENETRATION_ALLOWANCE, 0) _
-		  / (A.InvMass + B.InvMass) * Maths.PENETRATION_CORRECTION
+		  / (A.InverseMass + B.InverseMass) * Maths.PENETRATION_CORRECTION
 		  
-		  Call A.Position.AddSelf(Normal, -A.InvMass * correction)
-		  Call B.Position.AddSelf(normal, B.InvMass * correction)
+		  Call A.Position.AddSelf(Normal, -A.InverseMass * correction)
+		  Call B.Position.AddSelf(normal, B.InverseMass * correction)
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0, Description = 44657465726D696E6573206966207468697320636F6C6C6973696F6E2073686F756C6420626520636F6E7369646572656420747275652E2041207472756520636F6C6C6973696F6E2063616E206F6E6C79206F63637572206966206174206C65617374206F6E6520626F6479206973206D6F76696E672E
+		Sub RestingCorrection()
+		  // Since contacts are created during every worl update, bodies resting against each other 
+		  // will always be colliding. We're really only interested in knowing if a body has just 
+		  // collided with another, not that it happens to be permanently beside another. 
+		  // This method set `mCollisionOccurred` to True if both bodies A and B have at least 
+		  // some velocity.
+		  
+		  If Maths.OutsideRange(A.Velocity.X, -RESTING_THRESHOLD, RESTING_THRESHOLD) Or _
+		    Maths.OutsideRange(A.Velocity.Y, -RESTING_THRESHOLD, RESTING_THRESHOLD) Or _
+		    Maths.OutsideRange(B.Velocity.X, -RESTING_THRESHOLD, RESTING_THRESHOLD) Or _
+		    Maths.OutsideRange(B.Velocity.Y, -RESTING_THRESHOLD, RESTING_THRESHOLD) Then
+		    mCollisionOccurred = True
+		  Else
+		    mCollisionOccurred = False
+		  End If
 		  
 		End Sub
 	#tag EndMethod
@@ -166,8 +189,17 @@ Protected Class Manifold
 		B As PhysicsKit.Body
 	#tag EndProperty
 
+	#tag ComputedProperty, Flags = &h0, Description = 547275652069662074686973206D616E69666F6C6420726570726573656E7473206120636F6C6C6973696F6E206265747765656E2074776F20626F64696573207468617420617265204E4F5420617420726573742E
+		#tag Getter
+			Get
+			  Return mCollisionOccurred
+			End Get
+		#tag EndGetter
+		CollisionOccurred As Boolean
+	#tag EndComputedProperty
+
 	#tag Property, Flags = &h0
-		ContactCount As Integer
+		ContactCount As Integer = 0
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
@@ -176,6 +208,14 @@ Protected Class Manifold
 
 	#tag Property, Flags = &h0
 		DynamicFriction As Double
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private mCollisionOccurred As Boolean = True
+	#tag EndProperty
+
+	#tag Property, Flags = &h21, Description = 5468652060576F726C642E557064617465602074696D657374657020746861742074686973206D616E69666F6C6420776173206372656174656420696E2E
+		Private mTimeStep As Integer = 0
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
@@ -193,6 +233,19 @@ Protected Class Manifold
 	#tag Property, Flags = &h0
 		StaticFriction As Double
 	#tag EndProperty
+
+	#tag ComputedProperty, Flags = &h0, Description = 5468652060576F726C642E557064617465602074696D657374657020746861742074686973206D616E69666F6C6420776173206372656174656420696E2E2052656164206F6E6C792E
+		#tag Getter
+			Get
+			  Return mTimeStep
+			End Get
+		#tag EndGetter
+		TimeStep As Integer
+	#tag EndComputedProperty
+
+
+	#tag Constant, Name = RESTING_THRESHOLD, Type = Double, Dynamic = False, Default = \"1.0", Scope = Private
+	#tag EndConstant
 
 
 	#tag ViewBehavior
@@ -234,6 +287,46 @@ Protected Class Manifold
 			Group="Position"
 			InitialValue="0"
 			Type="Integer"
+			EditorType=""
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Penetration"
+			Visible=false
+			Group="Behavior"
+			InitialValue=""
+			Type="Double"
+			EditorType=""
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="ContactCount"
+			Visible=false
+			Group="Behavior"
+			InitialValue="0"
+			Type="Integer"
+			EditorType=""
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Restitution"
+			Visible=false
+			Group="Behavior"
+			InitialValue=""
+			Type="Double"
+			EditorType=""
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="DynamicFriction"
+			Visible=false
+			Group="Behavior"
+			InitialValue=""
+			Type="Double"
+			EditorType=""
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="StaticFriction"
+			Visible=false
+			Group="Behavior"
+			InitialValue=""
+			Type="Double"
 			EditorType=""
 		#tag EndViewProperty
 	#tag EndViewBehavior

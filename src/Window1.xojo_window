@@ -257,7 +257,7 @@ End
 		  
 		  Var fps As Integer = 30
 		  
-		  MyWorld = New World(1/fps, 10)
+		  MyWorld = New World(1/fps)
 		  AddHandler MyWorld.CollisionOccurred, AddressOf CollisionOccurred
 		  
 		  Var b As Body

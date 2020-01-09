@@ -1,6 +1,6 @@
 #tag Class
 Protected Class Body
-	#tag Method, Flags = &h0
+	#tag Method, Flags = &h0, Description = 4170706C696573206120666F72636520746F206120626F64792066726F6D206120676976656E20776F726C642D737061636520706F736974696F6E2E
 		Sub ApplyForce(f As PhysicsKit.Vector)
 		  Call Force.AddSelf(f)
 		  

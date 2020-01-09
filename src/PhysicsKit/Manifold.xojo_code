@@ -10,8 +10,8 @@ Protected Class Manifold
 		  
 		  Var ra, rb, rv, impulse, t, tangentImpulse As PhysicsKit.Vector
 		  Var raCrossN, rbCrossN, invMassSum, j, jt, contactVel As Double
-		  Var i As Integer = 0
-		  While i < ContactCount
+		  Var contactLimit As Integer = ContactCount - 1
+		  For i As Integer = 0 To contactLimit
 		    // Calculate radii from COM to contact.
 		    ra = Contacts(i).Subtract(A.Position)
 		    rb = Contacts(i).Subtract(B.Position)
@@ -67,10 +67,7 @@ Protected Class Manifold
 		    // Apply friction impulse.
 		    A.ApplyImpulse(tangentImpulse.Negate, ra)
 		    B.ApplyImpulse(tangentImpulse, rb)
-		    
-		    i = i + 1
-		  Wend
-		  
+		  Next i
 		End Sub
 	#tag EndMethod
 
@@ -102,8 +99,8 @@ Protected Class Manifold
 		  DynamicFriction = Sqrt(A.DynamicFriction * A.DynamicFriction + B.DynamicFriction * B.DynamicFriction)
 		  
 		  Var ra, rb, rv As PhysicsKit.Vector
-		  Var i As Integer = 0
-		  While i < ContactCount
+		  Var contactLimit As Integer = ContactCount - 1
+		  For i As Integer = 0 To contactLimit
 		    // Calculate radii from COM to contact.
 		    ra = contacts(i).Subtract(A.Position)
 		    rb = contacts(i).Subtract(B.Position)
@@ -115,10 +112,7 @@ Protected Class Manifold
 		    // The idea is that if the only thing moving this object is gravity,
 		    // then the collision should be performed without any restitution.
 		    If rv.LengthSquared < Maths.RESTING Then Restitution = 0
-		    
-		    i = i + 1
-		  Wend
-		  
+		  Next i
 		End Sub
 	#tag EndMethod
 

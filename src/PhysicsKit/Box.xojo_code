@@ -10,12 +10,11 @@ Implements PhysicsKit.Shape
 		  
 		  box.U.Set(mU)
 		  
-		  Var i As Integer = 0
-		  While i < VertexCount
+		  Var vertexLimit As Integer = VertexCount - 1
+		  For i As Integer = 0 To vertexLimit
 		    Call box.Vertices(i).Set(Vertices(i))
 		    Call box.Normals(i).Set(Normals(i))
-		    i = i + 1
-		  Wend
+		  Next i
 		  
 		  box.VertexCount = VertexCount
 		  

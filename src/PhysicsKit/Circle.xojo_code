@@ -88,9 +88,7 @@ Implements PhysicsKit.Shape
 		  
 		  #Pragma Unused radians
 		  
-		  // Does nothing.
-		  
-		  
+		  // Not needed.
 		End Sub
 	#tag EndMethod
 

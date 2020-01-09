@@ -27,12 +27,11 @@ Implements PhysicsKit.Shape
 		  
 		  p.U.Set(mU)
 		  
-		  Var i As Integer = 0
-		  While i < VertexCount
+		  Var vertexLimit As Integer = VertexCount - 1
+		  For i As Integer = 0 To vertexLimit
 		    Call p.Vertices(i).Set(Vertices(i))
 		    Call p.Normals(i).Set(Normals(i))
-		    i = i + 1
-		  Wend
+		  Next i
 		  
 		  p.VertexCount = VertexCount
 		  
@@ -48,14 +47,13 @@ Implements PhysicsKit.Shape
 		  // Calculate centroid and moment of inertia.
 		  Var centroid As PhysicsKit.Vector = New PhysicsKit.Vector(0, 0)
 		  Var inertia, area As Double = 0
-		  Var i As Integer
 		  Var p1, p2 As PhysicsKit.Vector
 		  Var d, triangleArea, weight, intx2, inty2 As Double
 		  
 		  Const k_inv3 = 1.0 / 3.0
+		  Var vertexLimit As Integer = VertexCount - 1
 		  
-		  i = 0
-		  While i < VertexCount
+		  For i As Integer = 0 To vertexLimit
 		    // Triangle vertices, third vertex implied as (0, 0)
 		    p1 = Vertices(i)
 		    p2 = Vertices((i + 1) Mod VertexCount)
@@ -73,19 +71,15 @@ Implements PhysicsKit.Shape
 		    intx2 = p1.X * p1.X + p2.X * p1.X + p2.X * p2.X
 		    inty2 = p1.Y * p1.Y + p2.Y * p1.Y + p2.Y * p2.Y
 		    inertia = inertia + ((0.25 * k_inv3 * d) * (intx2 + inty2))
-		    
-		    i = i + 1
-		  Wend
+		  Next i
 		  
 		  Call centroid.MultiplySelf(1.0 / area)
 		  
 		  // Translate vertices to centroid (make the centroid (0, 0) for the polygon in model space)
 		  // Not really necessary, but I like doing this anyway.
-		  i = 0
-		  While i < VertexCount
-		    Call Vertices(i).SubtractSelf(centroid)
-		    i = i + 1
-		  Wend
+		  For Each vert As PhysicsKit.Vector In Vertices
+		    Call vert.SubtractSelf(centroid)
+		  Next vert
 		  
 		  mBody.Mass = density * area
 		  mBody.InvMass = If((mBody.Mass <> 0), 1 / mBody.Mass, 0)
@@ -110,21 +104,17 @@ Implements PhysicsKit.Shape
 	#tag Method, Flags = &h0
 		Function GetSupport(dir As PhysicsKit.Vector) As PhysicsKit.Vector
 		  Var bestProjection As Double = -Maths.FLOAT_MAX_VALUE
-		  Var bestVertex, v As PhysicsKit.Vector
+		  Var bestVertex As PhysicsKit.Vector
 		  Var projection As Double
 		  
-		  Var i As Integer = 0
-		  While i < VertexCount
-		    v = Vertices(i)
+		  For Each v As PhysicsKit.Vector In Vertices
 		    projection = Vector.Dot(v, dir)
 		    
 		    If projection > bestProjection Then
 		      bestVertex = v
 		      bestProjection = projection
 		    End If
-		    
-		    i = i + 1
-		  Wend
+		  Next v
 		  
 		  Return bestVertex
 		  
@@ -164,9 +154,8 @@ Implements PhysicsKit.Shape
 		  Var rightMost As Integer = 0
 		  Var highestXCoord As Double = verts(0).X
 		  
-		  Var i As Integer = 0
 		  Var x As Double
-		  While i < verts.Count
+		  For i As Integer = 0 To verts.LastRowIndex
 		    x = verts(i).X
 		    
 		    If x > highestXCoord Then
@@ -177,9 +166,7 @@ Implements PhysicsKit.Shape
 		    ElseIf x = highestXCoord Then
 		      If verts(i).Y < verts(rightMost).Y Then rightMost = i
 		    End If
-		    
-		    i = i + 1
-		  Wend
+		  Next i
 		  
 		  Var hull(MAX_POLY_VERTEX_COUNT) As Integer
 		  Var outCount As Integer = 0
@@ -194,12 +181,10 @@ Implements PhysicsKit.Shape
 		    // to find the most counter-clockwise vertex in the set, given the previous hull index.
 		    Var nextHullIndex As Integer = 0
 		    
-		    i = 0
-		    While i < verts.Count
+		    For i As Integer = 0 To verts.LastRowIndex
 		      // Skip if same coordinate as we need three unique points in the set to perform a cross product.
 		      If nextHullIndex = indexHull Then
 		        nextHullIndex = i
-		        i = i + 1
 		        Continue
 		      End If
 		      
@@ -213,9 +198,7 @@ Implements PhysicsKit.Shape
 		      // Cross product is zero then e vectors are on same line
 		      // therefore want to record vertex farthest along that line
 		      If c = 0 And e2.LengthSquared > e1.LengthSquared Then nextHullIndex = i
-		      
-		      i = i + 1
-		    Wend
+		    Next i
 		    
 		    outCount = outCount + 1
 		    indexHull = nextHullIndex
@@ -228,25 +211,20 @@ Implements PhysicsKit.Shape
 		    
 		  Loop
 		  
-		  i = 0
-		  While i < VertexCount
+		  For i As Integer = 0 To VertexCount - 1
 		    // Copy vertices into shape's vertices.
 		    Call Vertices(i).Set(verts(hull(i)))
-		    i = i + 1
-		  Wend
+		  Next i
 		  
 		  // Compute face normals.
-		  i = 0
 		  Var face As PhysicsKit.Vector
-		  While i < VertexCount
+		  For i As Integer = 0 To VertexCount - 1
 		    face = Vertices((i + 1) Mod VertexCount).Subtract(Vertices(i))
 		    
 		    // Calculate normal with 2D cross product between vector and scalar.
 		    Normals(i).Set(face.Y, -face.X)
 		    Normals(i).Normalise
-		    
-		    i = i + 1
-		  Wend
+		  Next i
 		  
 		End Sub
 	#tag EndMethod

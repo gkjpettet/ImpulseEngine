@@ -62,16 +62,6 @@ Protected Module Maths
 		End Function
 	#tag EndMethod
 
-	#tag Method, Flags = &h1, Description = 526F756E6473207468652070617373656420446F75626C6520757020746F20746865206E65617265737420496E74656765722E
-		Protected Function Round(a As Double) As Integer
-		  // Rounds the passed Double up to the nearest Integer.
-		  
-		  #Pragma Warning "OPTIMISE: Could this be replaced by Xojo's implementation?"
-		  
-		  Return a + 0.5
-		End Function
-	#tag EndMethod
-
 
 	#tag Note, Name = About
 		This module contains additional maths-related helper methods and constants.

@@ -49,9 +49,8 @@ Protected Module Collisions
 		  Var separation As Double = -Maths.FLOAT_MAX_VALUE
 		  Var faceNormal As Integer = 0
 		  
-		  Var i As Integer = 0
 		  Var s As Double
-		  While i < polygonShape.VertexCount
+		  For i As Integer = 0 To polygonShape.VertexCount - 1
 		    s = Vector.Dot(polygonShape.Normals(i), center.Subtract(polygonShape.Vertices(i)))
 		    
 		    If s > circleShape.Radius Then Return
@@ -60,9 +59,7 @@ Protected Module Collisions
 		      separation = s
 		      faceNormal = i
 		    End If
-		    
-		    i = i + 1
-		  Wend
+		  Next i
 		  
 		  // Grab the face's vertices.
 		  Var v1 As PhysicsKit.Vector = polygonShape.Vertices(faceNormal)
@@ -156,8 +153,7 @@ Protected Module Collisions
 		  Var bestDistance As Double = -Maths.FLOAT_MAX_VALUE
 		  Var bestIndex As Integer = 0
 		  
-		  Var i As Integer = 0
-		  While i < polygonA.VertexCount
+		  For i As Integer = 0 To polygonA.VertexCount - 1
 		    // Retrieve a face normal from polygonA.
 		    Var nw As PhysicsKit.Vector = polygonA.U.Multiply(polygonA.Normals(i))
 		    
@@ -181,9 +177,7 @@ Protected Module Collisions
 		      bestDistance = d
 		      bestIndex = i
 		    End If
-		    
-		    i = i + 1
-		  Wend
+		  Next i
 		  
 		  faceIndex(0) = bestIndex
 		  Return bestDistance
@@ -203,17 +197,14 @@ Protected Module Collisions
 		  Var incidentFace As Integer = 0
 		  Var minDot As Double = Maths.FLOAT_MAX_VALUE
 		  
-		  Var i As Integer = 0
-		  While i < incPoly.VertexCount
+		  For i As Integer = 0 to incPoly.VertexCount - 1
 		    Var dot As Double = Vector.Dot(referenceNormal, incPoly.Normals(i))
 		    
 		    If dot < minDot Then
 		      minDot = dot
 		      incidentFace = i
 		    End If
-		    
-		    i = i + 1
-		  Wend
+		  Next i
 		  
 		  // Assign face vertices for incidentFace.
 		  v(0) = incPoly.U.Multiply(incPoly.Vertices(incidentFace)).AddSelf(incPoly.Body.Position)

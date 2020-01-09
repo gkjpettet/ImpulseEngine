@@ -69,8 +69,8 @@ Protected Class World
 		  If b.InvMass = 0 Then Return
 		  
 		  Call b.Position.AddSelf(b.Velocity, dt)
-		  b.Orient = b.Orient + (b.AngularVelocity * dt)
-		  b.SetOrient(b.Orient)
+		  b.Orientation = b.Orientation + (b.AngularVelocity * dt)
+		  b.SetOrient(b.Orientation)
 		  
 		  IntegrateForces(b, dt)
 		  
@@ -83,31 +83,22 @@ Protected Class World
 		  Contacts.ResizeTo(-1)
 		  
 		  Var A, B As PhysicsKit.Body
-		  Var i, j As Integer
 		  Var m As PhysicsKit.Manifold
-		  i = 0
-		  While i < Bodies.Count
+		  
+		  For i As Integer = 0 To Bodies.LastRowIndex
 		    A = Bodies(i)
 		    
-		    j = i + 1
-		    While j < Bodies.Count
+		    For j As Integer = i + 1 To Bodies.LastRowIndex
 		      B = Bodies(j)
 		      
-		      If A.InvMass = 0 And B.InvMass = 0 Then
-		        j = j + 1
-		        Continue
-		      End If
+		      If A.InvMass = 0 And B.InvMass = 0 Then Continue
 		      
 		      m = New Manifold(A, B)
 		      m.Solve
 		      
 		      If m.ContactCount > 0 Then Contacts.AddRow(m)
-		      
-		      j = j + 1
-		    Wend
-		    
-		    i = i + 1
-		  Wend
+		    Next j
+		  Next i
 		  
 		  // Integrate forces.
 		  For Each body As PhysicsKit.Body In Bodies
@@ -120,15 +111,11 @@ Protected Class World
 		  Next m
 		  
 		  // Solve collisions.
-		  j = 0
-		  While j < Iterations
-		    i = 0
-		    While i < Contacts.Count
+		  For j As Integer = 1 To Iterations
+		    For i As Integer = 0 To Contacts.LastRowIndex
 		      Contacts(i).ApplyImpulse
-		      i = i + 1
-		    Wend 
-		    j = j + 1
-		  Wend
+		    Next i
+		  Next j
 		  
 		  // Integrate velocities.
 		  For Each body As PhysicsKit.Body In Bodies

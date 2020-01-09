@@ -258,6 +258,7 @@ End
 		  // Bigger static circle.
 		  b = MyWorld.Add(New Circle(50), displayCentreX, displayCentreY)
 		  b.IsStatic = True
+		  b.SetOrient(PhysicsKit.Maths.DegreesToRadians(45))
 		  
 		  ButtonPauseResume.Caption = "Pause"
 		  ButtonPauseResume.Enabled = True
@@ -341,8 +342,8 @@ End
 		    If b.Shape IsA PhysicsKit.Circle Then
 		      c = PhysicsKit.Circle(b.Shape)
 		      
-		      Var rx As Double = Cos(b.Orient) * c.Radius
-		      Var ry As Double = Sin(b.Orient) * c.Radius
+		      Var rx As Double = Cos(b.Orientation) * c.Radius
+		      Var ry As Double = Sin(b.Orientation) * c.Radius
 		      
 		      g.DrawingColor = &cFF0000
 		      Var diameter As Double = c.radius * 2

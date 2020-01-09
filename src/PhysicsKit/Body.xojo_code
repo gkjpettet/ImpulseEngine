@@ -41,7 +41,7 @@ Protected Class Body
 
 	#tag Method, Flags = &h0
 		Sub SetOrient(radians_ As Double)
-		  Orient = radians_
+		  Orientation = radians_
 		  Self.Shape.SetOrient(radians_)
 		End Sub
 	#tag EndMethod
@@ -116,7 +116,7 @@ Protected Class Body
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		Orient As Double = 0
+		Orientation As Double = 0
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
@@ -234,7 +234,7 @@ Protected Class Body
 			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="Orient"
+			Name="Orientation"
 			Visible=false
 			Group="Behavior"
 			InitialValue=""

@@ -31,50 +31,9 @@ Implements PhysicsKit.Shape
 		  Vertices = Vector.ArrayOf(4)
 		  Normals = Vector.ArrayOf(4)
 		  
-		  // SetBox computes using half width and half heights.
+		  // Use our Super (Polygon)'s Setbox method to compute the vertices. 
+		  // Remember it takes a half width and half height.
 		  SetBox(width / 2, height / 2)
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Function GetSupport(dir As PhysicsKit.Vector) As PhysicsKit.Vector
-		  Var bestProjection As Double = -Maths.FLOAT_MAX_VALUE
-		  Var bestVertex, v As PhysicsKit.Vector
-		  Var projection As Double
-		  
-		  Var i As Integer = 0
-		  While i < VertexCount
-		    v = Vertices(i)
-		    projection = Vector.Dot(v, dir)
-		    
-		    If projection > bestProjection Then
-		      bestVertex = v
-		      bestProjection = projection
-		    End If
-		    
-		    i = i + 1
-		  Wend
-		  
-		  Return bestVertex
-		  
-		End Function
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub Initialise()
-		  // Part of the PhysicsKit.Shape interface.
-		  
-		  ComputeMass(1.0)
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub SetOrient(radians As Double)
-		  // Part of the PhysicsKit.Shape interface.
-		  
-		  mU.Set(radians)
 		  
 		End Sub
 	#tag EndMethod

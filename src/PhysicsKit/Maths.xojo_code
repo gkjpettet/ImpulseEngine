@@ -10,6 +10,14 @@ Protected Module Maths
 		End Function
 	#tag EndMethod
 
+	#tag Method, Flags = &h1
+		Protected Function DegreesToRadians(degrees As Double) As Double
+		  // Returns the specified degrees in radians.
+		  
+		  Return degrees * PI / 180
+		End Function
+	#tag EndMethod
+
 	#tag Method, Flags = &h1, Description = 52657475726E732054727565206966207468652074776F20646F75626C65732061726520636F6E7369646572656420657175616C2028616C6C6F77696E6720666F7220746F6C6572616E6365292E
 		Protected Function Equal(a As Double, b As Double) As Boolean
 		  // Returns True if the two doubles are considered equal (allowing for tolerance).
@@ -36,6 +44,14 @@ Protected Module Maths
 		  mGRAVITY = New Vector(0, 50)
 		  mRESTING = mGRAVITY.Multiply(DT).LengthSquared + EPSILON
 		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h1, Description = 52657475726E7320746865207370656369666965642072616469616E7320696E20646567726565732E
+		Protected Function RadiansToDegrees(radians As Double) As Double
+		  // Returns the specified radians in degrees.
+		  
+		  Return radians * 180 / PI
+		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h1, Description = 52657475726E7320612072616E646F6D20446F75626C65206265747765656E20606D696E6020616E6420606D6178602E

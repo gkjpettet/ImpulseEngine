@@ -1,10 +1,26 @@
 #tag Class
 Protected Class World
-	#tag Method, Flags = &h0
+	#tag Method, Flags = &h0, Description = 41646473207468652070617373656420736861706520746F2074686520776F726C6420617420746865207370656369666965642028782C20792920706F736974696F6E2E2028782C207929207370656369666965732074686520706F736974696F6E206F662074686520736861706527732063656E7472652E
 		Function Add(shape As PhysicsKit.Shape, x As Integer, y As Integer) As PhysicsKit.Body
-		  Var b As PhysicsKit.Body = New PhysicsKit.Body(shape, x, y)
+		  // Adds the passed shape to the world at the specified (x, y) position.
+		  // NB: (x, y) specifies the position of the centre of the shape.
+		  
+		  Var b As PhysicsKit.Body = New PhysicsKit.Body(Self, shape, x, y)
 		  Bodies.AddRow(b)
 		  Return b
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0, Description = 46696E647320616E642072657475726E732074686520666972737420626F6479207769746820746865207061737365642049442E2052657475726E73204E696C2069662069742063616E277420626520666F756E642E
+		Function BodyWithID(id As Integer) As PhysicsKit.Body
+		  // Finds and returns the first body with the passed ID. Returns Nil if it can't be found.
+		  
+		  For Each b As PhysicsKit.Body In Bodies
+		    If b.ID = id Then Return b
+		  Next b
+		  
+		  Return Nil
 		  
 		End Function
 	#tag EndMethod
@@ -23,6 +39,16 @@ Protected Class World
 		  Self.Iterations = iterations
 		  
 		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0, Description = 47656E657261746573206120756E697175652049442E20426F6469657320757365207468697320746F20656E7375726520746865792063616E20626520756E697175656C79206964656E7469666965642077697468696E206120576F726C6420696E7374616E63652E
+		Function GenerateID() As Integer
+		  // Generates a unique ID. Bodies use this to ensure they can be uniquely identified 
+		  // within a World instance.
+		  
+		  mNextID = mNextID + 1
+		  Return mNextID
+		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
@@ -137,6 +163,10 @@ Protected Class World
 
 	#tag Property, Flags = &h0
 		Iterations As Integer
+	#tag EndProperty
+
+	#tag Property, Flags = &h21
+		Private mNextID As Integer = -1
 	#tag EndProperty
 
 

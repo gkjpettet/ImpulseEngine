@@ -226,24 +226,38 @@ End
 		  Var displayCentreY As Double = Display.Height / 2
 		  
 		  // Add some dynamic circles.
-		  b = MyWorld.Add(New Circle(15), displayCentreX - 10, 0)
-		  b = MyWorld.Add(New Circle(20), displayCentreX, 110)
-		  b = MyWorld.Add(New Circle(35), displayCentreX - 20, 200)
-		  b = MyWorld.Add(New Circle(20), displayCentreX - 100, 100)
-		  b = MyWorld.Add(New Circle(30), displayCentreX - 120, 40)
+		  // b = MyWorld.Add(New Circle(15), displayCentreX - 10, 0)
+		  // b = MyWorld.Add(New Circle(20), displayCentreX, 110)
+		  // b = MyWorld.Add(New Circle(35), displayCentreX - 20, 200)
+		  // b = MyWorld.Add(New Circle(20), displayCentreX - 100, 100)
+		  // b = MyWorld.Add(New Circle(30), displayCentreX - 120, 40)
 		  
 		  // Dynamic polygon.
-		  b = MyWorld.Add(New Polygon(New Vector(0, 0), New Vector(30, -45), New Vector(60, -20), _
-		  New Vector(75, 20), New Vector(40, 40)), displayCentreX + 50, 50)
-		  
-		  // Bigger static circle.
-		  b = MyWorld.Add(New Circle(50), displayCentreX, displayCentreY)
-		  b.SetStatic
+		  // b = MyWorld.Add(New Polygon(New Vector(0, 0), New Vector(30, -45), New Vector(60, -20), _
+		  // New Vector(75, 20), New Vector(40, 40)), displayCentreX + 50, 50)
 		  
 		  // Ground.
 		  b = MyWorld.Add(New Box(Display.Width - 1, 8), displayCentreX, Display.Height - 9)
-		  b.SetStatic
+		  b.IsStatic = True
 		  b.SetOrient(0)
+		  b.StaticFriction = 1
+		  
+		  // Pink box1.
+		  b = MyWorld.Add(New Box(25, 25), 600, Display.Height - 27)
+		  
+		  // Orange circle1.
+		  b = MyWorld.Add(New Circle(12.5), 400, Display.Height - 27)
+		  // Push the circle rightwards.
+		  b.Push(New Vector(50, 0), 5)
+		  
+		  // // Box2 (orange).
+		  // b = MyWorld.Add(New Box(25, 25), 700, 100)
+		  // b.SetOrient(Maths.DegreesToRadians(45))
+		  // b.StaticFriction = 0
+		  
+		  // Bigger static circle.
+		  b = MyWorld.Add(New Circle(50), displayCentreX, displayCentreY)
+		  b.IsStatic = True
 		  
 		  ButtonPauseResume.Caption = "Pause"
 		  ButtonPauseResume.Enabled = True
@@ -338,7 +352,13 @@ End
 		    ElseIf b.Shape IsA PhysicsKit.Polygon Then
 		      p = PhysicsKit.Polygon(b.Shape)
 		      
-		      g.DrawingColor = &c0000FF
+		      If b.ID = 1 Then
+		        g.DrawingColor = &cFF31A300 // Pink.
+		      ElseIf b.ID = 2 Then
+		        g.DrawingColor = &cFFA20000 // Orange.
+		      Else
+		        g.DrawingColor = &c0000FF
+		      End If
 		      
 		      Var origin As PhysicsKit.Vector = New PhysicsKit.Vector(p.Vertices(0))
 		      Call p.U.MultiplySelf(origin)

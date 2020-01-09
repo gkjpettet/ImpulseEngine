@@ -138,7 +138,11 @@ Implements PhysicsKit.Shape
 	#tag Method, Flags = &h21
 		Private Sub Constructor(s As String)
 		  // Internal use.
-		  // Provided to allow the `Clone` method to work.
+		  // Provided to allow the `Clone` method to work. Without it, Xojo's compiler can't determine which
+		  // overridden constructor to use.
+		  
+		  #Pragma Unused s
+		  
 		End Sub
 	#tag EndMethod
 

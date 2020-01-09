@@ -141,7 +141,7 @@ Begin Window Window1
       Index           =   -2147483648
       InitialParent   =   ""
       Italic          =   False
-      Left            =   20
+      Left            =   144
       LockBottom      =   True
       LockedInPosition=   False
       LockLeft        =   True
@@ -161,7 +161,7 @@ Begin Window Window1
       Underline       =   False
       Value           =   ""
       Visible         =   True
-      Width           =   590
+      Width           =   584
    End
    Begin Canvas Display
       AllowAutoDeactivate=   True
@@ -188,6 +188,38 @@ Begin Window Window1
       Transparent     =   True
       Visible         =   True
       Width           =   1024
+   End
+   Begin CheckBox CheckBoxWeightless
+      AllowAutoDeactivate=   True
+      Bold            =   False
+      Caption         =   "Weightless?"
+      DataField       =   ""
+      DataSource      =   ""
+      Enabled         =   False
+      FontName        =   "System"
+      FontSize        =   0.0
+      FontUnit        =   0
+      Height          =   20
+      Index           =   -2147483648
+      InitialParent   =   ""
+      Italic          =   False
+      Left            =   20
+      LockBottom      =   False
+      LockedInPosition=   False
+      LockLeft        =   True
+      LockRight       =   False
+      LockTop         =   True
+      Scope           =   0
+      TabIndex        =   6
+      TabPanelIndex   =   0
+      TabStop         =   True
+      Tooltip         =   ""
+      Top             =   640
+      Transparent     =   False
+      Underline       =   False
+      Visible         =   True
+      VisualState     =   "0"
+      Width           =   112
    End
 End
 #tag EndWindow
@@ -246,6 +278,10 @@ End
 		  b.IsStatic = True
 		  b.Orientation = PhysicsKit.Maths.DegreesToRadians(270)
 		  
+		  // Triangle.
+		  b = MyWorld.AddPolygon(700, Display.Height - 47, 0, 0, 250, 0, 250, -100)
+		  b.IsStatic = True
+		  
 		  // Pink circle
 		  b = MyWorld.AddCircle(575, 100, 25)
 		  PinkID = b.ID
@@ -264,20 +300,17 @@ End
 		  b = MyWorld.AddCircle(displayCentreX, 110, 20)
 		  b = MyWorld.AddCircle(displayCentreX - 100, 100, 20)
 		  b = MyWorld.AddCircle(displayCentreX - 120, 40, 30)
-		  b = MyWorld.AddCircle(Display.Width - 200, 200, 35)
+		  b = MyWorld.AddCircle(Display.Width - 220, 200, 35)
 		  
-		  // Add a polygon.
-		  b = MyWorld.AddPolygon(displayCentreX + 175, 50, 0, 0, 30, -50, 60, -20, 75, 20, 40, 40)
-		  b.AngularVelocity = 0.5
-		  
-		  // Triangle.
-		  b = MyWorld.AddPolygon(700, Display.Height - 47, 0, 0, 250, 0, 250, -100)
-		  b.IsStatic = True
+		  // Add a polygon with some spin.
+		  b = MyWorld.AddPolygon(displayCentreX + 165, 50, 0, 0, 30, -50, 60, -20, 75, 20, 40, 40)
+		  b.AngularVelocity = 0.55
 		  
 		  ButtonPauseResume.Caption = "Pause"
 		  ButtonPauseResume.Enabled = True
 		  ButtonStop.Enabled = True
 		  ButtonStart.Enabled = False
+		  CheckboxWeightless.Enabled = True
 		  WorldUpdateTimer.RunMode = Timer.RunModes.Multiple
 		  WorldUpdateTimer.Period = 1000 / fps
 		  WorldUpdateTimer.Enabled = True
@@ -327,6 +360,7 @@ End
 		Sub Action()
 		  Me.Enabled = False
 		  ButtonStart.Enabled = True
+		  CheckBoxWeightless.Enabled = False
 		  Info.Value = "Simulation not running"
 		  WorldUpdateTimer.Enabled = False
 		End Sub
@@ -415,6 +449,17 @@ End
 		      g.DrawLine(v.X, v.Y, v.X + n.X * 4, v.Y + n.Y * 4)
 		    Next v
 		  Next m
+		End Sub
+	#tag EndEvent
+#tag EndEvents
+#tag Events CheckBoxWeightless
+	#tag Event
+		Sub Action()
+		  If Me.Value Then
+		    MyWorld.Gravity.Y = -Abs(MyWorld.Gravity.Y)
+		  Else
+		    MyWorld.Gravity.Y = Abs(MyWorld.Gravity.Y)
+		  End If
 		End Sub
 	#tag EndEvent
 #tag EndEvents

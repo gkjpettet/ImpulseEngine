@@ -1,11 +1,48 @@
 #tag Class
 Protected Class World
 	#tag Method, Flags = &h0, Description = 41646473207468652070617373656420736861706520746F2074686520776F726C6420617420746865207370656369666965642028782C20792920706F736974696F6E2E2028782C207929207370656369666965732074686520706F736974696F6E206F662074686520736861706527732063656E7472652E
-		Function Add(shape As PhysicsKit.Shape, x As Integer, y As Integer) As PhysicsKit.Body
+		Function Add(x As Integer, y As Integer, shape As PhysicsKit.Shape) As PhysicsKit.Body
 		  // Adds the passed shape to the world at the specified (x, y) position.
 		  // NB: (x, y) specifies the position of the centre of the shape.
 		  
 		  Var b As PhysicsKit.Body = New PhysicsKit.Body(Self, shape, x, y)
+		  Bodies.AddRow(b)
+		  Return b
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0, Description = 416464732061206E657720426F782073686170652077697468206077696474686020616E6420606865696768746020746F2074686520776F726C6420617420746865207370656369666965642028782C20792920706F736974696F6E2E2028782C207929207370656369666965732074686520706F736974696F6E206F662074686520736861706527732063656E7472652E
+		Function AddBox(x As Integer, y As Integer, width As Double, height As Double) As PhysicsKit.Body
+		  // Adds a new Box shape with `width` and `height` to the world at the specified (x, y) position.
+		  // NB: (x, y) specifies the position of the centre of the shape.
+		  
+		  Var b As PhysicsKit.Body = New PhysicsKit.Body(Self, New Box(width, height), x, y)
+		  Bodies.AddRow(b)
+		  Return b
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0, Description = 416464732061206E657720436972636C65207368617065207769746820607261646975736020746F2074686520776F726C6420617420746865207370656369666965642028782C20792920706F736974696F6E2E2028782C207929207370656369666965732074686520706F736974696F6E206F662074686520736861706527732063656E7472652E
+		Function AddCircle(x As Integer, y As Integer, radius As Double) As PhysicsKit.Body
+		  // Adds a new Circle shape with `radius` to the world at the specified (x, y) position.
+		  // NB: (x, y) specifies the position of the centre of the shape.
+		  
+		  Var b As PhysicsKit.Body = New PhysicsKit.Body(Self, New Circle(radius), x, y)
+		  Bodies.AddRow(b)
+		  Return b
+		  
+		End Function
+	#tag EndMethod
+
+	#tag Method, Flags = &h0, Description = 4372656174657320616E6420616464732061206E657720706F6C79676F6E2073686170652028636F6E73747275637465642066726F6D207468652070617373656420706F696E74732920746F2074686520776F726C6420617420746865207370656369666965642028782C20792920706F736974696F6E2E2028782C2079292069732074686520706F736974696F6E206F662074686520736861706527732063656E7472652E
+		Function AddPolygon(x As Double, y As Double, ParamArray points As Double) As PhysicsKit.body
+		  // Creates and adds a new polygon shape (constructed from the passed points) to the world at the 
+		  // specified (x, y) position.
+		  // NB: (x, y) specifies the position of the centre of the shape.
+		  
+		  Var b As PhysicsKit.Body = New PhysicsKit.Body(Self, New Polygon(points), x, y)
 		  Bodies.AddRow(b)
 		  Return b
 		  

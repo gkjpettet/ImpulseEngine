@@ -233,34 +233,46 @@ End
 		  Var displayCentreY As Double = Display.Height / 2
 		  
 		  // Ground.
-		  b = MyWorld.Add(New Box(Display.Width - 1, 8), displayCentreX, Display.Height - 9)
+		  b = MyWorld.AddBox(displayCentreX, Display.Height - 9, Display.Width - 1, 8)
 		  b.IsStatic = True
 		  
+		  // Left wall.
+		  b = MyWorld.AddBox(5, Display.Height / 2 - 7, Display.Height - 14, 10)
+		  b.IsStatic = True
+		  b.Orientation = PhysicsKit.Maths.DegreesToRadians(90)
+		  
+		  // Right wall.
+		  b = MyWorld.AddBox(Display.Width - 6, Display.Height / 2 - 7, Display.Height - 14, 10)
+		  b.IsStatic = True
+		  b.Orientation = PhysicsKit.Maths.DegreesToRadians(270)
+		  
 		  // Pink circle
-		  b = MyWorld.Add(New Circle(25), 600, 100)
+		  b = MyWorld.AddCircle(600, 100, 25)
 		  PinkID = b.ID
 		  
 		  // Orange circle
-		  b = MyWorld.Add(New Circle(25), 100, 100)
+		  b = MyWorld.AddCircle(100, 100, 25)
 		  OrangeID = b.ID
 		  
 		  // Bigger static circle.
-		  b = MyWorld.Add(New Circle(50), displayCentreX, displayCentreY)
+		  b = MyWorld.AddCircle(displayCentreX, displayCentreY, 50)
 		  b.IsStatic = True
 		  b.Orientation = PhysicsKit.Maths.DegreesToRadians(45)
 		  
 		  // Add some dynamic circles.
-		  b = MyWorld.Add(New Circle(15), displayCentreX - 10, 0)
-		  b = MyWorld.Add(New Circle(20), displayCentreX, 110)
-		  b = MyWorld.Add(New Circle(35), displayCentreX - 20, 200)
-		  b = MyWorld.Add(New Circle(20), displayCentreX - 100, 100)
-		  b = MyWorld.Add(New Circle(30), displayCentreX - 120, 40)
+		  b = MyWorld.AddCircle(displayCentreX - 10, 0, 15)
+		  b = MyWorld.AddCircle(displayCentreX, 110, 20)
+		  b = MyWorld.AddCircle(displayCentreX - 100, 100, 20)
+		  b = MyWorld.AddCircle(displayCentreX - 120, 40, 30)
+		  b = MyWorld.AddCircle(Display.Width - 200, 200, 35)
 		  
-		  // Dynamic polygon.
-		  b = MyWorld.Add(New Polygon(New Vector(0, 0), New Vector(30, -45), New Vector(60, -20), _
-		  New Vector(75, 20), New Vector(40, 40)), displayCentreX + 50, 50)
+		  // Add a polygon.
+		  b = MyWorld.AddPolygon(displayCentreX + 175, 50, 0, 0, 30, -45, 60, -20, 75, 20, 40, 40)
 		  
-		  b = MyWorld.Add(New Polygon(0, 0, 30, -45, 60, -20, 75, 20, 40, 40), displayCentreX + 175, 50)
+		  // Tilt a static box.
+		  b = MyWorld.AddBox(700, 500, 400, 10)
+		  b.IsStatic = True
+		  b.Orientation = PhysicsKit.Maths.DegreesToRadians(-30)
 		  
 		  ButtonPauseResume.Caption = "Pause"
 		  ButtonPauseResume.Enabled = True

@@ -90,7 +90,7 @@ Implements PhysicsKit.Shape
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Constructor(ParamArray points As Double)
+		Sub Constructor(points() As Double)
 		  // All classes implementing the `Shape` interface must intialise mU to a new Matrix.
 		  mU = New PhysicsKit.Matrix
 		  
@@ -112,6 +112,14 @@ Implements PhysicsKit.Shape
 		  Next i
 		  
 		  Set(verts)
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub Constructor(ParamArray points As Double)
+		  // Alias to Constructor(points() As Double)
+		  Constructor(points)
+		  
 		End Sub
 	#tag EndMethod
 

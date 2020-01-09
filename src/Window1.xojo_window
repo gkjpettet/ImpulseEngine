@@ -255,9 +255,9 @@ End
 		Sub StartSimulation()
 		  Using PhysicsKit
 		  
-		  Var fps As Integer = 30
+		  Const FPS = 60
 		  
-		  MyWorld = New World(1/fps)
+		  MyWorld = New World(1/FPS)
 		  AddHandler MyWorld.CollisionOccurred, AddressOf CollisionOccurred
 		  
 		  Var b As Body
@@ -312,7 +312,7 @@ End
 		  ButtonStart.Enabled = False
 		  CheckboxWeightless.Enabled = True
 		  WorldUpdateTimer.RunMode = Timer.RunModes.Multiple
-		  WorldUpdateTimer.Period = 1000 / fps
+		  WorldUpdateTimer.Period = 1000 / FPS
 		  WorldUpdateTimer.Enabled = True
 		  
 		End Sub

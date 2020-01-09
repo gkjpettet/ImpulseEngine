@@ -71,7 +71,7 @@ Protected Class World
 	#tag EndMethod
 
 	#tag Method, Flags = &h0, Description = 437265617465732061206E657720776F726C642E2054616B6573207468652064656C74612074696D65207065722075706461746520616E64206F7074696F6E616C6C7920746865206E756D626572206F6620697465726174696F6E7320616E64206120766563746F7220726570726573656E74696E6720677261766974792E
-		Sub Constructor(dt As Double, iterations As Integer = 3, gravity As PhysicsKit.Vector = Nil)
+		Sub Constructor(dt As Double, iterations As Integer = 5, gravity As PhysicsKit.Vector = Nil)
 		  Self.DeltaTime = dt
 		  Self.Iterations = iterations
 		  
@@ -80,7 +80,6 @@ Protected Class World
 		  Else
 		    Self.Gravity = New Vector(gravity)
 		  End If
-		  
 		  
 		End Sub
 	#tag EndMethod

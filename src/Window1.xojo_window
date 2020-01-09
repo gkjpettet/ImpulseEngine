@@ -247,7 +247,7 @@ End
 		  b.Orientation = PhysicsKit.Maths.DegreesToRadians(270)
 		  
 		  // Pink circle
-		  b = MyWorld.AddCircle(600, 100, 25)
+		  b = MyWorld.AddCircle(575, 100, 25)
 		  PinkID = b.ID
 		  
 		  // Orange circle
@@ -267,12 +267,12 @@ End
 		  b = MyWorld.AddCircle(Display.Width - 200, 200, 35)
 		  
 		  // Add a polygon.
-		  b = MyWorld.AddPolygon(displayCentreX + 175, 50, 0, 0, 30, -45, 60, -20, 75, 20, 40, 40)
+		  b = MyWorld.AddPolygon(displayCentreX + 175, 50, 0, 0, 30, -50, 60, -20, 75, 20, 40, 40)
+		  b.AngularVelocity = 0.5
 		  
-		  // Tilt a static box.
-		  b = MyWorld.AddBox(700, 500, 400, 10)
+		  // Triangle.
+		  b = MyWorld.AddPolygon(700, Display.Height - 47, 0, 0, 250, 0, 250, -100)
 		  b.IsStatic = True
-		  b.Orientation = PhysicsKit.Maths.DegreesToRadians(-30)
 		  
 		  ButtonPauseResume.Caption = "Pause"
 		  ButtonPauseResume.Enabled = True

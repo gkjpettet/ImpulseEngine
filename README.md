@@ -5,8 +5,6 @@ A 2D rigid body physics engine for Xojo. Based on Randy Gaul's [Impulse engine][
 
 - [ ] Add an option to destroy bodies which fall outside the world's bounds.
 - [ ] Add descriptions to all methods and properties in the module
-- [ ] Add convenience methods to `World` to add circles, boxes, triangles and polygons
-- [ ] Add a constructor to `Polygon` to construct from a ParamArray of doubles
 - [ ] Revolute joints
 - [ ] Fixed distance joints
 

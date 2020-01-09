@@ -253,33 +253,33 @@ End
 
 	#tag Method, Flags = &h0
 		Sub StartSimulation()
-		  Using PhysicsKit
-		  
 		  Const FPS = 60
 		  
-		  MyWorld = New World(1/FPS)
+		  MyWorld = New PhysicsKit.World(1/FPS)
 		  AddHandler MyWorld.CollisionOccurred, AddressOf CollisionOccurred
 		  
-		  Var b As Body
-		  Var displayCentreX As Double = Display.Width / 2
-		  Var displayCentreY As Double = Display.Height / 2
+		  Var b As PhysicsKit.Body
+		  Var dh As Double = Display.Height
+		  Var dw As Double = Display.Width
+		  Var dcx As Double = dw / 2
+		  Var dcy As Double = dh / 2
 		  
 		  // Ground.
-		  b = MyWorld.AddBox(displayCentreX, Display.Height - 9, Display.Width - 1, 8)
+		  b = MyWorld.AddBox(dcx, dh - 9, dw - 1, 8)
 		  b.IsStatic = True
 		  
 		  // Left wall.
-		  b = MyWorld.AddBox(5, Display.Height / 2 - 7, Display.Height - 14, 10)
+		  b = MyWorld.AddBox(5, dh / 2 - 7, dh - 14, 10)
 		  b.IsStatic = True
 		  b.Orientation = PhysicsKit.Maths.DegreesToRadians(90)
 		  
 		  // Right wall.
-		  b = MyWorld.AddBox(Display.Width - 6, Display.Height / 2 - 7, Display.Height - 14, 10)
+		  b = MyWorld.AddBox(dw - 6, dh / 2 - 7, dh - 14, 10)
 		  b.IsStatic = True
 		  b.Orientation = PhysicsKit.Maths.DegreesToRadians(270)
 		  
 		  // Triangle.
-		  b = MyWorld.AddPolygon(700, Display.Height - 47, 0, 0, 250, 0, 250, -100)
+		  b = MyWorld.AddPolygon(700, dh - 47, 0, 0, 250, 0, 250, -100)
 		  b.IsStatic = True
 		  
 		  // Pink circle
@@ -291,19 +291,19 @@ End
 		  OrangeID = b.ID
 		  
 		  // Bigger static circle.
-		  b = MyWorld.AddCircle(displayCentreX, displayCentreY, 50)
+		  b = MyWorld.AddCircle(dcx, dcy, 50)
 		  b.IsStatic = True
 		  b.Orientation = PhysicsKit.Maths.DegreesToRadians(45)
 		  
 		  // Add some dynamic circles.
-		  b = MyWorld.AddCircle(displayCentreX - 10, 0, 15)
-		  b = MyWorld.AddCircle(displayCentreX, 110, 20)
-		  b = MyWorld.AddCircle(displayCentreX - 100, 100, 20)
-		  b = MyWorld.AddCircle(displayCentreX - 120, 40, 30)
-		  b = MyWorld.AddCircle(Display.Width - 220, 200, 35)
+		  b = MyWorld.AddCircle(dcx - 10, 0, 15)
+		  b = MyWorld.AddCircle(dcx, 110, 20)
+		  b = MyWorld.AddCircle(dcx - 100, 100, 20)
+		  b = MyWorld.AddCircle(dcx - 120, 40, 30)
+		  b = MyWorld.AddCircle(dw - 220, 200, 35)
 		  
 		  // Add a polygon with some spin.
-		  b = MyWorld.AddPolygon(displayCentreX + 165, 50, 0, 0, 30, -50, 60, -20, 75, 20, 40, 40)
+		  b = MyWorld.AddPolygon(dcx + 165, 50, 0, 0, 30, -50, 60, -20, 75, 20, 40, 40)
 		  b.AngularVelocity = 0.55
 		  
 		  ButtonPauseResume.Caption = "Pause"

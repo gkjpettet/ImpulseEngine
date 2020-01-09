@@ -22,6 +22,13 @@ Implements PhysicsKit.Shape
 		End Function
 	#tag EndMethod
 
+	#tag Method, Flags = &h21
+		Private Sub Constructor()
+		  // Internal use.
+		  // Provided to allow the `Clone` method to work.
+		End Sub
+	#tag EndMethod
+
 	#tag Method, Flags = &h0
 		Sub Constructor(width As Double, height As Double)
 		  // All classes implementing the `Shape` interface must intialise mU to a new Matrix.

@@ -260,6 +260,8 @@ End
 		  b = MyWorld.Add(New Polygon(New Vector(0, 0), New Vector(30, -45), New Vector(60, -20), _
 		  New Vector(75, 20), New Vector(40, 40)), displayCentreX + 50, 50)
 		  
+		  b = MyWorld.Add(New Polygon(0, 0, 30, -45, 60, -20, 75, 20, 40, 40), displayCentreX + 175, 50)
+		  
 		  ButtonPauseResume.Caption = "Pause"
 		  ButtonPauseResume.Enabled = True
 		  ButtonStop.Enabled = True

@@ -23,7 +23,7 @@ Implements PhysicsKit.Shape
 		Function Clone() As PhysicsKit.Shape
 		  // Part of the PhysicsKit.Shape interface.
 		  
-		  Var p As PhysicsKit.Polygon = New PhysicsKit.Polygon()
+		  Var p As PhysicsKit.Polygon = New PhysicsKit.Polygon("")
 		  
 		  p.U.Set(mU)
 		  
@@ -90,6 +90,32 @@ Implements PhysicsKit.Shape
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
+		Sub Constructor(ParamArray points As Double)
+		  // All classes implementing the `Shape` interface must intialise mU to a new Matrix.
+		  mU = New PhysicsKit.Matrix
+		  
+		  Vertices = Vector.ArrayOf(MAX_POLY_VERTEX_COUNT)
+		  Normals = Vector.ArrayOf(MAX_POLY_VERTEX_COUNT)
+		  
+		  If points.Count < 3 Then
+		    Raise New InvalidArgumentException("The smallest polygon is a triangle which requires at least 6 points.")
+		  End If
+		  If points.Count Mod 2 <> 0 Then
+		    Raise New InvalidArgumentException("Expected an even number of points to construct a polygon from.")
+		  End If
+		  
+		  Var limit As Integer = points.LastRowIndex - 1
+		  Var verts() As PhysicsKit.Vector
+		  For i As Integer = 0 To limit
+		    verts.AddRow(New Vector(points(i), points(i + 1)))
+		    i = i + 1
+		  Next i
+		  
+		  Set(verts)
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
 		Sub Constructor(ParamArray verts As PhysicsKit.Vector)
 		  // All classes implementing the `Shape` interface must intialise mU to a new Matrix.
 		  mU = New PhysicsKit.Matrix
@@ -98,6 +124,13 @@ Implements PhysicsKit.Shape
 		  Normals = Vector.ArrayOf(MAX_POLY_VERTEX_COUNT)
 		  
 		  Set(verts)
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h21
+		Private Sub Constructor(s As String)
+		  // Internal use.
+		  // Provided to allow the `Clone` method to work.
 		End Sub
 	#tag EndMethod
 

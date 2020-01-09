@@ -282,8 +282,9 @@ End
 		  b = MyWorld.AddPolygon(700, dh - 47, 0, 0, 250, 0, 250, -100)
 		  b.IsStatic = True
 		  
-		  // Pink circle
-		  b = MyWorld.AddCircle(575, 100, 25)
+		  // Pink circle (bouncy)
+		  b = MyWorld.AddCircle(dcx - 30, 0, 15)
+		  b.Restitution = 0.9
 		  PinkID = b.ID
 		  
 		  // Orange circle
@@ -296,7 +297,7 @@ End
 		  b.Orientation = PhysicsKit.Maths.DegreesToRadians(45)
 		  
 		  // Add some dynamic circles.
-		  b = MyWorld.AddCircle(dcx - 10, 0, 15)
+		  b = MyWorld.AddCircle(30, 100, 25)
 		  b = MyWorld.AddCircle(dcx, 110, 20)
 		  b = MyWorld.AddCircle(dcx - 100, 100, 20)
 		  b = MyWorld.AddCircle(dcx - 120, 40, 30)

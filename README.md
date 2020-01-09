@@ -9,6 +9,7 @@ A 2D rigid body physics engine for Xojo. Based on Randy Gaul's [Impulse engine][
 - [ ] Fixed distance joints
 - [ ] Allow sleeping bodies
 - [ ] Allow "sensor" bodies
+- [ ] Allow density to be customised per shape
 
 [randy's]: https://www.randygaul.net/projects-open-sources/impulse-engine/
 [java port]: https://github.com/ClickerMonkey/ImpulseEngine

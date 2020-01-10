@@ -128,41 +128,6 @@ Begin Window Window1
       Scope           =   0
       TabPanelIndex   =   0
    End
-   Begin Label Info
-      AllowAutoDeactivate=   True
-      Bold            =   False
-      DataField       =   ""
-      DataSource      =   ""
-      Enabled         =   True
-      FontName        =   "System"
-      FontSize        =   0.0
-      FontUnit        =   0
-      Height          =   20
-      Index           =   -2147483648
-      InitialParent   =   ""
-      Italic          =   False
-      Left            =   144
-      LockBottom      =   True
-      LockedInPosition=   False
-      LockLeft        =   True
-      LockRight       =   False
-      LockTop         =   False
-      Multiline       =   False
-      Scope           =   0
-      Selectable      =   False
-      TabIndex        =   4
-      TabPanelIndex   =   0
-      TabStop         =   True
-      TextAlignment   =   "0"
-      TextColor       =   &c00000000
-      Tooltip         =   ""
-      Top             =   640
-      Transparent     =   False
-      Underline       =   False
-      Value           =   ""
-      Visible         =   True
-      Width           =   584
-   End
    Begin Canvas Display
       AllowAutoDeactivate=   True
       AllowFocus      =   False
@@ -233,8 +198,17 @@ End
 
 
 	#tag MenuHandler
-		Function DebugRun() As Boolean Handles DebugRun.Action
-			Window1.StartSimulation
+		Function DebugRunDemo1() As Boolean Handles DebugRunDemo1.Action
+			Window1.StartSimulation(1)
+			
+			Return True
+			
+		End Function
+	#tag EndMenuHandler
+
+	#tag MenuHandler
+		Function DebugRunDemo2() As Boolean Handles DebugRunDemo2.Action
+			StartSimulation(2)
 			
 			Return True
 			
@@ -252,7 +226,20 @@ End
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub StartSimulation()
+		Sub ConfigUIAndUpdateTimer(fps As Integer)
+		  ButtonPauseResume.Caption = "Pause"
+		  ButtonPauseResume.Enabled = True
+		  ButtonStop.Enabled = True
+		  ButtonStart.Enabled = False
+		  CheckboxWeightless.Enabled = True
+		  WorldUpdateTimer.RunMode = Timer.RunModes.Multiple
+		  WorldUpdateTimer.Period = 1000 / fps
+		  WorldUpdateTimer.Enabled = True
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub Demo1()
 		  Const FPS = 60
 		  
 		  MyWorld = New PhysicsKit.World(1/FPS, 5)
@@ -264,19 +251,7 @@ End
 		  Var dcx As Double = dw / 2
 		  Var dcy As Double = dh / 2
 		  
-		  // Ground.
-		  b = MyWorld.AddBox(dcx, dh - 9, dw - 1, 8)
-		  b.IsStatic = True
-		  
-		  // Left wall.
-		  b = MyWorld.AddBox(5, dh / 2 - 7, dh - 14, 10)
-		  b.IsStatic = True
-		  b.Orientation = PhysicsKit.Maths.DegreesToRadians(90)
-		  
-		  // Right wall.
-		  b = MyWorld.AddBox(dw - 6, dh / 2 - 7, dh - 14, 10)
-		  b.IsStatic = True
-		  b.Orientation = PhysicsKit.Maths.DegreesToRadians(270)
+		  SetWalls
 		  
 		  // Triangle.
 		  b = MyWorld.AddPolygon(700, dh - 47, 0, 0, 250, 0, 250, -100)
@@ -312,18 +287,73 @@ End
 		  b = MyWorld.AddPolygon(dcx + 165, 50, 0, 0, 30, -50, 60, -20, 75, 20, 40, 40)
 		  b.AngularVelocity = 0.55
 		  
-		  ButtonPauseResume.Caption = "Pause"
-		  ButtonPauseResume.Enabled = True
-		  ButtonStop.Enabled = True
-		  ButtonStart.Enabled = False
-		  CheckboxWeightless.Enabled = True
-		  WorldUpdateTimer.RunMode = Timer.RunModes.Multiple
-		  WorldUpdateTimer.Period = 1000 / FPS
-		  WorldUpdateTimer.Enabled = True
+		  // Update the UI and start the update timer.
+		  ConfigUIAndUpdateTimer(FPS)
 		  
 		End Sub
 	#tag EndMethod
 
+	#tag Method, Flags = &h0
+		Sub Demo2()
+		  Const FPS = 60
+		  
+		  MyWorld = New PhysicsKit.World(1/FPS, 5)
+		  AddHandler MyWorld.CollisionOccurred, AddressOf CollisionOccurred
+		  
+		  Var dh As Double = Display.Height
+		  Var dw As Double = Display.Width
+		  Var dcx As Double = dw / 2
+		  Var dcy As Double = dh / 2
+		  
+		  SetWalls
+		  
+		  // Add a circle in the bottom left corner of the screen.
+		  Body1 = MyWorld.AddCircle(50, dh - 45, 30)
+		  
+		  // Update the UI and start the update timer.
+		  ConfigUIAndUpdateTimer(FPS)
+		  
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub SetWalls()
+		  Var b As PhysicsKit.Body
+		  Var dh As Double = Display.Height
+		  Var dw As Double = Display.Width
+		  Var dcx As Double = dw / 2
+		  
+		  // Ground.
+		  b = MyWorld.AddBox(dcx, dh - 9, dw - 1, 8)
+		  b.IsStatic = True
+		  
+		  // Left wall.
+		  b = MyWorld.AddBox(5, dh / 2 - 7, dh - 14, 10)
+		  b.IsStatic = True
+		  b.Orientation = PhysicsKit.Maths.DegreesToRadians(90)
+		  
+		  // Right wall.
+		  b = MyWorld.AddBox(dw - 6, dh / 2 - 7, dh - 14, 10)
+		  b.IsStatic = True
+		  b.Orientation = PhysicsKit.Maths.DegreesToRadians(270)
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub StartSimulation(demo As Integer)
+		  If demo = 1 Then
+		    Demo1
+		  ElseIf demo = 2 Then
+		    Demo2
+		  End If
+		  
+		End Sub
+	#tag EndMethod
+
+
+	#tag Property, Flags = &h0
+		Body1 As PhysicsKit.Body
+	#tag EndProperty
 
 	#tag Property, Flags = &h0
 		MyWorld As PhysicsKit.World
@@ -343,7 +373,7 @@ End
 #tag Events ButtonStart
 	#tag Event
 		Sub Action()
-		  StartSimulation
+		  StartSimulation(2)
 		End Sub
 	#tag EndEvent
 #tag EndEvents
@@ -367,7 +397,6 @@ End
 		  Me.Enabled = False
 		  ButtonStart.Enabled = True
 		  CheckBoxWeightless.Enabled = False
-		  Info.Value = "Simulation not running"
 		  WorldUpdateTimer.Enabled = False
 		End Sub
 	#tag EndEvent

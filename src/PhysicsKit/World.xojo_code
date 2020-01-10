@@ -94,8 +94,11 @@ Protected Class World
 		End Function
 	#tag EndMethod
 
-	#tag Method, Flags = &h0
+	#tag Method, Flags = &h0, Description = 506572666F726D7320612073696D756C6174696F6E207374657020666F7220746865207370656369666965642074696D6520696E74657276616C2C207570646174696E67206974732076656C6F6369747920616E6420616E67756C61722076656C6F636974792E
 		Sub IntegrateForces(b As PhysicsKit.Body, dt As Double)
+		  // Performs a simulation step for the specified time interval, updating its velocity 
+		  // and angular velocity.
+		  
 		  If b.InverseMass = 0 Then Return
 		  
 		  Var dts As Double = dt * 0.5

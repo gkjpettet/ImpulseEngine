@@ -1,16 +1,22 @@
 #tag Class
 Protected Class Body
-	#tag Method, Flags = &h0, Description = 4170706C696573206120666F72636520746F206120626F64792066726F6D206120676976656E20776F726C642D737061636520706F736974696F6E2E
+	#tag Method, Flags = &h0, Description = 4164647320746865207061737365642060666F7263656020746F207468697320626F6479277320666F7263652E20546869732077696C6C20616C746572206974732076656C6F6369747920647572696E672068652063757272656E7420776F726C64207570646174652E
 		Sub ApplyForce(f As PhysicsKit.Vector)
+		  // Adds the passed `force` to this body's force. This will alter its velocity during 
+		  // the current world update.
+		  
 		  Call Force.AddSelf(f)
 		  
 		End Sub
 	#tag EndMethod
 
-	#tag Method, Flags = &h0
-		Sub ApplyImpulse(impulse As PhysicsKit.Vector, contactVector As PhysicsKit.Vector)
+	#tag Method, Flags = &h0, Description = 41646473207468652060696D70756C73656020766563746F7220746F207468697320626F647927732076656C6F6369747920616E6420757064617465732069742069747320616E67756C61722076656C6F63697479206261736564206F6E20746865207061737365642060696D70756C73656020616E642060636F6E746163746020766563746F72732E
+		Sub ApplyImpulse(impulse As PhysicsKit.Vector, contact As PhysicsKit.Vector)
+		  // Adds the `impulse` vector to this body's velocity and updates it its angular velocity based 
+		  // on the passed `impulse` and `contact` vectors.
+		  
 		  Call Velocity.AddSelf(impulse, InverseMass)
-		  AngularVelocity = AngularVelocity + (InverseInertia * Vector.Cross(contactVector, impulse))
+		  AngularVelocity = AngularVelocity + (InverseInertia * Vector.Cross(contact, impulse))
 		  
 		End Sub
 	#tag EndMethod
@@ -29,12 +35,13 @@ Protected Class Body
 		End Sub
 	#tag EndMethod
 
-	#tag Method, Flags = &h0, Description = 507573686573207468697320626F647920696E207468652073706563696669656420646972656374696F6E207769746820746865207061737365642060737472656E677468602E
-		Sub Push(direction As PhysicsKit.Vector, strength As Double)
+	#tag Method, Flags = &h0, Description = 507573686573207468697320626F647920696E207468652073706563696669656420646972656374696F6E207769746820746865207061737365642060737472656E677468602E20446F6573204E4F542061666665637420616E67756C617220726F746174696F6E2E
+		Sub LinearPush(direction As PhysicsKit.Vector, strength As Double)
 		  // Pushes this body in the specified direction with the passed `strength`.
+		  // Does NOT affect angular rotation.
 		  
 		  Call Velocity.AddSelf(direction, strength)
-		  AngularVelocity = AngularVelocity + (InverseInertia * Vector.Cross(New Vector, direction))
+		  
 		  
 		End Sub
 	#tag EndMethod

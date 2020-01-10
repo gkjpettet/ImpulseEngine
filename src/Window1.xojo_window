@@ -297,7 +297,7 @@ End
 		  b.Orientation = PhysicsKit.Maths.DegreesToRadians(45)
 		  
 		  // Add some dynamic circles.
-		  b = MyWorld.AddCircle(50, 100, 25)
+		  b = MyWorld.AddCircle(55, 60, 25)
 		  b = MyWorld.AddCircle(dcx, 110, 20)
 		  b = MyWorld.AddCircle(dcx - 100, 100, 20)
 		  b = MyWorld.AddCircle(dcx - 120, 40, 30)

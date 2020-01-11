@@ -13,5 +13,10 @@ A 2D rigid body physics engine for Xojo. Based on Randy Gaul's [Impulse engine][
 - [ ] Optimise the broadphase (? spatial hash)
 - [ ] Allow `dt` to be specified per World update rather than on creation
 
+## Texts to look at
+- Real-Time Collision Detection by Christer Ericson
+- Game Physics Engine Developement by Ian Millington
+
+
 [randy's]: https://www.randygaul.net/projects-open-sources/impulse-engine/
 [java port]: https://github.com/ClickerMonkey/ImpulseEngine

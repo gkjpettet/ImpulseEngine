@@ -12,7 +12,7 @@ Getting started is a simple as adding the `ImpulseEngine` module to your project
 ```xojo
 Using ImpulseEngine
 
-// I'm assuming your viewport (e.g: a canvas control( is 640 x 480 pixels.
+// I'm assuming your viewport (e.g: a canvas control) is 640 x 480 pixels.
 
 Var dt As Double = 1/60 // 60 FPS.
 Var iterations As Integer = 5

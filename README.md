@@ -1,4 +1,4 @@
-# ImpuselEngine
+# ImpulseEngine
 A 2D rigid body physics engine for Xojo. Based on Randy Gaul's [Impulse engine][randy's].
 
 The engine is complete and functional but is probably best used to learn about 2D vector physics 

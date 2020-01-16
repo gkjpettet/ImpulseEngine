@@ -1,12 +1,12 @@
 #tag Module
 Protected Module Collisions
 	#tag Method, Flags = &h1
-		Protected Sub CircleCircle(m As PhysicsKit.Manifold, circleBodyA As PhysicsKit.Body, circleBodyB As PhysicsKit.Body)
-		  Var circleShapeA As PhysicsKit.Circle = PhysicsKit.Circle(circleBodyA.Shape)
-		  Var circleShapeB As PhysicsKit.Circle = PhysicsKit.Circle(circleBodyB.Shape)
+		Protected Sub CircleCircle(m As ImpulseEngine.Manifold, circleBodyA As ImpulseEngine.Body, circleBodyB As ImpulseEngine.Body)
+		  Var circleShapeA As ImpulseEngine.Circle = ImpulseEngine.Circle(circleBodyA.Shape)
+		  Var circleShapeB As ImpulseEngine.Circle = ImpulseEngine.Circle(circleBodyB.Shape)
 		  
 		  // Calculate translational vector, which is normal.
-		  Var normal As PhysicsKit.Vector = circleBodyB.Position.Subtract(circleBodyA.Position)
+		  Var normal As ImpulseEngine.Vector = circleBodyB.Position.Subtract(circleBodyA.Position)
 		  
 		  Var dist_sqr As Double = normal.LengthSquared
 		  Var radius As Double = circleShapeA.Radius + circleShapeB.Radius
@@ -35,14 +35,14 @@ Protected Module Collisions
 	#tag EndMethod
 
 	#tag Method, Flags = &h1
-		Protected Sub CirclePolygon(m As PhysicsKit.Manifold, circleBody As PhysicsKit.Body, polygonBody As PhysicsKit.Body)
-		  Var circleShape As PhysicsKit.Circle = PhysicsKit.Circle(circleBody.Shape) //A
-		  Var polygonShape As PhysicsKit.Polygon = PhysicsKit.Polygon(polygonBody.Shape) // B
+		Protected Sub CirclePolygon(m As ImpulseEngine.Manifold, circleBody As ImpulseEngine.Body, polygonBody As ImpulseEngine.Body)
+		  Var circleShape As ImpulseEngine.Circle = ImpulseEngine.Circle(circleBody.Shape) //A
+		  Var polygonShape As ImpulseEngine.Polygon = ImpulseEngine.Polygon(polygonBody.Shape) // B
 		  
 		  m.ContactCount = 0
 		  
 		  // Transform circle center to Polygon model space.
-		  Var center As PhysicsKit.Vector = polygonShape.U.Transpose.MultiplySelf(circleBody.Position.Subtract(polygonBody.Position))
+		  Var center As ImpulseEngine.Vector = polygonShape.U.Transpose.MultiplySelf(circleBody.Position.Subtract(polygonBody.Position))
 		  
 		  // Find edge with minimum penetration.
 		  // Same concept as using support points in Polygon vs Polygon.
@@ -62,9 +62,9 @@ Protected Module Collisions
 		  Next i
 		  
 		  // Grab the face's vertices.
-		  Var v1 As PhysicsKit.Vector = polygonShape.Vertices(faceNormal)
+		  Var v1 As ImpulseEngine.Vector = polygonShape.Vertices(faceNormal)
 		  Var i2 As Integer = If(faceNormal + 1 < polygonShape.VertexCount, faceNormal + 1, 0)
-		  Var v2 As PhysicsKit.Vector = polygonShape.Vertices(i2)
+		  Var v2 As ImpulseEngine.Vector = polygonShape.Vertices(i2)
 		  
 		  // Check to see if center is within polygon
 		  If separation < Maths.EPSILON Then
@@ -96,7 +96,7 @@ Protected Module Collisions
 		    Call polygonShape.U.Multiply(v2, m.Contacts(0)).AddSelf(polygonBody.Position)
 		    
 		  Else // Closest to face.
-		    Var n As PhysicsKit.Vector = polygonShape.Normals(faceNormal)
+		    Var n As ImpulseEngine.Vector = polygonShape.Normals(faceNormal)
 		    
 		    If Vector.Dot(center.Subtract(v1), n) > circleShape.Radius Then Return
 		    
@@ -109,9 +109,9 @@ Protected Module Collisions
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
-		Private Function Clip(n As PhysicsKit.Vector, c As Double, face() As PhysicsKit.Vector) As Integer
+		Private Function Clip(n As ImpulseEngine.Vector, c As Double, face() As ImpulseEngine.Vector) As Integer
 		  Var sp As Integer = 0
-		  Var out() As PhysicsKit.Vector
+		  Var out() As ImpulseEngine.Vector
 		  out.AddRow(New Vector(face(0)))
 		  out.AddRow(New Vector(face(1)))
 		  
@@ -149,23 +149,23 @@ Protected Module Collisions
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
-		Private Function FindAxisLeastPenetration(faceIndex() As Integer, polygonA As PhysicsKit.Polygon, polygonB As PhysicsKit.Polygon) As Double
+		Private Function FindAxisLeastPenetration(faceIndex() As Integer, polygonA As ImpulseEngine.Polygon, polygonB As ImpulseEngine.Polygon) As Double
 		  Var bestDistance As Double = -Maths.FLOAT_MAX_VALUE
 		  Var bestIndex As Integer = 0
 		  
 		  For i As Integer = 0 To polygonA.VertexCount - 1
 		    // Retrieve a face normal from polygonA.
-		    Var nw As PhysicsKit.Vector = polygonA.U.Multiply(polygonA.Normals(i))
+		    Var nw As ImpulseEngine.Vector = polygonA.U.Multiply(polygonA.Normals(i))
 		    
 		    // Transform face normal into polygonB's model space.
-		    Var buT As PhysicsKit.Matrix = polygonB.U.Transpose
-		    Var n As PhysicsKit.Vector = buT.Multiply(nw)
+		    Var buT As ImpulseEngine.Matrix = polygonB.U.Transpose
+		    Var n As ImpulseEngine.Vector = buT.Multiply(nw)
 		    
 		    // Retrieve support point from B along -n
-		    Var s As PhysicsKit.Vector = polygonB.GetSupport(n.Negate)
+		    Var s As ImpulseEngine.Vector = polygonB.GetSupport(n.Negate)
 		    
 		    // Retrieve vertex on face from A, transform into polygonB's model space.
-		    Var v As PhysicsKit.Vector = _
+		    Var v As ImpulseEngine.Vector = _
 		    buT.MultiplySelf(polygonA.U.Multiply(polygonA.Vertices(i)).AddSelf(polygonA.Body.Position)._
 		    SubtractSelf(polygonB.Body.Position))
 		    
@@ -186,8 +186,8 @@ Protected Module Collisions
 	#tag EndMethod
 
 	#tag Method, Flags = &h21
-		Private Sub FindIncidentFace(v() As PhysicsKit.Vector, refPoly As PhysicsKit.Polygon, incPoly As PhysicsKit.Polygon, referenceIndex As Integer)
-		  Var referenceNormal As PhysicsKit.Vector = refPoly.Normals(referenceIndex)
+		Private Sub FindIncidentFace(v() As ImpulseEngine.Vector, refPoly As ImpulseEngine.Polygon, incPoly As ImpulseEngine.Polygon, referenceIndex As Integer)
+		  Var referenceNormal As ImpulseEngine.Vector = refPoly.Normals(referenceIndex)
 		  
 		  // Calculate normal in incident's frame of reference
 		  referenceNormal = refPoly.U.Multiply(referenceNormal) // To world space.
@@ -215,7 +215,7 @@ Protected Module Collisions
 	#tag EndMethod
 
 	#tag Method, Flags = &h1
-		Protected Sub PolygonCircle(m As PhysicsKit.Manifold, a As PhysicsKit.Body, b As PhysicsKit.Body)
+		Protected Sub PolygonCircle(m As ImpulseEngine.Manifold, a As ImpulseEngine.Body, b As ImpulseEngine.Body)
 		  // Re-use the CirclePolygon method with the arguments reversed.
 		  Collisions.CirclePolygon(m, b, a)
 		  
@@ -225,9 +225,9 @@ Protected Module Collisions
 	#tag EndMethod
 
 	#tag Method, Flags = &h1
-		Protected Sub PolygonPolygon(m As PhysicsKit.Manifold, a As PhysicsKit.Body, b As PhysicsKit.Body)
-		  Var polygonShapeA As PhysicsKit.Polygon = PhysicsKit.Polygon(a.Shape) //A
-		  Var polygonShapeB As PhysicsKit.Polygon = PhysicsKit.Polygon(b.Shape) //B
+		Protected Sub PolygonPolygon(m As ImpulseEngine.Manifold, a As ImpulseEngine.Body, b As ImpulseEngine.Body)
+		  Var polygonShapeA As ImpulseEngine.Polygon = ImpulseEngine.Polygon(a.Shape) //A
+		  Var polygonShapeB As ImpulseEngine.Polygon = ImpulseEngine.Polygon(b.Shape) //B
 		  
 		  m.ContactCount = 0
 		  
@@ -244,8 +244,8 @@ Protected Module Collisions
 		  Var referenceIndex As Integer
 		  Var flip As Boolean // Always point from bodyA to bodyB.
 		  
-		  Var RefPoly As PhysicsKit.Polygon // Reference.
-		  Var IncPoly As PhysicsKit.Polygon // Incident.
+		  Var RefPoly As ImpulseEngine.Polygon // Reference.
+		  Var IncPoly As ImpulseEngine.Polygon // Incident.
 		  
 		  // Determine which shape contains reference face.
 		  If Maths.Greater(penetrationA, penetrationB) Then
@@ -261,24 +261,24 @@ Protected Module Collisions
 		  End If
 		  
 		  // World space incident face.
-		  Var incidentFace() As PhysicsKit.Vector = Vector.ArrayOf(2)
+		  Var incidentFace() As ImpulseEngine.Vector = Vector.ArrayOf(2)
 		  FindIncidentFace(incidentFace, RefPoly, IncPoly, referenceIndex)
 		  
 		  // Setup reference face vertices.
-		  Var v1 As PhysicsKit.Vector = RefPoly.Vertices(referenceIndex)
+		  Var v1 As ImpulseEngine.Vector = RefPoly.Vertices(referenceIndex)
 		  referenceIndex = If(referenceIndex + 1 = RefPoly.VertexCount, 0, referenceIndex + 1)
-		  Var v2 As PhysicsKit.Vector = RefPoly.Vertices(referenceIndex)
+		  Var v2 As ImpulseEngine.Vector = RefPoly.Vertices(referenceIndex)
 		  
 		  // Transform vertices to world space.
 		  v1 = RefPoly.U.Multiply(v1).AddSelf(RefPoly.Body.Position)
 		  v2 = RefPoly.U.Multiply(v2).AddSelf(RefPoly.Body.Position)
 		  
 		  // Calculate reference face side normal in world space.
-		  Var sidePlaneNormal As PhysicsKit.Vector = v2.Subtract(v1)
+		  Var sidePlaneNormal As ImpulseEngine.Vector = v2.Subtract(v1)
 		  sidePlaneNormal.Normalise
 		  
 		  // Orthogonalize.
-		  Var refFaceNormal As PhysicsKit.Vector = New Vector(sidePlaneNormal.Y, -sidePlaneNormal.X)
+		  Var refFaceNormal As ImpulseEngine.Vector = New Vector(sidePlaneNormal.Y, -sidePlaneNormal.X)
 		  
 		  // ax + by = c
 		  // c is distance from origin

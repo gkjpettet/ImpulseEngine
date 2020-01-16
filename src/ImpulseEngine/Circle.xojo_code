@@ -1,9 +1,9 @@
 #tag Class
 Protected Class Circle
-Implements PhysicsKit.Shape
+Implements ImpulseEngine.Shape
 	#tag Method, Flags = &h0
-		Function Body() As PhysicsKit.Body
-		  // Part of the PhysicsKit.Shape interface.
+		Function Body() As ImpulseEngine.Body
+		  // Part of the ImpulseEngine.Shape interface.
 		  
 		  Return mBody
 		  
@@ -12,8 +12,8 @@ Implements PhysicsKit.Shape
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Body(Assigns b As PhysicsKit.Body)
-		  // Part of the PhysicsKit.Shape interface.
+		Sub Body(Assigns b As ImpulseEngine.Body)
+		  // Part of the ImpulseEngine.Shape interface.
 		  
 		  mBody = b
 		  
@@ -22,8 +22,8 @@ Implements PhysicsKit.Shape
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Clone() As PhysicsKit.Shape
-		  // Part of the PhysicsKit.Shape interface.
+		Function Clone() As ImpulseEngine.Shape
+		  // Part of the ImpulseEngine.Shape interface.
 		  
 		  Return New Circle(radius)
 		  
@@ -34,7 +34,7 @@ Implements PhysicsKit.Shape
 
 	#tag Method, Flags = &h0
 		Sub ComputeMass(density As Double)
-		  // Part of the PhysicsKit.Shape interface.
+		  // Part of the ImpulseEngine.Shape interface.
 		  
 		  mBody.Mass = Maths.PI * radius * radius * density
 		  mBody.InverseMass = If((mBody.Mass <> 0), 1 / mBody.Mass, 0)
@@ -47,7 +47,7 @@ Implements PhysicsKit.Shape
 	#tag Method, Flags = &h0
 		Sub Constructor(r As Double)
 		  // All classes implementing the `Shape` interface must intialise mU to a new Matrix.
-		  mU = New PhysicsKit.Matrix
+		  mU = New ImpulseEngine.Matrix
 		  
 		  radius = r
 		  
@@ -56,7 +56,7 @@ Implements PhysicsKit.Shape
 
 	#tag Method, Flags = &h0
 		Sub Initialise()
-		  // Part of the PhysicsKit.Shape interface.
+		  // Part of the ImpulseEngine.Shape interface.
 		  
 		  ComputeMass(1.0)
 		  
@@ -65,7 +65,7 @@ Implements PhysicsKit.Shape
 
 	#tag Method, Flags = &h0
 		Sub Orientation(Assigns radians As Double)
-		  // Part of the PhysicsKit.Shape interface.
+		  // Part of the ImpulseEngine.Shape interface.
 		  
 		  #Pragma Unused radians
 		  
@@ -75,7 +75,7 @@ Implements PhysicsKit.Shape
 
 	#tag Method, Flags = &h0
 		Function Radius() As Double
-		  // Part of the PhysicsKit.Shape interface.
+		  // Part of the ImpulseEngine.Shape interface.
 		  
 		  Return mRadians
 		  
@@ -85,7 +85,7 @@ Implements PhysicsKit.Shape
 
 	#tag Method, Flags = &h0
 		Sub Radius(Assigns r As Double)
-		  // Part of the PhysicsKit.Shape interface.
+		  // Part of the ImpulseEngine.Shape interface.
 		  
 		  mRadians = r
 		  
@@ -93,8 +93,8 @@ Implements PhysicsKit.Shape
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function U() As PhysicsKit.Matrix
-		  // Part of the PhysicsKit.Shape interface.
+		Function U() As ImpulseEngine.Matrix
+		  // Part of the ImpulseEngine.Shape interface.
 		  
 		  Return mU
 		  
@@ -102,8 +102,8 @@ Implements PhysicsKit.Shape
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub U(Assigns m As PhysicsKit.Matrix)
-		  // Part of the PhysicsKit.Shape interface.
+		Sub U(Assigns m As ImpulseEngine.Matrix)
+		  // Part of the ImpulseEngine.Shape interface.
 		  
 		  mU = m
 		  
@@ -112,7 +112,7 @@ Implements PhysicsKit.Shape
 
 
 	#tag Property, Flags = &h21
-		Private mBody As PhysicsKit.Body
+		Private mBody As ImpulseEngine.Body
 	#tag EndProperty
 
 	#tag Property, Flags = &h21
@@ -120,7 +120,7 @@ Implements PhysicsKit.Shape
 	#tag EndProperty
 
 	#tag Property, Flags = &h21
-		Private mU As PhysicsKit.Matrix
+		Private mU As ImpulseEngine.Matrix
 	#tag EndProperty
 
 

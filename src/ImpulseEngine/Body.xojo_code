@@ -1,7 +1,7 @@
 #tag Class
 Protected Class Body
 	#tag Method, Flags = &h0, Description = 4164647320746865207061737365642060666F7263656020746F207468697320626F6479277320666F7263652E20546869732077696C6C20616C746572206974732076656C6F6369747920647572696E672068652063757272656E7420776F726C64207570646174652E
-		Sub ApplyForce(f As PhysicsKit.Vector)
+		Sub ApplyForce(f As ImpulseEngine.Vector)
 		  // Adds the passed `force` to this body's force. This will alter its velocity during 
 		  // the current world update.
 		  
@@ -11,7 +11,7 @@ Protected Class Body
 	#tag EndMethod
 
 	#tag Method, Flags = &h0, Description = 41646473207468652060696D70756C73656020766563746F7220746F207468697320626F647927732076656C6F6369747920616E6420757064617465732069742069747320616E67756C61722076656C6F63697479206261736564206F6E20746865207061737365642060696D70756C73656020616E642060636F6E746163746020766563746F72732E
-		Sub ApplyImpulse(impulse As PhysicsKit.Vector, contact As PhysicsKit.Vector)
+		Sub ApplyImpulse(impulse As ImpulseEngine.Vector, contact As ImpulseEngine.Vector)
 		  // Adds the `impulse` vector to this body's velocity and updates it its angular velocity based 
 		  // on the passed `impulse` and `contact` vectors.
 		  
@@ -22,7 +22,7 @@ Protected Class Body
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Constructor(w As PhysicsKit.World, s As PhysicsKit.Shape, x As Integer, y As Integer)
+		Sub Constructor(w As ImpulseEngine.World, s As ImpulseEngine.Shape, x As Integer, y As Integer)
 		  Self.Shape = s
 		  Position = New Vector(x, y)
 		  Velocity = New Vector(0, 0)
@@ -36,7 +36,7 @@ Protected Class Body
 	#tag EndMethod
 
 	#tag Method, Flags = &h0, Description = 507573686573207468697320626F647920696E207468652073706563696669656420646972656374696F6E207769746820746865207061737365642060737472656E677468602E20446F6573204E4F542061666665637420616E67756C617220726F746174696F6E2E
-		Sub LinearPush(direction As PhysicsKit.Vector, strength As Double)
+		Sub LinearPush(direction As ImpulseEngine.Vector, strength As Double)
 		  // Pushes this body in the specified direction with the passed `strength`.
 		  // Does NOT affect angular rotation.
 		  
@@ -56,7 +56,7 @@ Protected Class Body
 	#tag EndProperty
 
 	#tag Property, Flags = &h0, Description = 5370656369666965732074686520666F72636520746F206170706C7920696E207468652063757272656E7420737465702E204974206973207A65726F65642061667465722065766572792060576F726C642E557064617465602E
-		Force As PhysicsKit.Vector
+		Force As ImpulseEngine.Vector
 	#tag EndProperty
 
 	#tag ComputedProperty, Flags = &h0
@@ -136,7 +136,7 @@ Protected Class Body
 	#tag EndComputedProperty
 
 	#tag Property, Flags = &h0, Description = 5468652063757272656E7420776F726C642D737061636520706F736974696F6E206F66207468697320626F64792E
-		Position As PhysicsKit.Vector
+		Position As ImpulseEngine.Vector
 	#tag EndProperty
 
 	#tag Property, Flags = &h0, Description = 5265737469747574696F6E2028656C617374696369747929206F662074686520626F64792E2030206D65616E7320636F6C6C6973696F6E732061726520706572666563746C7920696E656C617374696320616E64206E6F20626F756E63696E67206D6179206F636375722E20312E30206D65616E732074686520626F647920626F756E636573206261636B20776974682031303025206F6620697473206B696E6574696320656E657267792E
@@ -144,7 +144,7 @@ Protected Class Body
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		Shape As PhysicsKit.Shape
+		Shape As ImpulseEngine.Shape
 	#tag EndProperty
 
 	#tag Property, Flags = &h0, Description = 526570726573656E7473206672696374696F6E206265747765656E2074776F20626F64696573206E6F7420696E2072656C6174697665206D6F74696F6E2E
@@ -156,7 +156,7 @@ Protected Class Body
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		Velocity As PhysicsKit.Vector
+		Velocity As ImpulseEngine.Vector
 	#tag EndProperty
 
 
@@ -205,7 +205,7 @@ Protected Class Body
 			Name="AngularVelocity"
 			Visible=false
 			Group="Behavior"
-			InitialValue=""
+			InitialValue="0"
 			Type="Double"
 			EditorType=""
 		#tag EndViewProperty
@@ -213,7 +213,7 @@ Protected Class Body
 			Name="DynamicFriction"
 			Visible=false
 			Group="Behavior"
-			InitialValue=""
+			InitialValue="0.3"
 			Type="Double"
 			EditorType=""
 		#tag EndViewProperty
@@ -250,18 +250,10 @@ Protected Class Body
 			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
-			Name="mOrientation"
-			Visible=false
-			Group="Behavior"
-			InitialValue=""
-			Type="Double"
-			EditorType=""
-		#tag EndViewProperty
-		#tag ViewProperty
 			Name="Restitution"
 			Visible=false
 			Group="Behavior"
-			InitialValue=""
+			InitialValue="0.2"
 			Type="Double"
 			EditorType=""
 		#tag EndViewProperty
@@ -269,12 +261,36 @@ Protected Class Body
 			Name="StaticFriction"
 			Visible=false
 			Group="Behavior"
-			InitialValue=""
+			InitialValue="0.5"
 			Type="Double"
 			EditorType=""
 		#tag EndViewProperty
 		#tag ViewProperty
 			Name="Torque"
+			Visible=false
+			Group="Behavior"
+			InitialValue="0"
+			Type="Double"
+			EditorType=""
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="ID"
+			Visible=false
+			Group="Behavior"
+			InitialValue=""
+			Type="Integer"
+			EditorType=""
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="IsStatic"
+			Visible=false
+			Group="Behavior"
+			InitialValue=""
+			Type="Boolean"
+			EditorType=""
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="Orientation"
 			Visible=false
 			Group="Behavior"
 			InitialValue=""

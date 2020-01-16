@@ -1,9 +1,9 @@
 #tag Class
 Protected Class Polygon
-Implements PhysicsKit.Shape
+Implements ImpulseEngine.Shape
 	#tag Method, Flags = &h0
-		Function Body() As PhysicsKit.Body
-		  // Part of the PhysicsKit.Shape interface.
+		Function Body() As ImpulseEngine.Body
+		  // Part of the ImpulseEngine.Shape interface.
 		  
 		  Return mBody
 		  
@@ -11,8 +11,8 @@ Implements PhysicsKit.Shape
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Body(Assigns b As PhysicsKit.Body)
-		  // Part of the PhysicsKit.Shape interface.
+		Sub Body(Assigns b As ImpulseEngine.Body)
+		  // Part of the ImpulseEngine.Shape interface.
 		  
 		  mBody = b
 		  
@@ -20,10 +20,10 @@ Implements PhysicsKit.Shape
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Clone() As PhysicsKit.Shape
-		  // Part of the PhysicsKit.Shape interface.
+		Function Clone() As ImpulseEngine.Shape
+		  // Part of the ImpulseEngine.Shape interface.
 		  
-		  Var p As PhysicsKit.Polygon = New PhysicsKit.Polygon("")
+		  Var p As ImpulseEngine.Polygon = New ImpulseEngine.Polygon("")
 		  
 		  p.U.Set(mU)
 		  
@@ -42,12 +42,12 @@ Implements PhysicsKit.Shape
 
 	#tag Method, Flags = &h0
 		Sub ComputeMass(density As Double)
-		  // Part of the PhysicsKit.Shape interface.
+		  // Part of the ImpulseEngine.Shape interface.
 		  
 		  // Calculate centroid and moment of inertia.
-		  Var centroid As PhysicsKit.Vector = New PhysicsKit.Vector(0, 0)
+		  Var centroid As ImpulseEngine.Vector = New ImpulseEngine.Vector(0, 0)
 		  Var inertia, area As Double = 0
-		  Var p1, p2 As PhysicsKit.Vector
+		  Var p1, p2 As ImpulseEngine.Vector
 		  Var d, triangleArea, weight, intx2, inty2 As Double
 		  
 		  Const k_inv3 = 1.0 / 3.0
@@ -77,7 +77,7 @@ Implements PhysicsKit.Shape
 		  
 		  // Translate vertices to centroid (make the centroid (0, 0) for the polygon in model space)
 		  // Not really necessary, but I like doing this anyway.
-		  For Each vert As PhysicsKit.Vector In Vertices
+		  For Each vert As ImpulseEngine.Vector In Vertices
 		    Call vert.SubtractSelf(centroid)
 		  Next vert
 		  
@@ -92,7 +92,7 @@ Implements PhysicsKit.Shape
 	#tag Method, Flags = &h0
 		Sub Constructor(points() As Double)
 		  // All classes implementing the `Shape` interface must intialise mU to a new Matrix.
-		  mU = New PhysicsKit.Matrix
+		  mU = New ImpulseEngine.Matrix
 		  
 		  Vertices = Vector.ArrayOf(MAX_POLY_VERTEX_COUNT)
 		  Normals = Vector.ArrayOf(MAX_POLY_VERTEX_COUNT)
@@ -105,7 +105,7 @@ Implements PhysicsKit.Shape
 		  End If
 		  
 		  Var limit As Integer = points.LastRowIndex - 1
-		  Var verts() As PhysicsKit.Vector
+		  Var verts() As ImpulseEngine.Vector
 		  For i As Integer = 0 To limit
 		    verts.AddRow(New Vector(points(i), points(i + 1)))
 		    i = i + 1
@@ -124,9 +124,9 @@ Implements PhysicsKit.Shape
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Constructor(ParamArray verts As PhysicsKit.Vector)
+		Sub Constructor(ParamArray verts As ImpulseEngine.Vector)
 		  // All classes implementing the `Shape` interface must intialise mU to a new Matrix.
-		  mU = New PhysicsKit.Matrix
+		  mU = New ImpulseEngine.Matrix
 		  
 		  Vertices = Vector.ArrayOf(MAX_POLY_VERTEX_COUNT)
 		  Normals = Vector.ArrayOf(MAX_POLY_VERTEX_COUNT)
@@ -147,12 +147,12 @@ Implements PhysicsKit.Shape
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function GetSupport(dir As PhysicsKit.Vector) As PhysicsKit.Vector
+		Function GetSupport(dir As ImpulseEngine.Vector) As ImpulseEngine.Vector
 		  Var bestProjection As Double = -Maths.FLOAT_MAX_VALUE
-		  Var bestVertex As PhysicsKit.Vector
+		  Var bestVertex As ImpulseEngine.Vector
 		  Var projection As Double
 		  
-		  For Each v As PhysicsKit.Vector In Vertices
+		  For Each v As ImpulseEngine.Vector In Vertices
 		    projection = Vector.Dot(v, dir)
 		    
 		    If projection > bestProjection Then
@@ -168,7 +168,7 @@ Implements PhysicsKit.Shape
 
 	#tag Method, Flags = &h0
 		Sub Initialise()
-		  // Part of the PhysicsKit.Shape interface.
+		  // Part of the ImpulseEngine.Shape interface.
 		  
 		  ComputeMass(1.0)
 		  
@@ -177,7 +177,7 @@ Implements PhysicsKit.Shape
 
 	#tag Method, Flags = &h0
 		Sub Orientation(Assigns radians As Double)
-		  // Part of the PhysicsKit.Shape interface.
+		  // Part of the ImpulseEngine.Shape interface.
 		  
 		  mU.Set(radians)
 		  
@@ -186,7 +186,7 @@ Implements PhysicsKit.Shape
 
 	#tag Method, Flags = &h0
 		Function Radius() As Double
-		  // Part of the PhysicsKit.Shape interface.
+		  // Part of the ImpulseEngine.Shape interface.
 		  
 		  Return mRadius
 		  
@@ -195,7 +195,7 @@ Implements PhysicsKit.Shape
 
 	#tag Method, Flags = &h0
 		Sub Radius(Assigns r As Double)
-		  // Part of the PhysicsKit.Shape interface.
+		  // Part of the ImpulseEngine.Shape interface.
 		  
 		  mRadius = r
 		  
@@ -203,7 +203,7 @@ Implements PhysicsKit.Shape
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Set(verts() As PhysicsKit.Vector)
+		Sub Set(verts() As ImpulseEngine.Vector)
 		  // Find the right most point on the hull.
 		  Var rightMost As Integer = 0
 		  Var highestXCoord As Double = verts(0).X
@@ -226,7 +226,7 @@ Implements PhysicsKit.Shape
 		  Var outCount As Integer = 0
 		  Var indexHull As Integer = rightMost
 		  
-		  Var e1, e2 As PhysicsKit.Vector
+		  Var e1, e2 As ImpulseEngine.Vector
 		  Do
 		    
 		    hull(outCount) = indexHull
@@ -271,7 +271,7 @@ Implements PhysicsKit.Shape
 		  Next i
 		  
 		  // Compute face normals.
-		  Var face As PhysicsKit.Vector
+		  Var face As ImpulseEngine.Vector
 		  For i As Integer = 0 To VertexCount - 1
 		    face = Vertices((i + 1) Mod VertexCount).Subtract(Vertices(i))
 		    
@@ -299,8 +299,8 @@ Implements PhysicsKit.Shape
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function U() As PhysicsKit.Matrix
-		  // Part of the PhysicsKit.Shape interface.
+		Function U() As ImpulseEngine.Matrix
+		  // Part of the ImpulseEngine.Shape interface.
 		  
 		  Return mU
 		  
@@ -308,8 +308,8 @@ Implements PhysicsKit.Shape
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub U(Assigns m As PhysicsKit.Matrix)
-		  // Part of the PhysicsKit.Shape interface.
+		Sub U(Assigns m As ImpulseEngine.Matrix)
+		  // Part of the ImpulseEngine.Shape interface.
 		  
 		  mU = m
 		  
@@ -318,7 +318,7 @@ Implements PhysicsKit.Shape
 
 
 	#tag Property, Flags = &h1
-		Protected mBody As PhysicsKit.Body
+		Protected mBody As ImpulseEngine.Body
 	#tag EndProperty
 
 	#tag Property, Flags = &h1
@@ -326,11 +326,11 @@ Implements PhysicsKit.Shape
 	#tag EndProperty
 
 	#tag Property, Flags = &h1
-		Protected mU As PhysicsKit.Matrix
+		Protected mU As ImpulseEngine.Matrix
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		Normals(MAX_POLY_VERTEX_COUNT) As PhysicsKit.Vector
+		Normals(MAX_POLY_VERTEX_COUNT) As ImpulseEngine.Vector
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
@@ -338,7 +338,7 @@ Implements PhysicsKit.Shape
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		Vertices(MAX_POLY_VERTEX_COUNT) As PhysicsKit.Vector
+		Vertices(MAX_POLY_VERTEX_COUNT) As ImpulseEngine.Vector
 	#tag EndProperty
 
 

@@ -20,7 +20,7 @@ Begin Window Window1
    MinimumHeight   =   64
    MinimumWidth    =   64
    Resizeable      =   False
-   Title           =   "PhysicsKit"
+   Title           =   "ImpulseEngine"
    Type            =   "0"
    Visible         =   True
    Width           =   1024
@@ -134,6 +134,7 @@ Begin Window Window1
       AllowFocusRing  =   True
       AllowTabs       =   False
       Backdrop        =   0
+      DoubleBuffer    =   False
       Enabled         =   True
       Height          =   628
       Index           =   -2147483648
@@ -182,6 +183,7 @@ Begin Window Window1
       Top             =   640
       Transparent     =   False
       Underline       =   False
+      Value           =   False
       Visible         =   True
       VisualState     =   "0"
       Width           =   112
@@ -198,17 +200,8 @@ End
 
 
 	#tag MenuHandler
-		Function DebugRunDemo1() As Boolean Handles DebugRunDemo1.Action
-			Window1.StartSimulation(1)
-			
-			Return True
-			
-		End Function
-	#tag EndMenuHandler
-
-	#tag MenuHandler
-		Function DebugRunDemo2() As Boolean Handles DebugRunDemo2.Action
-			StartSimulation(2)
+		Function DebugRunDemo() As Boolean Handles DebugRunDemo.Action
+			Window1.StartSimulation
 			
 			Return True
 			
@@ -217,7 +210,7 @@ End
 
 
 	#tag Method, Flags = &h0
-		Sub CollisionOccurred(sender As PhysicsKit.World, m As PhysicsKit.Manifold)
+		Sub CollisionOccurred(sender As ImpulseEngine.World, m As ImpulseEngine.Manifold)
 		  #Pragma Unused sender
 		  #Pragma Unused m
 		  
@@ -239,13 +232,36 @@ End
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Demo1()
+		Sub SetWalls()
+		  Var b As ImpulseEngine.Body
+		  Var dh As Double = Display.Height
+		  Var dw As Double = Display.Width
+		  Var dcx As Double = dw / 2
+		  
+		  // Ground.
+		  b = MyWorld.AddBox(dcx, dh - 9, dw - 1, 8)
+		  b.IsStatic = True
+		  
+		  // Left wall.
+		  b = MyWorld.AddBox(5, dh / 2 - 7, dh - 14, 10)
+		  b.IsStatic = True
+		  b.Orientation = ImpulseEngine.Maths.DegreesToRadians(90)
+		  
+		  // Right wall.
+		  b = MyWorld.AddBox(dw - 6, dh / 2 - 7, dh - 14, 10)
+		  b.IsStatic = True
+		  b.Orientation = ImpulseEngine.Maths.DegreesToRadians(270)
+		End Sub
+	#tag EndMethod
+
+	#tag Method, Flags = &h0
+		Sub StartSimulation()
 		  Const FPS = 60
 		  
-		  MyWorld = New PhysicsKit.World(1/FPS, 5)
+		  MyWorld = New ImpulseEngine.World(1/FPS, 5)
 		  AddHandler MyWorld.CollisionOccurred, AddressOf CollisionOccurred
 		  
-		  Var b As PhysicsKit.Body
+		  Var b As ImpulseEngine.Body
 		  Var dh As Double = Display.Height
 		  Var dw As Double = Display.Width
 		  Var dcx As Double = dw / 2
@@ -257,19 +273,19 @@ End
 		  b = MyWorld.AddPolygon(700, dh - 47, 0, 0, 250, 0, 250, -100)
 		  b.IsStatic = True
 		  
-		  // Pink circle (bouncy)
+		  // Purple circle (bouncy)
 		  b = MyWorld.AddCircle(dcx - 30, 0, 15)
 		  b.Restitution = 0.9
-		  PinkID = b.ID
+		  PurpleID = b.ID
 		  
 		  // Orange circle
 		  b = MyWorld.AddCircle(dw - 50, 100, 25)
-		  OrangeID = b.ID
 		  
-		  // Bigger static circle.
+		  // Bigger static orange circle.
 		  b = MyWorld.AddCircle(dcx, dcy, 50)
 		  b.IsStatic = True
-		  b.Orientation = PhysicsKit.Maths.DegreesToRadians(45)
+		  b.Orientation = ImpulseEngine.Maths.DegreesToRadians(45)
+		  OrangeID = b.ID
 		  
 		  // Add some dynamic circles.
 		  b = MyWorld.AddCircle(55, 60, 25)
@@ -293,70 +309,9 @@ End
 		End Sub
 	#tag EndMethod
 
-	#tag Method, Flags = &h0
-		Sub Demo2()
-		  Const FPS = 60
-		  
-		  MyWorld = New PhysicsKit.World(1/FPS, 5)
-		  AddHandler MyWorld.CollisionOccurred, AddressOf CollisionOccurred
-		  
-		  Var dh As Double = Display.Height
-		  Var dw As Double = Display.Width
-		  Var dcx As Double = dw / 2
-		  Var dcy As Double = dh / 2
-		  
-		  SetWalls
-		  
-		  // Add a circle in the bottom left corner of the screen.
-		  Body1 = MyWorld.AddCircle(50, dh - 45, 30)
-		  
-		  // Update the UI and start the update timer.
-		  ConfigUIAndUpdateTimer(FPS)
-		  
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub SetWalls()
-		  Var b As PhysicsKit.Body
-		  Var dh As Double = Display.Height
-		  Var dw As Double = Display.Width
-		  Var dcx As Double = dw / 2
-		  
-		  // Ground.
-		  b = MyWorld.AddBox(dcx, dh - 9, dw - 1, 8)
-		  b.IsStatic = True
-		  
-		  // Left wall.
-		  b = MyWorld.AddBox(5, dh / 2 - 7, dh - 14, 10)
-		  b.IsStatic = True
-		  b.Orientation = PhysicsKit.Maths.DegreesToRadians(90)
-		  
-		  // Right wall.
-		  b = MyWorld.AddBox(dw - 6, dh / 2 - 7, dh - 14, 10)
-		  b.IsStatic = True
-		  b.Orientation = PhysicsKit.Maths.DegreesToRadians(270)
-		End Sub
-	#tag EndMethod
-
-	#tag Method, Flags = &h0
-		Sub StartSimulation(demo As Integer)
-		  If demo = 1 Then
-		    Demo1
-		  ElseIf demo = 2 Then
-		    Demo2
-		  End If
-		  
-		End Sub
-	#tag EndMethod
-
 
 	#tag Property, Flags = &h0
-		Body1 As PhysicsKit.Body
-	#tag EndProperty
-
-	#tag Property, Flags = &h0
-		MyWorld As PhysicsKit.World
+		MyWorld As ImpulseEngine.World
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
@@ -364,7 +319,7 @@ End
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		PinkID As Integer = -1
+		PurpleID As Integer = -1
 	#tag EndProperty
 
 
@@ -373,7 +328,7 @@ End
 #tag Events ButtonStart
 	#tag Event
 		Sub Action()
-		  StartSimulation(2)
+		  StartSimulation
 		End Sub
 	#tag EndEvent
 #tag EndEvents
@@ -420,19 +375,19 @@ End
 		  
 		  If MyWorld = Nil Then Return
 		  
-		  Var b As PhysicsKit.Body
-		  Var c As PhysicsKit.Circle
-		  Var p As PhysicsKit.Polygon
+		  Var b As ImpulseEngine.Body
+		  Var c As ImpulseEngine.Circle
+		  Var p As ImpulseEngine.Polygon
 		  For Each b In MyWorld.Bodies
-		    If b.Shape IsA PhysicsKit.Circle Then
-		      c = PhysicsKit.Circle(b.Shape)
+		    If b.Shape IsA ImpulseEngine.Circle Then
+		      c = ImpulseEngine.Circle(b.Shape)
 		      
 		      Var rx As Double = Cos(b.Orientation) * c.Radius
 		      Var ry As Double = Sin(b.Orientation) * c.Radius
 		      
 		      Select Case b.ID
-		      Case PinkID
-		        g.DrawingColor = &cFF31A3
+		      Case PurpleID
+		        g.DrawingColor = &c941EFF
 		      Case OrangeID
 		        g.DrawingColor = &cFFA200
 		      Else
@@ -443,26 +398,26 @@ End
 		      g.DrawOval(b.Position.X - c.Radius, b.Position.Y - c.Radius, diameter, diameter)
 		      g.DrawLine(b.Position.X, b.Position.Y, b.Position.X + rx, b.Position.Y + ry)
 		      
-		    ElseIf b.Shape IsA PhysicsKit.Polygon Then
-		      p = PhysicsKit.Polygon(b.Shape)
+		    ElseIf b.Shape IsA ImpulseEngine.Polygon Then
+		      p = ImpulseEngine.Polygon(b.Shape)
 		      
 		      Select Case b.ID
-		      Case PinkID
-		        g.DrawingColor = &cFF31A3
+		      Case PurpleID
+		        g.DrawingColor = &c941EFF
 		      Case OrangeID
 		        g.DrawingColor = &cFFA200
 		      Else
 		        g.DrawingColor = &c0000FF // Blue.
 		      End Select
 		      
-		      Var origin As PhysicsKit.Vector = New PhysicsKit.Vector(p.Vertices(0))
+		      Var origin As ImpulseEngine.Vector = New ImpulseEngine.Vector(p.Vertices(0))
 		      Call p.U.MultiplySelf(origin)
 		      Call origin.AddSelf(b.Position)
 		      
-		      Var currentPos, previousPos As PhysicsKit.Vector
+		      Var currentPos, previousPos As ImpulseEngine.Vector
 		      previousPos = origin
 		      For i As Integer = 1 To p.VertexCount - 1
-		        currentPos = New PhysicsKit.Vector(p.Vertices(i))
+		        currentPos = New ImpulseEngine.Vector(p.Vertices(i))
 		        Call p.U.MultiplySelf(currentPos)
 		        Call currentPos.AddSelf(b.Position)
 		        
@@ -470,17 +425,16 @@ End
 		        
 		        previousPos = currentPos
 		      Next i
-		      // g.DrawingColor = &c00FF00
 		      g.DrawLine(currentPos.X, currentPos.Y, origin.X, origin.Y)
 		      
 		    End If
 		  Next b
 		  
 		  g.DrawingColor = &cFF0000 // Red.
-		  For Each m As PhysicsKit.Manifold In MyWorld.Contacts
+		  For Each m As ImpulseEngine.Manifold In MyWorld.Contacts
 		    If Not m.CollisionOccurred Then Continue
-		    Var n As PhysicsKit.Vector = m.Normal
-		    for Each v As PhysicsKit.Vector In m.Contacts
+		    Var n As ImpulseEngine.Vector = m.Normal
+		    for Each v As ImpulseEngine.Vector In m.Contacts
 		      g.DrawLine(v.X, v.Y, v.X + n.X * 4, v.Y + n.Y * 4)
 		    Next v
 		  Next m
@@ -736,7 +690,7 @@ End
 		EditorType=""
 	#tag EndViewProperty
 	#tag ViewProperty
-		Name="PinkID"
+		Name="PurpleID"
 		Visible=false
 		Group="Behavior"
 		InitialValue="-1"

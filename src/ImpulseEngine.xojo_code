@@ -1,5 +1,5 @@
 #tag Module
-Protected Module PhysicsKit
+Protected Module ImpulseEngine
 	#tag CompatibilityFlags = API2Only
 End Module
 #tag EndModule

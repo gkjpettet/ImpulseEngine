@@ -1,19 +1,19 @@
 #tag Interface
 Protected Interface Shape
 	#tag Method, Flags = &h0
-		Function Body() As PhysicsKit.Body
+		Function Body() As ImpulseEngine.Body
 		  
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Body(Assigns b As PhysicsKit.Body)
+		Sub Body(Assigns b As ImpulseEngine.Body)
 		  
 		End Sub
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function Clone() As PhysicsKit.Shape
+		Function Clone() As ImpulseEngine.Shape
 		  
 		End Function
 	#tag EndMethod
@@ -49,13 +49,13 @@ Protected Interface Shape
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Function U() As PhysicsKit.Matrix
+		Function U() As ImpulseEngine.Matrix
 		  
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub U(Assigns m As PhysicsKit.Matrix)
+		Sub U(Assigns m As ImpulseEngine.Matrix)
 		  
 		End Sub
 	#tag EndMethod

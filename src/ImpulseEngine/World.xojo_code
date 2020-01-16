@@ -1,11 +1,11 @@
 #tag Class
 Protected Class World
 	#tag Method, Flags = &h0, Description = 41646473207468652070617373656420736861706520746F2074686520776F726C6420617420746865207370656369666965642028782C20792920706F736974696F6E2E2028782C207929207370656369666965732074686520706F736974696F6E206F662074686520736861706527732063656E7472652E
-		Function Add(x As Integer, y As Integer, shape As PhysicsKit.Shape) As PhysicsKit.Body
+		Function Add(x As Integer, y As Integer, shape As ImpulseEngine.Shape) As ImpulseEngine.Body
 		  // Adds the passed shape to the world at the specified (x, y) position.
 		  // NB: (x, y) specifies the position of the centre of the shape.
 		  
-		  Var b As PhysicsKit.Body = New PhysicsKit.Body(Self, shape, x, y)
+		  Var b As ImpulseEngine.Body = New ImpulseEngine.Body(Self, shape, x, y)
 		  Bodies.AddRow(b)
 		  Return b
 		  
@@ -13,11 +13,11 @@ Protected Class World
 	#tag EndMethod
 
 	#tag Method, Flags = &h0, Description = 416464732061206E657720426F782073686170652077697468206077696474686020616E6420606865696768746020746F2074686520776F726C6420617420746865207370656369666965642028782C20792920706F736974696F6E2E2028782C207929207370656369666965732074686520706F736974696F6E206F662074686520736861706527732063656E7472652E
-		Function AddBox(x As Integer, y As Integer, width As Double, height As Double) As PhysicsKit.Body
+		Function AddBox(x As Integer, y As Integer, width As Double, height As Double) As ImpulseEngine.Body
 		  // Adds a new Box shape with `width` and `height` to the world at the specified (x, y) position.
 		  // NB: (x, y) specifies the position of the centre of the shape.
 		  
-		  Var b As PhysicsKit.Body = New PhysicsKit.Body(Self, New Box(width, height), x, y)
+		  Var b As ImpulseEngine.Body = New ImpulseEngine.Body(Self, New Box(width, height), x, y)
 		  Bodies.AddRow(b)
 		  Return b
 		  
@@ -25,11 +25,11 @@ Protected Class World
 	#tag EndMethod
 
 	#tag Method, Flags = &h0, Description = 416464732061206E657720436972636C65207368617065207769746820607261646975736020746F2074686520776F726C6420617420746865207370656369666965642028782C20792920706F736974696F6E2E2028782C207929207370656369666965732074686520706F736974696F6E206F662074686520736861706527732063656E7472652E
-		Function AddCircle(x As Integer, y As Integer, radius As Double) As PhysicsKit.Body
+		Function AddCircle(x As Integer, y As Integer, radius As Double) As ImpulseEngine.Body
 		  // Adds a new Circle shape with `radius` to the world at the specified (x, y) position.
 		  // NB: (x, y) specifies the position of the centre of the shape.
 		  
-		  Var b As PhysicsKit.Body = New PhysicsKit.Body(Self, New Circle(radius), x, y)
+		  Var b As ImpulseEngine.Body = New ImpulseEngine.Body(Self, New Circle(radius), x, y)
 		  Bodies.AddRow(b)
 		  Return b
 		  
@@ -37,12 +37,12 @@ Protected Class World
 	#tag EndMethod
 
 	#tag Method, Flags = &h0, Description = 4372656174657320616E6420616464732061206E657720706F6C79676F6E2073686170652028636F6E73747275637465642066726F6D207468652070617373656420706F696E74732920746F2074686520776F726C6420617420746865207370656369666965642028782C20792920706F736974696F6E2E2028782C2079292069732074686520706F736974696F6E206F662074686520736861706527732063656E7472652E
-		Function AddPolygon(x As Double, y As Double, ParamArray points As Double) As PhysicsKit.body
+		Function AddPolygon(x As Double, y As Double, ParamArray points As Double) As ImpulseEngine.body
 		  // Creates and adds a new polygon shape (constructed from the passed points) to the world at the 
 		  // specified (x, y) position.
 		  // NB: (x, y) specifies the position of the centre of the shape.
 		  
-		  Var b As PhysicsKit.Body = New PhysicsKit.Body(Self, New Polygon(points), x, y)
+		  Var b As ImpulseEngine.Body = New ImpulseEngine.Body(Self, New Polygon(points), x, y)
 		  Bodies.AddRow(b)
 		  Return b
 		  
@@ -50,10 +50,10 @@ Protected Class World
 	#tag EndMethod
 
 	#tag Method, Flags = &h0, Description = 46696E647320616E642072657475726E732074686520666972737420626F6479207769746820746865207061737365642049442E2052657475726E73204E696C2069662069742063616E277420626520666F756E642E
-		Function BodyWithID(id As Integer) As PhysicsKit.Body
+		Function BodyWithID(id As Integer) As ImpulseEngine.Body
 		  // Finds and returns the first body with the passed ID. Returns Nil if it can't be found.
 		  
-		  For Each b As PhysicsKit.Body In Bodies
+		  For Each b As ImpulseEngine.Body In Bodies
 		    If b.ID = id Then Return b
 		  Next b
 		  
@@ -71,7 +71,7 @@ Protected Class World
 	#tag EndMethod
 
 	#tag Method, Flags = &h0, Description = 437265617465732061206E657720776F726C642E2054616B6573207468652064656C74612074696D65207065722075706461746520616E64206F7074696F6E616C6C7920746865206E756D626572206F6620697465726174696F6E7320616E64206120766563746F7220726570726573656E74696E6720677261766974792E
-		Sub Constructor(dt As Double, iterations As Integer = 5, gravity As PhysicsKit.Vector = Nil)
+		Sub Constructor(dt As Double, iterations As Integer = 5, gravity As ImpulseEngine.Vector = Nil)
 		  Self.DeltaTime = dt
 		  Self.Iterations = iterations
 		  
@@ -95,7 +95,7 @@ Protected Class World
 	#tag EndMethod
 
 	#tag Method, Flags = &h0, Description = 506572666F726D7320612073696D756C6174696F6E207374657020666F7220746865207370656369666965642074696D6520696E74657276616C2C207570646174696E67206974732076656C6F6369747920616E6420616E67756C61722076656C6F636974792E
-		Sub IntegrateForces(b As PhysicsKit.Body, dt As Double)
+		Sub IntegrateForces(b As ImpulseEngine.Body, dt As Double)
 		  // Performs a simulation step for the specified time interval, updating its velocity 
 		  // and angular velocity.
 		  
@@ -111,7 +111,7 @@ Protected Class World
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub IntegrateVelocity(b As PhysicsKit.Body, dt As Double)
+		Sub IntegrateVelocity(b As ImpulseEngine.Body, dt As Double)
 		  If b.InverseMass = 0 Then Return
 		  
 		  Call b.Position.AddSelf(b.Velocity, dt)
@@ -130,8 +130,8 @@ Protected Class World
 		  // Generate new collision info.
 		  Contacts.ResizeTo(-1)
 		  
-		  Var A, B As PhysicsKit.Body
-		  Var m As PhysicsKit.Manifold
+		  Var A, B As ImpulseEngine.Body
+		  Var m As ImpulseEngine.Manifold
 		  
 		  For i As Integer = 0 To Bodies.LastRowIndex
 		    A = Bodies(i)
@@ -149,7 +149,7 @@ Protected Class World
 		  Next i
 		  
 		  // Integrate forces.
-		  For Each body As PhysicsKit.Body In Bodies
+		  For Each body As ImpulseEngine.Body In Bodies
 		    IntegrateForces(body, DeltaTime)
 		  Next body
 		  
@@ -166,7 +166,7 @@ Protected Class World
 		  Next j
 		  
 		  // Integrate velocities.
-		  For Each body As PhysicsKit.Body In Bodies
+		  For Each body As ImpulseEngine.Body In Bodies
 		    IntegrateVelocity(body, DeltaTime)
 		  Next body
 		  
@@ -180,7 +180,7 @@ Protected Class World
 		    If m.CollisionOccurred Then CollisionOccurred(m)
 		  Next m
 		  
-		  For Each body As PhysicsKit.Body In Bodies
+		  For Each body As ImpulseEngine.Body In Bodies
 		    body.Force.Set(0, 0)
 		    body.Torque = 0
 		  Next body
@@ -190,16 +190,16 @@ Protected Class World
 
 
 	#tag Hook, Flags = &h0, Description = 4120636F6C6C6973696F6E20686173206F63637572726564206265747765656E2074776F20626F646965732E2054686520636F6C6C6973696F6E20646174612069732073746F72656420696E2074686520706173736564204D616E69666F6C642E
-		Event CollisionOccurred(m As PhysicsKit.Manifold)
+		Event CollisionOccurred(m As ImpulseEngine.Manifold)
 	#tag EndHook
 
 
 	#tag Property, Flags = &h0, Description = 416C6C206F662074686520626F6469657320696E207468697320776F726C642E20546865206F6C646572206120626F64792C20746865206C6F7765722074686520696E6465782E
-		Bodies() As PhysicsKit.Body
+		Bodies() As ImpulseEngine.Body
 	#tag EndProperty
 
 	#tag Property, Flags = &h0, Description = 457665727920636F6C6C6973696F6E206D616E69666F6C6420696E2074686520776F726C6420666F72207468652063757272656E7420737465702E
-		Contacts() As PhysicsKit.Manifold
+		Contacts() As ImpulseEngine.Manifold
 	#tag EndProperty
 
 	#tag Property, Flags = &h0, Description = 546865206E756D626572206F66207365636F6E647320746F20616476616E6365207468652073696D756C6174696F6E207769746820656163682063616C6C20746F2060557064617465602E
@@ -218,7 +218,7 @@ Protected Class World
 			  mRestingValue = mGravity.Multiply(DeltaTime).LengthSquared + Maths.EPSILON
 			End Set
 		#tag EndSetter
-		Gravity As PhysicsKit.Vector
+		Gravity As ImpulseEngine.Vector
 	#tag EndComputedProperty
 
 	#tag Property, Flags = &h0, Description = 546865206E756D626572206F6620636F6C6C6973696F6E20697465726174696F6E7320746F20706572666F726D2065616368207570646174652E2054686520686967686572207468652076616C75652C2074686520686967686572207175616C697479207468652073696D756C6174696F6E2077696C6C2062652061742074686520657870656E7365206F6620706572666F726D616E63652E
@@ -226,7 +226,7 @@ Protected Class World
 	#tag EndProperty
 
 	#tag Property, Flags = &h21
-		Private mGravity As PhysicsKit.Vector
+		Private mGravity As ImpulseEngine.Vector
 	#tag EndProperty
 
 	#tag Property, Flags = &h21

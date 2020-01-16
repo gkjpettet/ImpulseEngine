@@ -124,25 +124,13 @@ Begin Menu MainMenuBar
       AutoEnabled = True
       AutoEnable = True
       Visible = True
-      Begin MenuItem DebugRunDemo1
+      Begin MenuItem DebugRunDemo
          SpecialMenu = 0
-         Value = "Run Demo1"
+         Value = "Run Demo"
          Index = -2147483648
-         Text = "Run Demo1"
-         ShortcutKey = "1"
-         Shortcut = "Cmd+1"
-         MenuModifier = True
-         AutoEnabled = True
-         AutoEnable = True
-         Visible = True
-      End
-      Begin MenuItem DebugRunDemo2
-         SpecialMenu = 0
-         Value = "Run Demo2"
-         Index = -2147483648
-         Text = "Run Demo2"
-         ShortcutKey = "2"
-         Shortcut = "Cmd+2"
+         Text = "Run Demo"
+         ShortcutKey = "R"
+         Shortcut = "Cmd+R"
          MenuModifier = True
          AutoEnabled = True
          AutoEnable = True

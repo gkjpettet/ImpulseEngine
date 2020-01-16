@@ -1,12 +1,12 @@
 #tag Class
 Protected Class Box
-Inherits PhysicsKit.Polygon
-Implements PhysicsKit.Shape
+Inherits ImpulseEngine.Polygon
+Implements ImpulseEngine.Shape
 	#tag Method, Flags = &h0
-		Function Clone() As PhysicsKit.Shape
-		  // Part of the PhysicsKit.Shape interface.
+		Function Clone() As ImpulseEngine.Shape
+		  // Part of the ImpulseEngine.Shape interface.
 		  
-		  Var box As PhysicsKit.Box = New PhysicsKit.Box
+		  Var box As ImpulseEngine.Box = New ImpulseEngine.Box
 		  
 		  box.U.Set(mU)
 		  
@@ -33,7 +33,7 @@ Implements PhysicsKit.Shape
 	#tag Method, Flags = &h0
 		Sub Constructor(width As Double, height As Double)
 		  // All classes implementing the `Shape` interface must intialise mU to a new Matrix.
-		  mU = New PhysicsKit.Matrix
+		  mU = New ImpulseEngine.Matrix
 		  
 		  Vertices = Vector.ArrayOf(4)
 		  Normals = Vector.ArrayOf(4)

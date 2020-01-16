@@ -1,10 +1,10 @@
 #tag Class
 Protected Class Matrix
 	#tag Method, Flags = &h0, Description = 52657475726E732061206E6577206D6174726978207468617420697320746865206162736F6C7574652076616C7565206F662074686973206D61747269782E
-		Function Abs() As PhysicsKit.Matrix
+		Function Abs() As ImpulseEngine.Matrix
 		  // Returns a new matrix that is the absolute value of this matrix.
 		  
-		  Var out As PhysicsKit.Matrix = New Matrix
+		  Var out As ImpulseEngine.Matrix = New Matrix
 		  
 		  out.M00 = Realbasic.Abs(M00)
 		  out.M01 = Realbasic.Abs(M01)
@@ -17,7 +17,7 @@ Protected Class Matrix
 	#tag EndMethod
 
 	#tag Method, Flags = &h0, Description = 5365747320606F75746020746F20746865206162736F6C7574652076616C7565206F662074686973206D617472697820616E642072657475726E7320606F7574602E204372656174657320606F757460206966206E65656465642E
-		Function Abs(out As PhysicsKit.Matrix) As PhysicsKit.Matrix
+		Function Abs(out As ImpulseEngine.Matrix) As ImpulseEngine.Matrix
 		  // Sets `out` to the absolute value of this matrix and returns `out`.
 		  // Creates `out` if needed.
 		  
@@ -65,7 +65,7 @@ Protected Class Matrix
 	#tag EndMethod
 
 	#tag Method, Flags = &h0, Description = 52657475726E732061206E657720766563746F7220746861742069732074686520782D61786973202831737420636F6C756D6E29206F662074686973206D61747269782E
-		Function GetAxisX() As PhysicsKit.Vector
+		Function GetAxisX() As ImpulseEngine.Vector
 		  // Returns a new vector that is the x-axis (1st column) of this matrix.
 		  
 		  Return New Vector(M00, M10)
@@ -74,7 +74,7 @@ Protected Class Matrix
 	#tag EndMethod
 
 	#tag Method, Flags = &h0, Description = 5365747320606F75746020746F2074686520782D61786973202831737420636F6C756D6E29206F662074686973206D617472697820616E642072657475726E7320606F7574602E204372656174657320606F757460206966206E65656465642E
-		Function GetAxisX(out As PhysicsKit.Vector) As PhysicsKit.Vector
+		Function GetAxisX(out As ImpulseEngine.Vector) As ImpulseEngine.Vector
 		  // Sets `out` to the x-axis (1st column) of this matrix and returns `out`.
 		  // Creates `out` if needed.
 		  
@@ -91,7 +91,7 @@ Protected Class Matrix
 	#tag EndMethod
 
 	#tag Method, Flags = &h0, Description = 52657475726E732061206E657720766563746F7220746861742069732074686520792D617869732028326E6420636F6C756D6E29206F662074686973206D61747269782E
-		Function GetAxisY() As PhysicsKit.Vector
+		Function GetAxisY() As ImpulseEngine.Vector
 		  // Returns a new vector that is the y-axis (2nd column) of this matrix.
 		  
 		  Return New Vector(M01, M11)
@@ -100,7 +100,7 @@ Protected Class Matrix
 	#tag EndMethod
 
 	#tag Method, Flags = &h0, Description = 5365747320606F75746020746F2074686520792D617869732028326E6420636F6C756D6E29206F662074686973206D617472697820616E642072657475726E7320606F7574602E204372656174657320606F757460206966206E65656465642E
-		Function GetAxisY(out As PhysicsKit.Vector) As PhysicsKit.Vector
+		Function GetAxisY(out As ImpulseEngine.Vector) As ImpulseEngine.Vector
 		  // Sets `out` to the y-axis (2nd column) of this matrix and returns `out`.
 		  // Creates `out` if needed.
 		  
@@ -117,7 +117,7 @@ Protected Class Matrix
 	#tag EndMethod
 
 	#tag Method, Flags = &h0, Description = 5365747320606F7574602074686520746F207472616E73666F726D6174696F6E206F66207B782C797D2062792074686973206D617472697820616E642072657475726E7320606F7574602E204372656174657320606F757460206966206E65656465642E
-		Function Multiply(x As Double, y As Double, out As PhysicsKit.Vector) As PhysicsKit.Vector
+		Function Multiply(x As Double, y As Double, out As ImpulseEngine.Vector) As ImpulseEngine.Vector
 		  // Sets `out` the to transformation of {x,y} by this matrix and returns `out`.
 		  // Creates `out` if needed.
 		  
@@ -134,7 +134,7 @@ Protected Class Matrix
 	#tag EndMethod
 
 	#tag Method, Flags = &h0, Description = 52657475726E732061206E6577206D6174726978207468617420697320746865206D756C7469706C69636174696F6E206F66207468697320616E64206078602E
-		Function Multiply(x As PhysicsKit.Matrix) As PhysicsKit.Matrix
+		Function Multiply(x As ImpulseEngine.Matrix) As ImpulseEngine.Matrix
 		  // Returns a new matrix that is the multiplication of this and `x`.
 		  
 		  Return Multiply(x, New Matrix())
@@ -143,11 +143,11 @@ Protected Class Matrix
 	#tag EndMethod
 
 	#tag Method, Flags = &h0, Description = 5365747320606F75746020746F20746865206D756C7469706C69636174696F6E206F662074686973206D617472697820616E642060786020616E642072657475726E7320606F7574602E204372656174657320606F757460206966206E65656465642E
-		Function Multiply(x As PhysicsKit.Matrix, out As PhysicsKit.Matrix) As PhysicsKit.Matrix
+		Function Multiply(x As ImpulseEngine.Matrix, out As ImpulseEngine.Matrix) As ImpulseEngine.Matrix
 		  // Sets `out` to the multiplication of this matrix and `x` and returns `out`.
 		  // Creates `out` if needed.
 		  
-		  If out = Nil Then out = New PhysicsKit.Matrix
+		  If out = Nil Then out = New ImpulseEngine.Matrix
 		  
 		  out.M00 = M00 * x.M00 + M01 * x.M10
 		  out.M01 = M00 * x.M01 + M01 * x.M11
@@ -160,7 +160,7 @@ Protected Class Matrix
 	#tag EndMethod
 
 	#tag Method, Flags = &h0, Description = 52657475726E732061206E657720766563746F72207468617420697320746865207472616E73666F726D6174696F6E206F66206076602062792074686973206D61747269782E
-		Function Multiply(v As PhysicsKit.Vector) As PhysicsKit.Vector
+		Function Multiply(v As ImpulseEngine.Vector) As ImpulseEngine.Vector
 		  // Returns a new vector that is the transformation of `v` by this matrix.
 		  
 		  Return Multiply(v.X, v.Y, New Vector())
@@ -169,7 +169,7 @@ Protected Class Matrix
 	#tag EndMethod
 
 	#tag Method, Flags = &h0, Description = 5365747320606F75746020746F20746865207472616E73666F726D6174696F6E206F66206076602062792074686973206D61747269782E
-		Function Multiply(v As PhysicsKit.Vector, out As PhysicsKit.Vector) As PhysicsKit.Vector
+		Function Multiply(v As ImpulseEngine.Vector, out As ImpulseEngine.Vector) As ImpulseEngine.Vector
 		  // Sets `out` to the transformation of `v` by this matrix.
 		  
 		  Return Multiply(v.X, v.Y, out)
@@ -178,7 +178,7 @@ Protected Class Matrix
 	#tag EndMethod
 
 	#tag Method, Flags = &h0, Description = 4D756C7469706C6965732074686973206D617472697820627920782E
-		Sub MultiplySelf(x As PhysicsKit.Matrix)
+		Sub MultiplySelf(x As ImpulseEngine.Matrix)
 		  // Multiplies this matrix by x.
 		  
 		  Set(M00 * x.M00 + M01 * x.M10, _
@@ -190,7 +190,7 @@ Protected Class Matrix
 	#tag EndMethod
 
 	#tag Method, Flags = &h0, Description = 5472616E73666F726D73206076602062792074686973206D61747269782E
-		Function MultiplySelf(v As PhysicsKit.Vector) As PhysicsKit.Vector
+		Function MultiplySelf(v As ImpulseEngine.Vector) As ImpulseEngine.Vector
 		  // Transforms `v` by this matrix.
 		  
 		  Return Multiply(v.X, v.Y, v)
@@ -225,7 +225,7 @@ Protected Class Matrix
 	#tag EndMethod
 
 	#tag Method, Flags = &h0, Description = 536574732074686973206D617472697820746F2068617665207468652073616D652076616C7565732061732074686520676976656E206D61747269782E
-		Sub Set(m As PhysicsKit.Matrix)
+		Sub Set(m As ImpulseEngine.Matrix)
 		  // Sets this matrix to have the same values as the given matrix.
 		  
 		  M00 = m.M00
@@ -237,20 +237,20 @@ Protected Class Matrix
 	#tag EndMethod
 
 	#tag Method, Flags = &h0, Description = 52657475726E732061206E6577206D6174726978207468617420697320746865207472616E73706F7365206F662074686973206D61747269782E
-		Function Transpose() As PhysicsKit.Matrix
+		Function Transpose() As ImpulseEngine.Matrix
 		  // Returns a new matrix that is the transpose of this matrix.
 		  
-		  Return New PhysicsKit.Matrix(M00, M10, M01, M11)
+		  Return New ImpulseEngine.Matrix(M00, M10, M01, M11)
 		End Function
 	#tag EndMethod
 
 	#tag Method, Flags = &h0, Description = 5365747320606F75746020746F20746865207472616E73706F7365206F662074686973206D617472697820616E642072657475726E7320606F7574602E204372656174657320606F757460206966206E65656465642E
-		Function Transpose(out As PhysicsKit.Matrix) As PhysicsKit.Matrix
+		Function Transpose(out As ImpulseEngine.Matrix) As ImpulseEngine.Matrix
 		  // Sets `out` to the transpose of this matrix and returns `out`.
 		  // Creates `out` if needed.
 		  
 		  If out = Nil Then
-		    Return New PhysicsKit.Matrix(M00, M10, M01, M11)
+		    Return New ImpulseEngine.Matrix(M00, M10, M01, M11)
 		  Else
 		    out.M00 = M00
 		    out.M01 = M10
@@ -338,7 +338,31 @@ Protected Class Matrix
 			Visible=false
 			Group="Behavior"
 			InitialValue=""
-			Type="Integer"
+			Type="Double"
+			EditorType=""
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="M01"
+			Visible=false
+			Group="Behavior"
+			InitialValue=""
+			Type="Double"
+			EditorType=""
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="M10"
+			Visible=false
+			Group="Behavior"
+			InitialValue=""
+			Type="Double"
+			EditorType=""
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="M11"
+			Visible=false
+			Group="Behavior"
+			InitialValue=""
+			Type="Double"
 			EditorType=""
 		#tag EndViewProperty
 	#tag EndViewBehavior

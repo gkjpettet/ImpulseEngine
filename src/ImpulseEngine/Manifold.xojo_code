@@ -8,7 +8,7 @@ Protected Class Manifold
 		    Return
 		  End If
 		  
-		  Var ra, rb, rv, impulse, t, tangentImpulse As PhysicsKit.Vector
+		  Var ra, rb, rv, impulse, t, tangentImpulse As ImpulseEngine.Vector
 		  Var raCrossN, rbCrossN, invMassSum, j, jt, contactVel As Double
 		  Var contactLimit As Integer = ContactCount - 1
 		  For i As Integer = 0 To contactLimit
@@ -72,7 +72,7 @@ Protected Class Manifold
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Constructor(a As PhysicsKit.Body, b As PhysicsKit.Body, timeStep As Integer)
+		Sub Constructor(a As ImpulseEngine.Body, b As ImpulseEngine.Body, timeStep As Integer)
 		  Self.A = a
 		  Self.B = b
 		  Normal = New Vector(0, 0)
@@ -91,7 +91,7 @@ Protected Class Manifold
 	#tag EndMethod
 
 	#tag Method, Flags = &h0
-		Sub Initialise(w As PhysicsKit.World)
+		Sub Initialise(w As ImpulseEngine.World)
 		  // Restitution mixing law. Taken from Box2D. 
 		  // The idea is allow for anything to bounce off an inelastic surface.
 		  // For example, a superball bounces on anything.
@@ -101,7 +101,7 @@ Protected Class Manifold
 		  StaticFriction = Sqrt(A.StaticFriction * A.StaticFriction + B.StaticFriction * B.StaticFriction)
 		  DynamicFriction = Sqrt(A.DynamicFriction * A.DynamicFriction + B.DynamicFriction * B.DynamicFriction)
 		  
-		  Var ra, rb, rv As PhysicsKit.Vector
+		  Var ra, rb, rv As ImpulseEngine.Vector
 		  Var contactLimit As Integer = ContactCount - 1
 		  For i As Integer = 0 To contactLimit
 		    // Calculate radii from COM to contact.
@@ -182,11 +182,11 @@ Protected Class Manifold
 
 
 	#tag Property, Flags = &h0
-		A As PhysicsKit.Body
+		A As ImpulseEngine.Body
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		B As PhysicsKit.Body
+		B As ImpulseEngine.Body
 	#tag EndProperty
 
 	#tag ComputedProperty, Flags = &h0, Description = 547275652069662074686973206D616E69666F6C6420726570726573656E7473206120636F6C6C6973696F6E206265747765656E2074776F20626F64696573207468617420617265204E4F5420617420726573742E
@@ -203,7 +203,7 @@ Protected Class Manifold
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		Contacts(1) As PhysicsKit.Vector
+		Contacts(1) As ImpulseEngine.Vector
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
@@ -219,7 +219,7 @@ Protected Class Manifold
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
-		Normal As PhysicsKit.Vector
+		Normal As ImpulseEngine.Vector
 	#tag EndProperty
 
 	#tag Property, Flags = &h0
@@ -327,6 +327,22 @@ Protected Class Manifold
 			Group="Behavior"
 			InitialValue=""
 			Type="Double"
+			EditorType=""
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="CollisionOccurred"
+			Visible=false
+			Group="Behavior"
+			InitialValue=""
+			Type="Boolean"
+			EditorType=""
+		#tag EndViewProperty
+		#tag ViewProperty
+			Name="TimeStep"
+			Visible=false
+			Group="Behavior"
+			InitialValue=""
+			Type="Integer"
 			EditorType=""
 		#tag EndViewProperty
 	#tag EndViewBehavior

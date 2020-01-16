@@ -34,6 +34,7 @@ poly.AngularVelocity = 0.55
 // Call World.Update every `dt` seconds.
 // Assume we have a Timer elsewhere with an intervale of 1/fps that
 // calls `w.Update` and then draws every body in the World in a canavs.
+// See the demo app to see how this can be done.
 ```
 
 [randy's]: https://www.randygaul.net/projects-open-sources/impulse-engine/

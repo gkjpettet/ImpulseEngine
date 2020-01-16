@@ -7,7 +7,7 @@ rather than in an actual game as it is missing some important features such as j
 The engine is written in 100% Xojo and has no external dependencies. It uses API 2.0 and therefore requires Xojo 2019 Release 2 to compile. It will not run on iOS due to this limitation.
 
 ## Usage
-Getting started is a simple as adding the `ImpulseEngine` module to your project. The project includes a simple test bed demo application illustrating how to create bodies and add them to the simulation. I've tried to keep the engine's API simple and have thoroughly documented the code. 
+Getting started is a simple as adding the `ImpulseEngine` module to your project. The project includes a simple demo application illustrating how to create bodies and add them to the simulation. I've tried to keep the engine's API simple and have thoroughly documented the code. 
 
 ```xojo
 Using ImpulseEngine

@@ -37,8 +37,9 @@ poly.AngularVelocity = 0.55
 // See the demo app to see how this can be done.
 ```
 
+## Video
 <a href="http://www.youtube.com/watch?feature=player_embedded&v=CXD5eXC74Dw
 " target="_blank"><img src="http://img.youtube.com/vi/CXD5eXC74Dw/0.jpg" 
-alt="YouTube Video of ImpulseEngine" width="240" height="180" border="10" /></a>
+alt="YouTube Video of ImpulseEngine"/></a>
 
 [randy's]: https://www.randygaul.net/projects-open-sources/impulse-engine/

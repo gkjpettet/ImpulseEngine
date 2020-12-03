@@ -3,7 +3,7 @@ Begin Window Window1
    Backdrop        =   0
    BackgroundColor =   &cFFFFFF00
    Composite       =   False
-   DefaultLocation =   "0"
+   DefaultLocation =   0
    FullScreen      =   False
    HasBackgroundColor=   False
    HasCloseButton  =   True
@@ -21,7 +21,7 @@ Begin Window Window1
    MinimumWidth    =   64
    Resizeable      =   False
    Title           =   "ImpulseEngine"
-   Type            =   "0"
+   Type            =   0
    Visible         =   True
    Width           =   1024
    Begin PushButton ButtonStart
@@ -44,7 +44,7 @@ Begin Window Window1
       LockLeft        =   False
       LockRight       =   True
       LockTop         =   False
-      MacButtonStyle  =   "0"
+      MacButtonStyle  =   0
       Scope           =   2
       TabIndex        =   1
       TabPanelIndex   =   0
@@ -76,7 +76,7 @@ Begin Window Window1
       LockLeft        =   False
       LockRight       =   True
       LockTop         =   False
-      MacButtonStyle  =   "0"
+      MacButtonStyle  =   0
       Scope           =   2
       TabIndex        =   2
       TabPanelIndex   =   0
@@ -108,7 +108,7 @@ Begin Window Window1
       LockLeft        =   False
       LockRight       =   True
       LockTop         =   False
-      MacButtonStyle  =   "0"
+      MacButtonStyle  =   0
       Scope           =   2
       TabIndex        =   3
       TabPanelIndex   =   0
@@ -121,10 +121,11 @@ Begin Window Window1
       Width           =   80
    End
    Begin Timer WorldUpdateTimer
+      Enabled         =   True
       Index           =   -2147483648
       LockedInPosition=   False
       Period          =   18
-      RunMode         =   "0"
+      RunMode         =   0
       Scope           =   0
       TabPanelIndex   =   0
    End
@@ -185,7 +186,7 @@ Begin Window Window1
       Underline       =   False
       Value           =   False
       Visible         =   True
-      VisualState     =   "0"
+      VisualState     =   0
       Width           =   112
    End
 End

@@ -193,13 +193,6 @@ End
 #tag EndWindow
 
 #tag WindowCode
-	#tag Event
-		Sub Open()
-		  
-		End Sub
-	#tag EndEvent
-
-
 	#tag MenuHandler
 		Function DebugRunDemo() As Boolean Handles DebugRunDemo.Action
 			Window1.StartSimulation
@@ -215,7 +208,9 @@ End
 		  #Pragma Unused sender
 		  #Pragma Unused m
 		  
-		  System.DebugLog("Collision occurred")
+		  #If DebugBuild
+		    System.DebugLog("Collision occurred")
+		  #EndIf
 		End Sub
 	#tag EndMethod
 
@@ -361,9 +356,6 @@ End
 	#tag Event
 		Sub Action()
 		  Window1.MyWorld.Update
-		  //Window1.UpdateCycles = Window1.UpdateCycles + 1
-		  //Window1.Info.Value = "Update cycles: " + Window1.UpdateCycles.ToString
-		  
 		  Window1.Display.Invalidate
 		  
 		End Sub

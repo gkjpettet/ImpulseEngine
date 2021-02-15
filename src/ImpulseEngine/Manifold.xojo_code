@@ -105,8 +105,8 @@ Protected Class Manifold
 		  Var contactLimit As Integer = ContactCount - 1
 		  For i As Integer = 0 To contactLimit
 		    // Calculate radii from COM to contact.
-		    ra = contacts(i).Subtract(A.Position)
-		    rb = contacts(i).Subtract(B.Position)
+		    ra = Contacts(i).Subtract(A.Position)
+		    rb = Contacts(i).Subtract(B.Position)
 		    
 		    rv = B.Velocity.Add(Vector.Cross(B.AngularVelocity, rb, New Vector)). _
 		    SubtractSelf(A.Velocity).SubtractSelf(Vector.Cross(A.AngularVelocity, ra, New Vector))
@@ -132,10 +132,11 @@ Protected Class Manifold
 
 	#tag Method, Flags = &h0, Description = 44657465726D696E6573206966207468697320636F6C6C6973696F6E2073686F756C6420626520636F6E7369646572656420747275652E2041207472756520636F6C6C6973696F6E2063616E206F6E6C79206F63637572206966206174206C65617374206F6E6520626F6479206973206D6F76696E672E
 		Sub RestingCorrection()
-		  // Since contacts are created during every worl update, bodies resting against each other 
-		  // will always be colliding. We're really only interested in knowing if a body has just 
-		  // collided with another, not that it happens to be permanently beside another. 
-		  // This method set `mCollisionOccurred` to True if both bodies A and B have at least 
+		  // Since contacts are created during every world update, bodies resting against 
+		  // each other will always be colliding. We're really only interested in knowing 
+		  // if a body has just collided with another, not that it happens to be 
+		  // permanently beside another. 
+		  // This method sets `mCollisionOccurred` to True if both bodies A and B have at least 
 		  // some velocity.
 		  
 		  If Maths.OutsideRange(A.Velocity.X, -RESTING_THRESHOLD, RESTING_THRESHOLD) Or _
@@ -244,7 +245,7 @@ Protected Class Manifold
 	#tag EndComputedProperty
 
 
-	#tag Constant, Name = RESTING_THRESHOLD, Type = Double, Dynamic = False, Default = \"1.0", Scope = Private
+	#tag Constant, Name = RESTING_THRESHOLD, Type = Double, Dynamic = False, Default = \"1.75", Scope = Private
 	#tag EndConstant
 
 

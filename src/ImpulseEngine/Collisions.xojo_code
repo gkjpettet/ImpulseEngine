@@ -2,6 +2,7 @@
 Protected Module Collisions
 	#tag Method, Flags = &h1
 		Protected Sub CircleCircle(m As ImpulseEngine.Manifold, circleBodyA As ImpulseEngine.Body, circleBodyB As ImpulseEngine.Body)
+		  // Get the shapes of the circle bodies passed in.
 		  Var circleShapeA As ImpulseEngine.Circle = ImpulseEngine.Circle(circleBodyA.Shape)
 		  Var circleShapeB As ImpulseEngine.Circle = ImpulseEngine.Circle(circleBodyB.Shape)
 		  
@@ -17,11 +18,14 @@ Protected Module Collisions
 		    Return
 		  End If
 		  
-		  Var distance As Double = Sqrt(dist_sqr)
-		  
+		  // They're in contact.
 		  m.ContactCount = 1
 		  
+		  // Compute the distance between the two circles.
+		  Var distance As Double = Sqrt(dist_sqr)
+		  
 		  If distance = 0 Then
+		    // They're overlapping.
 		    m.Penetration = circleShapeA.Radius
 		    m.Normal.Set(1, 0)
 		    Call m.Contacts(0).Set(circleBodyA.Position)
@@ -36,13 +40,15 @@ Protected Module Collisions
 
 	#tag Method, Flags = &h1
 		Protected Sub CirclePolygon(m As ImpulseEngine.Manifold, circleBody As ImpulseEngine.Body, polygonBody As ImpulseEngine.Body)
+		  // Get the shapes of the bodies passed in.
 		  Var circleShape As ImpulseEngine.Circle = ImpulseEngine.Circle(circleBody.Shape) //A
 		  Var polygonShape As ImpulseEngine.Polygon = ImpulseEngine.Polygon(polygonBody.Shape) // B
 		  
+		  // Start out with no contact.
 		  m.ContactCount = 0
 		  
-		  // Transform circle center to Polygon model space.
-		  Var center As ImpulseEngine.Vector = polygonShape.U.Transpose.MultiplySelf(circleBody.Position.Subtract(polygonBody.Position))
+		  // Transform the circle's centre to polygon model space.
+		  Var centre As ImpulseEngine.Vector = polygonShape.U.Transpose.MultiplySelf(circleBody.Position.Subtract(polygonBody.Position))
 		  
 		  // Find edge with minimum penetration.
 		  // Same concept as using support points in Polygon vs Polygon.
@@ -51,7 +57,7 @@ Protected Module Collisions
 		  
 		  Var s As Double
 		  For i As Integer = 0 To polygonShape.VertexCount - 1
-		    s = Vector.Dot(polygonShape.Normals(i), center.Subtract(polygonShape.Vertices(i)))
+		    s = Vector.Dot(polygonShape.Normals(i), centre.Subtract(polygonShape.Vertices(i)))
 		    
 		    If s > circleShape.Radius Then Return
 		    
@@ -66,7 +72,7 @@ Protected Module Collisions
 		  Var i2 As Integer = If(faceNormal + 1 < polygonShape.VertexCount, faceNormal + 1, 0)
 		  Var v2 As ImpulseEngine.Vector = polygonShape.Vertices(i2)
 		  
-		  // Check to see if center is within polygon
+		  // Check to see if `centre` is within polygon
 		  If separation < Maths.EPSILON Then
 		    m.ContactCount = 1
 		    Call polygonShape.U.Multiply(polygonShape.Normals(faceNormal), m.Normal).NegateSelf
@@ -76,29 +82,29 @@ Protected Module Collisions
 		  End If
 		  
 		  // Determine which voronoi region of the edge center of circle lies within.
-		  Var dot1 As Double = Vector.Dot(center.Subtract(v1), v2.Subtract(v1))
-		  Var dot2 As Double = Vector.Dot(center.Subtract(v2), v1.Subtract(v2))
+		  Var dot1 As Double = Vector.Dot(centre.Subtract(v1), v2.Subtract(v1))
+		  Var dot2 As Double = Vector.Dot(centre.Subtract(v2), v1.Subtract(v2))
 		  m.Penetration = circleShape.Radius - separation
 		  
 		  // Closest to v1.
 		  If dot1 <= 0 Then
-		    If Vector.DistanceSquared(center, v1) > circleShape.Radius * circleShape.Radius Then Return
+		    If Vector.DistanceSquared(centre, v1) > circleShape.Radius * circleShape.Radius Then Return
 		    
 		    m.ContactCount = 1
-		    polygonShape.U.MultiplySelf(m.Normal.Set(v1).SubtractSelf(center)).Normalise
+		    polygonShape.U.MultiplySelf(m.Normal.Set(v1).SubtractSelf(centre)).Normalise
 		    Call polygonShape.U.Multiply(v1, m.Contacts(0)).AddSelf(polygonBody.Position)
 		    
 		  ElseIf dot2 <= 0 Then // Closest to v2.
-		    If Vector.DistanceSquared(center, v2) > circleShape.Radius * circleShape.Radius Then Return
+		    If Vector.DistanceSquared(centre, v2) > circleShape.Radius * circleShape.Radius Then Return
 		    
 		    m.ContactCount = 1
-		    polygonShape.U.MultiplySelf(m.Normal.Set(v2).SubtractSelf(center)).Normalise
+		    polygonShape.U.MultiplySelf(m.Normal.Set(v2).SubtractSelf(centre)).Normalise
 		    Call polygonShape.U.Multiply(v2, m.Contacts(0)).AddSelf(polygonBody.Position)
 		    
 		  Else // Closest to face.
 		    Var n As ImpulseEngine.Vector = polygonShape.Normals(faceNormal)
 		    
-		    If Vector.Dot(center.Subtract(v1), n) > circleShape.Radius Then Return
+		    If Vector.Dot(centre.Subtract(v1), n) > circleShape.Radius Then Return
 		    
 		    m.ContactCount = 1
 		    Call polygonShape.U.Multiply(n, m.Normal).NegateSelf
@@ -226,9 +232,11 @@ Protected Module Collisions
 
 	#tag Method, Flags = &h1
 		Protected Sub PolygonPolygon(m As ImpulseEngine.Manifold, a As ImpulseEngine.Body, b As ImpulseEngine.Body)
+		  // Get the shapes of the passed in bodies.
 		  Var polygonShapeA As ImpulseEngine.Polygon = ImpulseEngine.Polygon(a.Shape) //A
 		  Var polygonShapeB As ImpulseEngine.Polygon = ImpulseEngine.Polygon(b.Shape) //B
 		  
+		  // We start with no contact.
 		  m.ContactCount = 0
 		  
 		  // Check for a separating axis with polygonShapeA's face planes.

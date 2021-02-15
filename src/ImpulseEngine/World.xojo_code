@@ -146,6 +146,7 @@ Protected Class World
 		  Var A, B As ImpulseEngine.Body
 		  Var m As ImpulseEngine.Manifold
 		  
+		  #Pragma Warning "OPTIMISE: Use a spatial hash to check for collisions?"
 		  For i As Integer = 0 To Bodies.LastRowIndex
 		    A = Bodies(i)
 		    

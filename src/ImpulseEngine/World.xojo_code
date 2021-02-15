@@ -120,6 +120,19 @@ Protected Class World
 		  
 		  IntegrateForces(b, dt)
 		  
+		  // Can we sleep this body or does it need waking up?
+		  If Not b.IsStatic And _ 
+		    Abs(b.Velocity.X) <= VELOCITY_SLEEP_THRESHOLD And _ 
+		    Abs(b.Velocity.Y) <= VELOCITY_SLEEP_THRESHOLD And _
+		    Abs(b.AngularVelocity) <= ANGULAR_VELOCITY_SLEEP_THRESHOLD Then
+		    b.IsSleeping = True
+		    b.Velocity.X = 0
+		    b.Velocity.Y = 0
+		    b.AngularVelocity = 0
+		  Else
+		    b.IsSleeping = False
+		  End If
+		  
 		End Sub
 	#tag EndMethod
 
@@ -138,6 +151,9 @@ Protected Class World
 		    
 		    For j As Integer = i + 1 To Bodies.LastRowIndex
 		      B = Bodies(j)
+		      
+		      // If these two bodies are sleeping then they aren't colliding.
+		      If A.IsSleeping And B.IsSleeping Then Continue
 		      
 		      If A.InverseMass = 0 And B.InverseMass = 0 Then Continue
 		      
@@ -249,6 +265,13 @@ Protected Class World
 		#tag EndGetter
 		RestingValue As Double
 	#tag EndComputedProperty
+
+
+	#tag Constant, Name = ANGULAR_VELOCITY_SLEEP_THRESHOLD, Type = Double, Dynamic = False, Default = \"0.5", Scope = Private
+	#tag EndConstant
+
+	#tag Constant, Name = VELOCITY_SLEEP_THRESHOLD, Type = Double, Dynamic = False, Default = \"0.5", Scope = Private
+	#tag EndConstant
 
 
 	#tag ViewBehavior

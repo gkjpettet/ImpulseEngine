@@ -254,7 +254,7 @@ End
 		Sub StartSimulation()
 		  Const FPS = 60
 		  
-		  MyWorld = New ImpulseEngine.World(1/FPS, 5)
+		  MyWorld = New ImpulseEngine.World(1/FPS, 3)
 		  AddHandler MyWorld.CollisionOccurred, AddressOf CollisionOccurred
 		  
 		  Var b As ImpulseEngine.Body

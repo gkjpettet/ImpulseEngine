@@ -80,6 +80,10 @@ Protected Class Body
 		InverseMass As Double
 	#tag EndProperty
 
+	#tag Property, Flags = &h0
+		IsSleeping As Boolean = False
+	#tag EndProperty
+
 	#tag ComputedProperty, Flags = &h0, Description = 49662054727565207468656E207468697320626F64792077696C6C206D61696E7461696E206120666978656420706F736974696F6E20696E2074686520776F726C642E
 		#tag Getter
 			Get

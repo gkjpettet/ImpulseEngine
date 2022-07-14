@@ -406,10 +406,10 @@ Protected Class Vector
 		  // Creates `out` if needed.
 		  
 		  If out = Nil Then
-		    Return New Vector(Xojo.Math.Max(a.X, b.X), Xojo.Math.Max(a.Y, b.Y))
+		    Return New Vector(Max(a.X, b.X), Max(a.Y, b.Y))
 		  Else
-		    out.X = Xojo.Math.Max(a.X, b.X)
-		    out.Y = Xojo.Math.Max(a.Y, b.Y)
+		    out.X = Max(a.X, b.X)
+		    out.Y = Max(a.Y, b.Y)
 		  End If
 		  
 		  Return out
@@ -435,10 +435,10 @@ Protected Class Vector
 		  // Creates `out` if needed.
 		  
 		  If out = Nil Then
-		    out = New Vector(Xojo.Math.Min(a.X, b.X), Xojo.Math.Min(a.Y, b.Y))
+		    out = New Vector(Min(a.X, b.X), Min(a.Y, b.Y))
 		  Else
-		    out.X = Xojo.Math.Min(a.X, b.X)
-		    out.Y = Xojo.Math.Min(a.Y, b.Y)
+		    out.X = Min(a.X, b.X)
+		    out.Y = Min(a.Y, b.Y)
 		  End If
 		  
 		  Return out
@@ -450,8 +450,8 @@ Protected Class Vector
 		Function MinSelf(a As ImpulseEngine.Vector, b As ImpulseEngine.Vector) As ImpulseEngine.Vector
 		  // Sets this vector to the minimum between vectors `a` and `b` and returns itself.
 		  
-		  X = Xojo.Math.Min(a.X, b.X)
-		  Y = Xojo.Math.Min(a.Y, b.Y)
+		  X = Min(a.X, b.X)
+		  Y = Min(a.Y, b.Y)
 		  
 		  Return Self
 		  

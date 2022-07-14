@@ -6,10 +6,10 @@ Protected Class Matrix
 		  
 		  Var out As ImpulseEngine.Matrix = New Matrix
 		  
-		  out.M00 = Xojo.Math.Abs(M00)
-		  out.M01 = Xojo.Math.Abs(M01)
-		  out.M10 = Xojo.Math.Abs(M10)
-		  out.M11 = Xojo.Math.Abs(M11)
+		  out.M00 = Abs(M00)
+		  out.M01 = Abs(M01)
+		  out.M10 = Abs(M10)
+		  out.M11 = Abs(M11)
 		  
 		  Return out
 		  
@@ -23,10 +23,10 @@ Protected Class Matrix
 		  
 		  If out = Nil Then out = New Matrix
 		  
-		  out.M00 = Xojo.Math.Abs(M00)
-		  out.M01 = Xojo.Math.Abs(M01)
-		  out.M10 = Xojo.Math.Abs(M10)
-		  out.M11 = Xojo.Math.Abs(M11)
+		  out.M00 = Abs(M00)
+		  out.M01 = Abs(M01)
+		  out.M10 = Abs(M10)
+		  out.M11 = Abs(M11)
 		  
 		  Return out
 		  
@@ -37,10 +37,10 @@ Protected Class Matrix
 		Sub AbsSelf()
 		  // Sets the values of this matrix to their absolute value.
 		  
-		  M00 = Xojo.Math.Abs(M00)
-		  M01 = Xojo.Math.Abs(M01)
-		  M10 = Xojo.Math.Abs(M10)
-		  M11 = Xojo.Math.Abs(M11)
+		  M00 = Abs(M00)
+		  M01 = Abs(M01)
+		  M10 = Abs(M10)
+		  M11 = Abs(M11)
 		  
 		  
 		End Sub

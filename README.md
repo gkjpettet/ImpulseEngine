@@ -33,7 +33,7 @@ Var poly As Body = MyWorld.AddPolygon(150, 50, 0, 0, 30, -50, 60, -20, 75, 20, 4
 poly.AngularVelocity = 0.55
 
 // Call World.Update every `dt` seconds.
-// Assume we have a Timer elsewhere with an intervale of 1/fps that
+// Assume we have a Timer elsewhere with an interval of 1/FPS that
 // calls `w.Update` and then draws every body in the World in a canavs.
 // See the demo app to see how this can be done.
 ```

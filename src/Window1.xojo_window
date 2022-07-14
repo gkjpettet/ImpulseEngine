@@ -252,7 +252,7 @@ End
 
 	#tag Method, Flags = &h0
 		Sub StartSimulation()
-		  Const FPS = 60
+		  Const FPS = 30
 		  
 		  MyWorld = New ImpulseEngine.World(1/FPS, 3)
 		  AddHandler MyWorld.CollisionOccurred, AddressOf CollisionOccurred

@@ -4,7 +4,8 @@ A 2D rigid body physics engine for Xojo. Based on Randy Gaul's [Impulse engine][
 The engine is complete and functional but is probably best used to learn about 2D vector physics 
 rather than in an actual game as it is missing some important features such as joints.
 
-The engine is written in 100% Xojo and has no external dependencies. It uses API 2.0 and therefore requires Xojo 2019 Release 2 to compile. It will not run on iOS due to this limitation.
+The engine is written in 100% Xojo and has no external dependencies. It uses API 2.0 and therefore requires Xojo 2019 Release 2 to compile.
+It works in Xojo desktop and iOS projects.
 
 ## Usage
 Getting started is a simple as adding the `ImpulseEngine` module to your project. The project includes a simple demo application illustrating how to create bodies and add them to the simulation. I've tried to keep the engine's API simple and have thoroughly documented the code. 
